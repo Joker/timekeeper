@@ -8,6 +8,7 @@ Item {
     property int minutes
     property int seconds
     property real shift
+    property string day
 
 
     function timeChanged() {
@@ -15,7 +16,7 @@ Item {
         hours    = shift ? date.getUTCHours()   + Math.floor(clock.shift)  : date.getHours()
         minutes  = shift ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
         seconds  = date.getUTCSeconds();
-
+        day      = Qt.formatDateTime(date, "ddd")
     }
 
     Timer {
@@ -23,18 +24,21 @@ Item {
         onTriggered: clock.timeChanged()
     }
 
-    Text {
-        x: 67; y: 104
-        text: Qt.formatDateTime(new Date(), "ddd")
-        font.pointSize: 11
-        font.family: "Engravers MT"
-        color: "#333333"
-    }
 
     Image { id: background; source: "clock.png"}
 
     Image { x: 77; y: 74;  source: "center.png"}  
 
+
+    FontLoader { id: fixedFont; source: "./Engravers_MT.ttf"}
+    Text {
+        x: 67; y: 104
+        text: clock.day
+        font.pointSize: 11
+        font.family: fixedFont.name
+        color: "#333333"
+
+    }
 
 
     Image {

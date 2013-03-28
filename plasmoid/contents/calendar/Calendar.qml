@@ -14,29 +14,30 @@ Item {
     }
 
     property int tik
-//    function timeChanged() {
-//        var date = new Date;
-//        tik  = date.getUTCSeconds();
-//    }
-//    Timer {
-//        interval: 100; running: true; repeat: true;
-//        onTriggered: calendar.timeChanged()
-//    }
+    property int tak
+    property bool lock: true
+    function timeChanged() {
+        if(lock){
+            var date = new Date;
+            tak  = date.getUTCSeconds() * 6;
+        }
+    }
+    Timer {
+        interval: 100; running: true; repeat: true;
+        onTriggered: calendar.timeChanged()
+    }
 
     Image {
         id: rotatingring
         x: 16; y: 17
         source: "rotatingring.png"
+        smooth: true
+
 
         MouseArea {
             id: mousearea
 
-            property bool __isPanning: false
-            property int __lastX: -1
-            property int __lastY: -1
-
             anchors.fill : parent
-
 
             function inner(x, y){
                 var dx = x - 223;
@@ -56,21 +57,23 @@ Item {
                 a = (x > 0) ? a+90 : a+270;
                 return a;
             }
-            onPressed: {/*
-                var x = mouse.x
-                var y = mouse.y
-                console.log(x, y)
-            */}
+            onPressed: {
+                if(inner(mouse.x, mouse.y)){
+                    calendar.lock = false
+                }
+            }
 
             onReleased: {
-                Math.atan()
-                //console.log(mouse.x, mouse.y)
-               // console.log("onReleased")
+                calendar.lock = true
             }
 
             onPositionChanged: {
-                if(inner(mouse.x, mouse.y))
-                   calendar.tik=get_angle(mouse.x, mouse.y)
+                var a
+                if(inner(mouse.x, mouse.y)){
+                    a = get_angle(mouse.x, mouse.y)
+                    calendar.tik=a
+                    calendar.tak=a
+                }
             }
 
             onCanceled: {
@@ -79,7 +82,7 @@ Item {
         }
 
         transform: Rotation {
-            id: minuteRotation
+            id: monthRotation
             origin.x: 223; origin.y: 223;
             angle: calendar.tik
             Behavior on angle {
@@ -93,6 +96,16 @@ Item {
         x: 69
         y: 71
         source: "counterWheel.png"
+        smooth: true
+        transform: Rotation {
+            id: counterRotation
+            origin.x: 170.5; origin.y: 170.5;
+            angle: calendar.tak * -1
+            Behavior on angle {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+
+        }
     }
 
 }

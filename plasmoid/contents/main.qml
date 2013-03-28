@@ -9,7 +9,7 @@
      Row {
          anchors.centerIn: parent
          Calendar {
-             Clock { shift: 4 }
+             Clock { x: 0; y: 0; shift: 4 }
          }
 
      }

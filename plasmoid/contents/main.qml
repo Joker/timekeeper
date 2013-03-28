@@ -1,12 +1,16 @@
  import QtQuick 1.1
  import "clock"
+ import "calendar"
 
  Rectangle {
-     width: 240; height: 240
+     width: 500; height: 500
      color: "transparent"
 
      Row {
          anchors.centerIn: parent
-         Clock { shift: 4 }
+         Calendar {
+             Clock { shift: 4 }
+         }
+
      }
  }

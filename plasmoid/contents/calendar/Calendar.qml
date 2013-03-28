@@ -5,7 +5,7 @@ Item {
     width: 478; height: 478
     Image {
         id: iGlass
-        x: 2; y: 1
+        x: 2; y: 0
         source: "innerFramesAndGlass.png"
     }
     Image {
@@ -29,7 +29,7 @@ Item {
 
     Image {
         id: rotatingring
-        x: 16; y: 17
+        x: 16; y: 18
         source: "rotatingring.png"
         smooth: true
 

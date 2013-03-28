@@ -1,10 +1,12 @@
 [Desktop Entry]
 Comment=
 Encoding=UTF-8
-Icon=clock
+Icon=icon.png
+
 Keywords=
 Name=TimeKeeper
 Type=Service
+
 X-KDE-ParentApp=
 X-KDE-PluginInfo-Author=Joker
 X-KDE-PluginInfo-Category=Miscellaneous

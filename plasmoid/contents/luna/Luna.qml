@@ -21,7 +21,7 @@ Item {
 		var phaseNumber = LunaCalc.getCurrentPhase(phases);
 
         svg_sourse = "luna-gskbyte" + phaseNumber + ".svg"
-        console.log(svg_sourse)
+        // console.log(svg_sourse)
 	}
 
 

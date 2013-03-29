@@ -18,8 +18,8 @@ Rectangle {
         Cog{ x: 305;y: 188}
         Wheel{ x: -13;y: 178}
         Clock { x: -9; y: 42; shift: 4 }
-        Earth{ x: 160;y: 262}
-        Luna  { x: 242;y: 316; width: 40;height: 40}
+        Earth{ x: 168;y: 267}
+        Luna  { x: 139;y: 256; width: 40;height: 40}
 
 
     }

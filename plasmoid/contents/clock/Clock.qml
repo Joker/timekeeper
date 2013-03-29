@@ -85,4 +85,6 @@ Item {
             }
         }
     }
+
+    Image { x: 26; y: 10; source: "clockglass.png"}
 }

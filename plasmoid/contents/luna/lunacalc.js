@@ -18,12 +18,9 @@
  *   along with this program; if not, see <http://www.gnu.org/licenses/>.  *
  ***************************************************************************/
 
-var lunation = 0;
-
 function getLunation(time)
 {
-//	var lunation = 0;
-	var next_new = new Date(0);
+    var next_new // = new Date(0);
 
 	// obtain reasonable start value for lunation so that the while loop below has a minimal amount of iterations (for faster startup of the plasmoid)
 	var reference = 947178885000; // number of milliseconds between 1970-01-01 00:00:00 and 2000-01-06 18:14:45 (first new moon of 2000, see lunation in phases.js)
@@ -52,34 +49,18 @@ function getPhasesByLunation(lunation)
 	return phases;
 }
 
-function getTodayPhases()
+function getTodayPhases(today)
 {
-	var today = new Date();
-	lunation = getLunation(today);
-	return getPhasesByLunation(lunation);
+    if(!today) today = new Date();
+    var lunation = getLunation(today);
+    var phases = getPhasesByLunation(lunation);
+    return getCurrentPhase(phases, today);
 }
 
-function getPreviousPhases()
-{
-	lunation--;
-	return getPhasesByLunation(lunation);
-}
-
-function getNextPhases()
-{
-	lunation++;
-	return getPhasesByLunation(lunation);
-}
-
-function reloadPhases()
-{
-	return getPhasesByLunation(lunation);
-}
-
-function getCurrentPhase(phases)
+function getCurrentPhase(phases, today)
 {
 	var oneDay = 1000 * 60 * 60 * 24;
-	var today = new Date().getTime();
+    if(!today) today = new Date().getTime();
 
 	// set time for all phases to 00:00:00 in order to obtain the correct phase for today (these changes should be local)
 	for (var i = 0; i < 5; i++) {
@@ -108,7 +89,7 @@ function getCurrentPhase(phases)
 		phaseNumber = 0;
 	else if (daysFromLastNew <= 1 || daysFromLastNew >= 28) {
 		phaseNumber = (29 + daysFromLastNew) % 29;
-		daysToNextNew = -Math.floor((today - phases[4].getTime()) / oneDay);
+        var daysToNextNew = -Math.floor((today - phases[4].getTime()) / oneDay);
 		if (daysToNextNew == 0)
 			phaseNumber = 0;
 		else if (daysToNextNew < 3)

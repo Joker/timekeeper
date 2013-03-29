@@ -3,6 +3,7 @@ import QtQuick 1.1
 Item {
     id: calendar
     width: 478; height: 478
+
     Image {
         id: iGlass
         x: 2; y: 0
@@ -16,6 +17,7 @@ Item {
     property int tik
     property int tak
     property bool lock: true
+
     function timeChanged() {
         if(lock){
             var date = new Date;
@@ -104,8 +106,6 @@ Item {
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }
-
         }
     }
-
 }

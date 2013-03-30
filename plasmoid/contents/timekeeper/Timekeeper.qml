@@ -5,7 +5,6 @@ Item {
     id: timekeeper
     width: 193; height: 131
 
-FontLoader { id: fixedFont; source: "../clock/Engravers_MT.ttf"}
     property string day: "31"
     property string month: "NOV"
     property string year: "54"
@@ -23,13 +22,13 @@ FontLoader { id: fixedFont; source: "../clock/Engravers_MT.ttf"}
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
-                position: 0.56
-                color: "#ffffff"
+                position: 0.16
+                color: "#766139"
             }
 
             GradientStop {
-                position: 1
-                color: "#206f4a"
+                position: 0.68
+                color: "#ffffff"
             }
         }
     }
@@ -39,7 +38,7 @@ FontLoader { id: fixedFont; source: "../clock/Engravers_MT.ttf"}
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
-                position: 0.56
+                position: 0.46
                 color: "#b8a38b"
             }
 
@@ -53,19 +52,21 @@ FontLoader { id: fixedFont; source: "../clock/Engravers_MT.ttf"}
         x: 23;y: 44
         width: 76;height: 22
         gradient: Gradient {
-            GradientStop { position: 0.4; color: "#ffffff"}
-            GradientStop { position: 1;   color: "#206f4a"}
+            GradientStop {
+                position: 0
+                color: "#766139"
+            }
+
+            GradientStop {
+                position: 0.51
+                color: "#ffffff"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#766139"
+            }
         }
-        /*
-        gradient: Gradient {
-                              GradientStop { position: 0;    color: "#88FFFFFF" }
-                              GradientStop { position: .1;   color: "#55FFFFFF" }
-                              GradientStop { position: .5;   color: "#33FFFFFF" }
-                              GradientStop { position: .501; color: "#11000000" }
-                              GradientStop { position: .8;   color: "#11FFFFFF" }
-                              GradientStop { position: 1;    color: "#55FFFFFF" }
-                          }
-                         // */
     }
     Image { x: 0; y: 0; source: "timekeeper.png"
         Text {
@@ -95,6 +96,22 @@ FontLoader { id: fixedFont; source: "../clock/Engravers_MT.ttf"}
             font.family: fixedFont.name
             color: "#333333"
 
+        }
+
+        MouseArea {
+            id: mousearea1
+            x: 0
+            y: 50
+            width: 20
+            height: 13
+        }
+
+        MouseArea {
+            id: mousearea2
+            x: 154
+            y: 90
+            width: 10
+            height: 30
         }
     }
 }

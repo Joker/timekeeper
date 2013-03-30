@@ -48,7 +48,7 @@ Item {
         count++
         //console.log(Qt.formatDateTime(today, "dd"))
 */
-        console.log(tak,tik)
+      //  console.log(tak,tik)
 
     }
 

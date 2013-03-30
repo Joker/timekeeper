@@ -6,7 +6,7 @@ Item {
         x: 39
         y: -11
         width: 103; height: 103
-        Image { source: "cogShadow.png"}
+        Image { x: 6; y: 17; source: "cogShadow.png"}
         Image { x: 11; y: 10; width: 82; height: 84; source: "cog.png"}
     }
 

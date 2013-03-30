@@ -3,6 +3,8 @@ import "clock"
 import "calendar"
 import "luna"
 import "wheels"
+import "timekeeper"
+
 Rectangle {
 /*
     Component.onCompleted: {
@@ -15,12 +17,11 @@ Rectangle {
     Calendar {
         anchors.centerIn: parent
 
-        Cog{ x: 305;y: 188}
+
         Wheel{ x: -13;y: 178}
         Clock { x: -9; y: 42; shift: 4 }
-//        Earth{ x: 168;y: 267}
         Luna  { x: 162;y: 90}
-
+        Timekeeper{ x: 285;y: 186}
 
     }
 

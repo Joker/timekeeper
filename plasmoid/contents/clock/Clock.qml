@@ -10,16 +10,9 @@ Item {
     property real shift
     property string day
 
+    Image { id: background; source: "clock.png" }
+    Image { x: 77; y: 74;  source: "center.png" }
 
-
-
-
-    Image { id: background; source: "clock.png"}
-
-    Image { x: 77; y: 74;  source: "center.png"}  
-
-
-    //FontLoader { id: fixedFont; source: "./Engravers_MT.ttf"}
     Text {
         x: 67; y: 104
         text: clock.day
@@ -28,7 +21,6 @@ Item {
         color: "#333333"
 
     }
-
 
     Image {
         x: 75; y: 29

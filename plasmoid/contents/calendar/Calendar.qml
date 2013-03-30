@@ -14,7 +14,7 @@ Item {
         source: "woodSurround.png"
     }
 
-    property int tik
+    property int month
     property int tak
     property bool lock: true
 
@@ -53,21 +53,22 @@ Item {
             onPressed: {
                 if(inner(mouse.x, mouse.y)){
                     calendar.lock = false
-                    an = get_angle(mouse.x, mouse.y)
+                    //an = get_angle(mouse.x, mouse.y)
                 }
             }
 
             onReleased: {
                 calendar.lock = true
+                dataUpdated()
             }
 
             onPositionChanged: {
                 var a
                 if(inner(mouse.x, mouse.y)){
                     a = get_angle(mouse.x, mouse.y)
-                    a = a + an
-                    console.log(a, an)
-                    calendar.tik=a
+                    //a = a + an
+                    //console.log(a, an)
+                    calendar.month=a
                     calendar.tak=a
                 }
             }
@@ -80,7 +81,7 @@ Item {
         transform: Rotation {
             id: monthRotation
             origin.x: 223; origin.y: 223;
-            angle: calendar.tik
+            angle: calendar.month
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }

@@ -1,69 +1,21 @@
 import QtQuick 1.1
-// import org.kde.plasma.core 0.1 as PlasmaCore
-import "phases.js"   as Phases
-import "lunacalc.js" as LunaCalc
-import "../calendar"
+
+
 
 Item {
     id: luna
     width: 152; height: 152
 
     property string svg_sourse: "luna-gskbyte13.svg"
-
-	Component.onCompleted: {
-		// refresh moon image
-        // plasmoid.addEventListener("dataUpdated", dataUpdated);
-        // dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
-
-        // dataUpdated()
-        // plasmoid.setAspectRatioMode(ConstrainedSquare);
-	}
-
-    function dataUpdated(today) {
-        if(!today) today = new Date();
-        var phaseNumber = LunaCalc.getTodayPhases(today);
-
-        svg_sourse = "luna-gskbyte" + phaseNumber + ".svg"
-        console.log(phaseNumber)
-	}
-
-    property double tik: 0
-    property int tak: -1
-    property int count: 0
-//*
-    function timeChanged() {
-        if(tik > 360){
-            tik = 12.42
-            tak = 0
-        }else{
-            tik += 12.42
-            tak ++
-        }
-        svg_sourse = "luna-gskbyte" + tak + ".svg"
-/*
-        var today = new Date();
-        today.setDate(today.getDate()+count)
-        dataUpdated(today)
-
-        count++
-        //console.log(Qt.formatDateTime(today, "dd"))
-*/
-      //  console.log(tak,tik)
-
-    }
-
-    Timer {
-        interval: 100; running: true; repeat: true;
-        onTriggered: luna.timeChanged()
-    }
-// */
+    property double degree: 0
+    property int    phase: 29
+    property int    home_degree: 0
 
     Item {
-        id: earth
         x: 34; y: 34
         width: 84; height: 84
-        Image { x: 1; y: 1; source: "earthUnderShadow.png"}
-        Image { x: 8; y: 8; source: "earth.png"}
+        Image { x: 1; y: 1; smooth: true; source: "earthUnderShadow.png"}
+        Image { x: 8; y: 8; smooth: true; source: "earth.png"}
     }
     Item {
         id: moon
@@ -80,10 +32,17 @@ Item {
         transform: Rotation {
             id: minuteRotation
             origin.x: 17.5; origin.y: 76;
-            angle: tik
+            angle: degree
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }
+        }
+    }
+    transform: Rotation {
+        origin.x: 76.5; origin.y: 152;
+        angle:home_degree
+        Behavior on angle {
+            SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
         }
     }
 }

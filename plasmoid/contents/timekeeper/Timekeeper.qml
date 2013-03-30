@@ -13,8 +13,8 @@ Item {
         id: cogMonth
         x: 29;y: 13
         width: 84; height: 84
-        Image { x: -6; y: -5; source: "../wheels/monthCogShadow.png"}
-        Image { x: 1; y: 0; width: 82; height: 84; source: "../wheels/monthCog.png"}
+        Image { x: -6; y: -5; source: "monthCogShadow.png"}
+        Image { x: 1; y: 0; width: 82; height: 84; source: "monthCog.png"}
     }
     Rectangle {
         x: 95;y: 70

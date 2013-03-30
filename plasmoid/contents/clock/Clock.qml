@@ -11,18 +11,7 @@ Item {
     property string day
 
 
-    function timeChanged() {
-        var date = new Date;
-        hours    = shift ? date.getUTCHours()   + Math.floor(clock.shift)  : date.getHours()
-        minutes  = shift ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
-        seconds  = date.getUTCSeconds();
-        day      = Qt.formatDateTime(date, "ddd")
-    }
 
-    Timer {
-        interval: 100; running: true; repeat: true;
-        onTriggered: clock.timeChanged()
-    }
 
 
     Image { id: background; source: "clock.png"}

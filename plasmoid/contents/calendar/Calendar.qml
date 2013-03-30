@@ -18,17 +18,6 @@ Item {
     property int tak
     property bool lock: true
 
-    function timeChanged() {
-        if(lock){
-            var date = new Date;
-            tak  = date.getUTCSeconds() * 6;
-        }
-    }
-    Timer {
-        interval: 100; running: true; repeat: true;
-        onTriggered: calendar.timeChanged()
-    }
-
     Image {
         id: rotatingring
         x: 16; y: 18

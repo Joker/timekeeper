@@ -6,6 +6,7 @@ import "wheels"
 import "timekeeper"
 
 Rectangle {
+    FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf"}
 /*
     Component.onCompleted: {
         plasmoid.setBackgroundHints(NoBackground);

@@ -41,13 +41,14 @@ Item {
 
             anchors.fill : parent
 
+            property double an
             function inner(x, y){
                 var dx = x - 223;
                 var dy = y - 223;
                 var xy = (dx * dx + dy * dy)
 
                 var out = (223 * 223) >   xy;
-                var inn = (186 * 186) <=  xy;
+                var inn = (150 * 150) <=  xy;
 
                 if(out && inn) return true; else return false;
             }
@@ -57,11 +58,13 @@ Item {
                 if(x==0) return (y>0) ? 180 : 0;
                 var a = Math.atan(y/x)*180/Math.PI;
                 a = (x > 0) ? a+90 : a+270;
+
                 return a;
             }
             onPressed: {
                 if(inner(mouse.x, mouse.y)){
                     calendar.lock = false
+                    an = get_angle(mouse.x, mouse.y)
                 }
             }
 
@@ -73,6 +76,8 @@ Item {
                 var a
                 if(inner(mouse.x, mouse.y)){
                     a = get_angle(mouse.x, mouse.y)
+                    a = a + an
+                    console.log(a, an)
                     calendar.tik=a
                     calendar.tak=a
                 }

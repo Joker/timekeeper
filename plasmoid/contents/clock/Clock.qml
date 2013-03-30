@@ -30,7 +30,7 @@ Item {
     Image { x: 77; y: 74;  source: "center.png"}  
 
 
-    FontLoader { id: fixedFont; source: "./Engravers_MT.ttf"}
+    //FontLoader { id: fixedFont; source: "./Engravers_MT.ttf"}
     Text {
         x: 67; y: 104
         text: clock.day

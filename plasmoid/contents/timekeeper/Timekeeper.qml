@@ -49,8 +49,8 @@ Item {
         }
     }
     Rectangle {
-        x: 23;y: 44
-        width: 76;height: 22
+        x: 50;y: 17
+        width: 21;height: 76
         gradient: Gradient {
             GradientStop {
                 position: 0
@@ -58,7 +58,12 @@ Item {
             }
 
             GradientStop {
-                position: 0.51
+                position: 0.35
+                color: "#ffffff"
+            }
+
+            GradientStop {
+                position: 0.58
                 color: "#ffffff"
             }
 
@@ -67,6 +72,7 @@ Item {
                 color: "#766139"
             }
         }
+        rotation: 270
     }
     Image { x: 0; y: 0; source: "timekeeper.png"
         Text {

@@ -76,7 +76,7 @@ Item {
     }
     Image { x: 0; y: 0; source: "timekeeper.png"
         Text {
-            x: 101; y: 14
+            x: 102; y: 14
             width: 28; height: 22
             text: day
             font.pointSize: 15

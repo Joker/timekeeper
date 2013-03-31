@@ -9,7 +9,7 @@ Item {
     property string svg_sourse: "luna-gskbyte13.svg"
     property double degree: 0
     property int    phase: 29
-    property int    home_degree: 0
+    property int    earth_degree: 0
 
     Item {
         x: 34; y: 34
@@ -40,7 +40,7 @@ Item {
     }
     transform: Rotation {
         origin.x: 76.5; origin.y: 152;
-        angle:home_degree
+        angle:earth_degree
         Behavior on angle {
             SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
         }

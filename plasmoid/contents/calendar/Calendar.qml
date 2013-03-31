@@ -14,7 +14,7 @@ Item {
         source: "woodSurround.png"
     }
 
-    property int month
+    property double month_degree
     property int tak
     property bool lock: true
 
@@ -68,7 +68,7 @@ Item {
                     a = get_angle(mouse.x, mouse.y)
                     //a = a + an
                     //console.log(a, an)
-                    calendar.month=a
+                    calendar.month_degree=a
                     calendar.tak=a
                 }
             }
@@ -77,11 +77,11 @@ Item {
                 console.log("onCanceled")
             }
         }
-
+        rotation: 122
         transform: Rotation {
             id: monthRotation
             origin.x: 223; origin.y: 223;
-            angle: calendar.month
+            angle: calendar.month_degree
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }

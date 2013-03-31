@@ -11,29 +11,35 @@ import "luna/lunacalc.js" as LunaCalc
 
 Rectangle {
     FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf"}
-//*
-    Component.onCompleted: {
-        plasmoid.setBackgroundHints(NoBackground);
 
+    Component.onCompleted: {
+//*
+        plasmoid.setBackgroundHints(NoBackground);
 
         // refresh moon image
         plasmoid.addEventListener("dataUpdated", dataUpdated);
         dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
 
-        dataUpdated()
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
-    }
 // */
+        dataUpdated()
+    }
 
     function dataUpdated(today) {
+        var MM = [0, -31, -62, -93, -123, -153, -182.5, -241.5, -300, -329.5]
         if(!today) today = new Date();
 
-        calendar.month = today.getMonth() * 30 - today.getDate();
+//        var aDate = new Date();
+//            aDate.setMonth(aDate.getMonth()+1, 0)
+//        var num = aDate.getDate();
+        var month = today.getMonth()
+        var date  = today.getDate()-1
+        calendar.month_degree = MM[month] - date;
 
+        luna.earth_degree = month * 30 * -1 - date
         luna.phase = LunaCalc.getTodayPhases(today);
         luna.svg_sourse = "luna-gskbyte" + luna.phase + ".svg"
         luna.degree = 185 + 12.41 * luna.phase
-        luna.home_degree = calendar.month + 180
     }
     function timeChanged() {
         var date = new Date;
@@ -45,10 +51,11 @@ Rectangle {
         timekeeper.day   = Qt.formatDateTime(date, "dd")
         timekeeper.month = Qt.formatDateTime(date, "MMM")
         timekeeper.year  = Qt.formatDateTime(date, "yy")
-
-//        if(calendar.lock){
-//            calendar.tak  = clock.seconds * 6;
-//        }
+/*
+        if(calendar.lock){
+            calendar.tak  = clock.seconds * 6;
+        }
+// */
     }
 
     Timer {

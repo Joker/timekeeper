@@ -16,7 +16,7 @@ Item {
 
     property double month_degree
     property int tak
-    property bool lock: true
+    property bool lock: false
 
     Image {
         id: rotatingring
@@ -58,7 +58,7 @@ Item {
             }
 
             onReleased: {
-                calendar.lock = true
+                calendar.lock = clock.lock
                 dataUpdated()
             }
 

@@ -13,10 +13,77 @@ Item {
     property alias whell_st : whell.state
     property alias whell_x  : whell.x
     property alias whell_y  : whell.y
+    property alias wr : wr_img.rotation
+    property alias wrs: wrs_img.rotation
+    property alias wc : wc_img.rotation
+    property alias wcs: wcs_img.rotation
+    property bool lock: false
 
-    Wheel{
+    Item{
         id: whell
         x: -26;y: 137
+
+        width: 132; height: 93
+        Image {
+            id: wcs_img
+            x: 43; y: -5;
+            source: "wheels/cogShadow.png"
+            smooth: true;
+            Behavior on rotation {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+        }
+        Image {
+            id: wc_img
+            x: 50; y: -17;
+            width: 82; height: 84;
+            source: "wheels/cog.png"
+            smooth: true;
+            Behavior on rotation {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+        }
+        Image {
+            id: wrs_img
+            x: 3; y: 2;
+            source: "wheels/wheelShadow.png"
+            smooth: true;
+            Behavior on rotation {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+        }
+        Image {
+            id: wr_img
+            source: "wheels/wheel.png"
+            smooth: true;
+            Behavior on rotation {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+        }
+        Image {
+            x: 26; y: 2;
+            source: "wheels/driveBand.png"
+            MouseArea {
+                id: cog
+                x: 15; y: 36
+                width: 14; height: 14
+                onClicked: {
+                    console.log(calendar.lock, lock )
+                    if(!lock){
+                        lock = !lock
+                        return
+                    }
+                    if(!calendar.lock){
+                        calendar.lock = !calendar.lock
+                        return
+                    }
+                    lock = !lock
+                    calendar.lock = !calendar.lock
+
+                }
+            }
+        }
+
         state: "in"
 
         states: [

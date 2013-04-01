@@ -51,11 +51,17 @@ Rectangle {
         timekeeper.day   = Qt.formatDateTime(date, "dd")
         timekeeper.month = Qt.formatDateTime(date, "MMM")
         timekeeper.year  = Qt.formatDateTime(date, "yy")
-//*
-        if(!calendar.lock){
+
+        if(calendar.lock){
             calendar.tak  = clock.seconds * 6;
         }
-// */
+        if(clock.lock){
+            clock.wr   = clock.seconds * 6 * -1;
+            clock.wrs  = clock.seconds * 6 * -1;
+            clock.wc   = clock.seconds * 6;
+            clock.wcs  = clock.seconds * 6;
+        }
+
     }
 
     Timer {
@@ -81,7 +87,7 @@ Rectangle {
                 x: 80; y: 76
                 width: 14; height: 14
 
-               onClicked: clock.state = "zen";
+                onClicked: clock.wr =120
             }
             MouseArea {
                 id: in_out

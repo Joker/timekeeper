@@ -76,6 +76,8 @@ Rectangle {
     Calendar {
         id:calendar;
         anchors.centerIn: parent
+        property alias lx : luna.x
+        property alias ly : luna.y
 
         Clock {
             id: clock;

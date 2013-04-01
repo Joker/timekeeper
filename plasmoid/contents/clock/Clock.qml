@@ -68,7 +68,7 @@ Item {
                 x: 15; y: 36
                 width: 14; height: 14
                 onClicked: {
-                    console.log(calendar.lock, lock )
+                    //console.log(calendar.lock, lock )
                     if(!lock){
                         lock = !lock
                         return
@@ -79,7 +79,6 @@ Item {
                     }
                     lock = !lock
                     calendar.lock = !calendar.lock
-
                 }
             }
         }

@@ -2,9 +2,9 @@ import QtQuick 1.1
 import "clock"
 import "calendar"
 import "luna"
-import "wheels"
+import "clock/wheels"
 import "timekeeper"
-import org.kde.plasma.core 0.1 as PlasmaCore
+//import org.kde.plasma.core 0.1 as PlasmaCore
 import "luna/phases.js"   as Phases
 import "luna/lunacalc.js" as LunaCalc
 
@@ -13,7 +13,7 @@ Rectangle {
     FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf"}
 
     Component.onCompleted: {
-//*
+/*
         plasmoid.setBackgroundHints(NoBackground);
 
         // refresh moon image
@@ -51,8 +51,8 @@ Rectangle {
         timekeeper.day   = Qt.formatDateTime(date, "dd")
         timekeeper.month = Qt.formatDateTime(date, "MMM")
         timekeeper.year  = Qt.formatDateTime(date, "yy")
-/*
-        if(calendar.lock){
+//*
+        if(!calendar.lock){
             calendar.tak  = clock.seconds * 6;
         }
 // */
@@ -71,13 +71,51 @@ Rectangle {
         id:calendar;
         anchors.centerIn: parent
 
-        Wheel{ x: 3;y: 177 } // x: -13;y: 178
-
         Clock {
             id: clock;
-            // x: -9; y: 42;
             x: 29; y: 60
             shift: 4
+            state: "in"
+            MouseArea {
+                id: center
+                x: 80; y: 76
+                width: 14; height: 14
+
+               onClicked: clock.state = "zen";
+            }
+            MouseArea {
+                id: in_out
+                x: 62; y: 86
+                width: 11; height: 12
+
+                onClicked: {
+                    clock.state == "out" ? clock.state = "in" : clock.state = "out";
+                    if (clock.whell_st != "hide") clock.whell_st = clock.state;
+                }
+            }
+            MouseArea {
+                id: right
+                x: 101; y: 86
+                width: 11; height: 12
+
+                onClicked: clock.whell_st == "hide" ? clock.whell_st = clock.state : clock.whell_st = "hide";
+            }
+            states: [
+                State {
+                    name: "out"
+                    PropertyChanges { target: clock; x: -9; y: 42; }
+                },
+                State {
+                    name: "in"
+                    PropertyChanges { target: clock; x: 29; y: 60; }
+                }
+            ]
+            Behavior on x {
+                     NumberAnimation { duration: 1000 }
+            }
+            Behavior on y {
+                     NumberAnimation { duration: 700 }
+            }
         }
 
         Timekeeper{

@@ -1,4 +1,5 @@
 import QtQuick 1.1
+import "wheels"
 
 Item {
     id: clock
@@ -9,6 +10,38 @@ Item {
     property int seconds
     property real shift
     property string day
+    property alias whell_st : whell.state
+    property alias whell_x  : whell.x
+    property alias whell_y  : whell.y
+
+    Wheel{
+        id: whell
+        x: -26;y: 137
+        state: "in"
+
+        states: [
+            State {
+                name: "hide"
+                PropertyChanges { target: whell; x: 10; y: 25; }
+            },
+            State {
+                name: "out"
+                PropertyChanges { target: whell; x: -5; }
+            },
+            State {
+                name: "in"
+                PropertyChanges { target: whell; x: -26; y: 137; }
+            }
+        ]
+
+        Behavior on x {
+                 NumberAnimation { duration: 1500 }
+        }
+        Behavior on y {
+                 NumberAnimation { duration: 800 }
+        }
+
+    } // x: -13;y: 178
 
     Image { id: background; source: "clock.png" }
     Image { x: 77; y: 74;  source: "center.png" }

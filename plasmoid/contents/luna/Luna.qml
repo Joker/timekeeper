@@ -21,6 +21,7 @@ Item {
         id: moon
         x: 60; y: 0
         width: 33; height: 33
+        Image { id: moon_big_sh; x: -9; y: -8; opacity: 0; smooth: true; source: "moonBigShadow.png" }
         Image { id: moon_sh; x: -6; y: -6; smooth: true; source: "moonUnderShadow.png" }
         Image {
             id: svg
@@ -64,6 +65,10 @@ Item {
                 visible: false
             }
             PropertyChanges {
+                target: moon_big_sh
+                opacity:1
+            }
+            PropertyChanges {
                 target: earth
                 x: 30; y: 30
                 width: 25;height: 25
@@ -95,12 +100,17 @@ Item {
     ]
 
     transitions: [
-        // from: "*"; to: "bottomLeft"
         Transition {
-            NumberAnimation { properties: "opacity, earth_degree, x,y, width,height, lx,ly"; duration: 1500; easing.type: Easing.InOutBack; } //InOutBack
+            NumberAnimation { properties: "earth_degree, x,y, width,height, lx,ly"; duration: 1500; easing.type: Easing.InOutBack; } //InOutBack
+
         },
         Transition {
-            from: "*"; to: "home2"
+            from: "*"; to: "big_moon"
+            NumberAnimation { properties: "earth_degree, x,y, width,height, lx,ly"; duration: 1500; easing.type: Easing.InOutBack; }
+            NumberAnimation { properties: "opacity"; duration: 1200;  easing.type: Easing.InExpo}
+        },
+        Transition {
+            from: "home"; to: "home2"
             NumberAnimation { properties: "lx,ly"; duration: 600; easing.type: Easing.InOutBack; }
         },
         Transition {

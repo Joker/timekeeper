@@ -1,29 +1,20 @@
 import QtQuick 1.1
 
 Item {
-    id: calendar
+    id: cr
     width: 478; height: 478
 
-    Image {
-        id: iGlass
-        x: 2; y: 0
-        source: "innerFramesAndGlass.png"
-    }
-    Image {
-        id: iSurround
-        source: "woodSurround.png"
-    }
+    Image { x: 2; y: 0; source: "innerFramesAndGlass.png" }
+    Image { source: "woodSurround.png" }
 
     property double month_degree
     property int tak
     property bool lock: false
 
     Image {
-        id: rotatingring
         x: 16; y: 18
         source: "rotatingring.png"
         smooth: true
-
 
         MouseArea {
             id: mousearea
@@ -44,7 +35,7 @@ Item {
             function get_angle(x,y){
                 var x = x - 223;
                 var y = y - 223;
-                if(x==0) return (y>0) ? 180 : 0;
+                if(x == 0) return (y>0) ? 180 : 0;
                 var a = Math.atan(y/x)*180/Math.PI;
                 a = (x > 0) ? a+90 : a+270;
 
@@ -52,13 +43,13 @@ Item {
             }
             onPressed: {
                 if(inner(mouse.x, mouse.y)){
-                    calendar.lock = false
+                    cr.lock = false
                     //an = get_angle(mouse.x, mouse.y)
                 }
             }
 
             onReleased: {
-                calendar.lock = clock.lock
+                cr.lock = clock.lock
                 dataUpdated()
             }
 
@@ -68,8 +59,8 @@ Item {
                     a = get_angle(mouse.x, mouse.y)
                     //a = a + an
                     //console.log(a, an)
-                    calendar.month_degree=a
-                    calendar.tak=a
+                    cr.month_degree=a
+                    cr.tak=a
                 }
             }
 
@@ -79,9 +70,8 @@ Item {
         }
         rotation: 122
         transform: Rotation {
-            id: monthRotation
             origin.x: 223; origin.y: 223;
-            angle: calendar.month_degree
+            angle: cr.month_degree
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }
@@ -97,7 +87,7 @@ Item {
         transform: Rotation {
             id: counterRotation
             origin.x: 170.5; origin.y: 170.5;
-            angle: calendar.tak * -1
+            angle: cr.tak * -1
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }

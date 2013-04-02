@@ -56,10 +56,10 @@ Rectangle {
             calendar.tak  = clock.seconds * 6;
         }
         if(clock.lock){
-            clock.wr   = clock.seconds * 6 * -1;
-            clock.wrs  = clock.seconds * 6 * -1;
-            clock.wc   = clock.seconds * 6;
-            clock.wcs  = clock.seconds * 6;
+            clock.wr   = clock.seconds * 6;
+            clock.wrs  = clock.seconds * 6;
+            clock.wc   = clock.seconds * 6 * -1;
+            clock.wcs  = clock.seconds * 6 * -1;
         }
 
     }
@@ -89,7 +89,7 @@ Rectangle {
                 x: 80; y: 76
                 width: 14; height: 14
 
-                onClicked: clock.wr =120
+                onClicked: calendar.state = "closez"
             }
             MouseArea {
                 id: in_out
@@ -136,4 +136,13 @@ Rectangle {
             x: 162;y: 90
         }
     }
+    states: [
+        State {
+            name: "closez"
+            PropertyChanges {
+                target: calendar;
+                width: 100; height: 100;
+            }
+        }
+    ]
 }

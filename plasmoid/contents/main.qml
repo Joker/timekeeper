@@ -10,6 +10,7 @@ import "luna/lunacalc.js" as LunaCalc
 
 
 Rectangle {
+    id: main
     FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf"}
 
     Component.onCompleted: {
@@ -70,12 +71,12 @@ Rectangle {
     }
 
 
-    width: 500; height: 500
+    width: 478; height: 478
     color: "transparent"
 
     Calendar {
         id:calendar;
-        anchors.centerIn: parent
+        // anchors.centerIn: parent
         property alias lx : luna.x
         property alias ly : luna.y
 
@@ -89,7 +90,10 @@ Rectangle {
                 x: 80; y: 76
                 width: 14; height: 14
 
-                onClicked: calendar.state = "closez"
+                onClicked:{
+                    main.state == "small" ? main.state = "big" : main.state = "small";
+                    if (clock.whell_st != "hide") clock.whell_st = clock.state;
+                }
             }
             MouseArea {
                 id: in_out
@@ -138,11 +142,40 @@ Rectangle {
     }
     states: [
         State {
-            name: "closez"
-            PropertyChanges {
-                target: calendar;
-                width: 100; height: 100;
+            name: "small"
+            ParentChange{
+                target: clock
+                parent: main
             }
+            PropertyChanges {
+                target: calendar
+                scale: 0.1
+                rotation: 360
+                rangle:2
+                x: -119; y: -88
+            }
+            PropertyChanges {
+                target: clock
+                state: "hide"
+            }
+        },
+        State {
+            name: "big"
+            PropertyChanges {
+                target: luna
+                z: 1
+            }
+        }
+    ]
+    transitions: [
+        Transition {
+            from: "*"; to: "big"
+            NumberAnimation { properties: "scale, rangle"; duration: 1000 } //InOutBack
+        },
+        Transition {
+            from: "*"; to: "small"
+            NumberAnimation { properties: "scale, rangle"; duration: 1000 }
+            NumberAnimation { properties: "rotation, x, y "; duration: 3000 }
         }
     ]
 }

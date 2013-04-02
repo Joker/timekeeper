@@ -10,6 +10,7 @@ Item {
     property double month_degree
     property int tak
     property bool lock: false
+    property alias rangle: cr_rot.angle
 
     Image {
         x: 16; y: 18
@@ -93,4 +94,5 @@ Item {
             }
         }
     }
+    transform: Rotation {id: cr_rot; origin.x: 239; origin.y: 239; axis { x: 1; y: 1; z: 0 } angle: 0 }
 }

@@ -4,13 +4,13 @@ Item {
     id: cr
     width: 478; height: 478
 
-    Image { x: 2; y: 0; source: "innerFramesAndGlass.png" }
-    Image { source: "woodSurround.png" }
-
     property double month_degree
     property int tak
     property bool lock: false
     property alias rangle: cr_rot.angle
+
+    Image { x: 2; y: 0; source: "innerFramesAndGlass.png" }
+    Image { source: "woodSurround.png" }
 
     Image {
         x: 16; y: 18
@@ -51,7 +51,7 @@ Item {
 
             onReleased: {
                 cr.lock = clock.lock
-                dataUpdated()
+                //dataUpdated()
             }
 
             onPositionChanged: {

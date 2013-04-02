@@ -1,14 +1,14 @@
 import QtQuick 1.1
 
 Item {
-    id: home
+    id: home;
     width: 152; height: 152
 
     property string svg_sourse: "luna-gskbyte13.svg"
     property double degree: 0
     property int    phase: 29
     property int    earth_degree: 0
-    //state: "big_moon"
+    //state: "home3"
 
     Item {
         x: 34; y: 34
@@ -73,21 +73,40 @@ Item {
                 x: 27; y: 26
                 width: 31;height: 32
             }
-            PropertyChanges { target:calendar; lx: 162 ;  ly: 165         }
-            PropertyChanges { target:home;     degree: 0; earth_degree: 0 }
+            PropertyChanges { target:main; lx: 162 ;  ly: 165         }
+            PropertyChanges { target:home; degree: 0; earth_degree: 0 }
+        },
+        State {
+            name: "home"
+            PropertyChanges { target:home; degree: 0; earth_degree: 0; }
+            onCompleted: luna.state = "home2"
+        },
+        State {
+            name: "home2"
+            PropertyChanges { target:home; degree: 0; earth_degree: 0; z: 4 }
+            PropertyChanges { target:main; lx: clock.x+10 ;  ly: clock.y+10 }
+        },
+        State {
+            name: "home3"
+            PropertyChanges { target:home; degree: 0; earth_degree: 0;  z: 4 }
+            PropertyChanges { target:main; lx: 150 ;  ly: 150 }
+            onCompleted: luna.state = ""
         }
-//        State {
-//            name: "home"
-//            onCompleted: luna.state = "big_moon"
-//        }
     ]
 
     transitions: [
         // from: "*"; to: "bottomLeft"
         Transition {
             NumberAnimation { properties: "opacity, earth_degree, x,y, width,height, lx,ly"; duration: 1500; easing.type: Easing.InOutBack; } //InOutBack
+        },
+        Transition {
+            from: "*"; to: "home2"
+            NumberAnimation { properties: "lx,ly"; duration: 600; easing.type: Easing.InOutBack; }
+        },
+        Transition {
+            from: "*"; to: "home3"
+            NumberAnimation { properties: "lx,ly"; duration: 1500;}
         }
-
     ]
 
     transform: Rotation {

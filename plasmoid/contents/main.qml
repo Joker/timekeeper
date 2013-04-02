@@ -4,17 +4,23 @@ import "calendar"
 import "luna"
 import "clock/wheels"
 import "timekeeper"
-//import org.kde.plasma.core 0.1 as PlasmaCore
+import org.kde.plasma.core 0.1 as PlasmaCore
 import "luna/phases.js"   as Phases
 import "luna/lunacalc.js" as LunaCalc
 
 
 Rectangle {
     id: main
+    width: 478; height: 478
+    color: "transparent"
+
+    property alias lx : luna.x
+    property alias ly : luna.y
+
     FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf"}
 
     Component.onCompleted: {
-/*
+//*
         plasmoid.setBackgroundHints(NoBackground);
 
         // refresh moon image
@@ -71,111 +77,103 @@ Rectangle {
     }
 
 
-    width: 478; height: 478
-    color: "transparent"
 
     Calendar {
         id:calendar;
+        z: 1
         // anchors.centerIn: parent
-        property alias lx : luna.x
-        property alias ly : luna.y
-
-        Clock {
-            id: clock;
-            x: 29; y: 60
-            shift: 4
-            state: "in"
-            MouseArea {
-                id: center
-                x: 80; y: 76
-                width: 14; height: 14
-
-                onClicked:{
-                    main.state == "small" ? main.state = "big" : main.state = "small";
-                    if (clock.whell_st != "hide") clock.whell_st = clock.state;
-                }
-            }
-            MouseArea {
-                id: in_out
-                x: 62; y: 86
-                width: 11; height: 12
-
-                onClicked: {
-                    clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                    if (clock.whell_st != "hide") clock.whell_st = clock.state;
-                }
-            }
-            MouseArea {
-                id: right
-                x: 101; y: 86
-                width: 11; height: 12
-
-                onClicked: clock.whell_st == "hide" ? clock.whell_st = clock.state : clock.whell_st = "hide";
-            }
-            states: [
-                State {
-                    name: "out"
-                    PropertyChanges { target: clock; x: -9; y: 42; }
-                },
-                State {
-                    name: "in"
-                    PropertyChanges { target: clock; x: 29; y: 60; }
-                }
-            ]
-            Behavior on x {
-                     NumberAnimation { duration: 1000 }
-            }
-            Behavior on y {
-                     NumberAnimation { duration: 700 }
-            }
-        }
 
         Timekeeper{
             id: timekeeper;
             x: 285;y: 186
         }
+    }
+    Clock {
+        id: clock;
+        x: 29; y: 60
+        shift: 4
+        state: "in"
+        MouseArea {
+            id: center
+            x: 80; y: 76
+            width: 14; height: 14
 
-        Luna  {
-            id:luna;
-            x: 162;y: 90
+            onClicked:{
+                if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
+                //if (clock.whell_st != "hide") clock.whell_st = clock.state;
+            }
         }
+        MouseArea {
+            id: in_out
+            x: 62; y: 86
+            width: 11; height: 12
+
+            onClicked: {
+                clock.state == "out" ? clock.state = "in" : clock.state = "out";
+                if (clock.whell_st != "hide") clock.whell_st = clock.state;
+            }
+        }
+        MouseArea {
+            id: right
+            x: 101; y: 86
+            width: 11; height: 12
+
+            onClicked: clock.whell_st == "hide" ? clock.whell_st = clock.state : clock.whell_st = "hide";
+        }
+        states: [
+            State {
+                name: "out"
+                PropertyChanges { target: clock; x: -9; y: 42; }
+            },
+            State {
+                name: "in"
+                PropertyChanges { target: clock; x: 29; y: 60; }
+            }
+        ]
+        Behavior on x {
+                 NumberAnimation { duration: 1000 }
+        }
+        Behavior on y {
+                 NumberAnimation { duration: 700 }
+        }
+        z: 5
+    }
+    Luna  {
+        id:luna;
+        x: 162; y: 90
+        z: 7
     }
     states: [
         State {
             name: "small"
-            ParentChange{
-                target: clock
-                parent: main
-            }
             PropertyChanges {
                 target: calendar
-                scale: 0.1
+                scale: 0.3
                 rotation: 360
-                rangle:2
+                // rangle:2
                 x: -119; y: -88
             }
             PropertyChanges {
                 target: clock
-                state: "hide"
+                whell_st: "hide"
             }
-        },
-        State {
-            name: "big"
             PropertyChanges {
                 target: luna
-                z: 1
+                state: "home"
             }
+
         }
     ]
     transitions: [
         Transition {
             from: "*"; to: "big"
-            NumberAnimation { properties: "scale, rangle"; duration: 1000 } //InOutBack
+            NumberAnimation { properties: "scale"; duration: 2700 } //InOutBack
+            NumberAnimation { properties: "x, y "; duration: 700 }
         },
         Transition {
             from: "*"; to: "small"
-            NumberAnimation { properties: "scale, rangle"; duration: 1000 }
-            NumberAnimation { properties: "rotation, x, y "; duration: 3000 }
+            NumberAnimation { properties: "scale"; duration: 1000 }
+            NumberAnimation { properties: "rotation, x, y "; duration: 2700 }
         }
     ]
 }

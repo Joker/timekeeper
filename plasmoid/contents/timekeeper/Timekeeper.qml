@@ -104,19 +104,14 @@ Item {
         }
 
         MouseArea {
-            id: mousearea1
-            x: 0
-            y: 50
-            width: 20
-            height: 13
+            x: 0; y: 50
+            width: 20; height: 13
+            onClicked: dataUpdated()
         }
 
         MouseArea {
-            id: mousearea2
-            x: 154
-            y: 90
-            width: 10
-            height: 30
+            x: 154; y: 90
+            width: 10; height: 30
         }
     }
 }

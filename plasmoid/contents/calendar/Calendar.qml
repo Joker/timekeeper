@@ -9,7 +9,9 @@ Item {
     property bool lock: false
     property alias rangle: cr_rot.angle
 
-    Image { x: 2; y: 0; source: "innerFramesAndGlass.png" }
+    Image  { x: 2; y: 0; source: "innerFramesAndGlass.png" }
+    Marble { id: marble1; x: 2;y: 0 ;visible: false}
+
     Image { source: "woodSurround.png" }
 
     Image {
@@ -42,18 +44,17 @@ Item {
 
                 return a;
             }
+
             onPressed: {
                 if(inner(mouse.x, mouse.y)){
                     cr.lock = false
                     //an = get_angle(mouse.x, mouse.y)
                 }
             }
-
             onReleased: {
                 cr.lock = clock.lock
                 //dataUpdated()
             }
-
             onPositionChanged: {
                 var a
                 if(inner(mouse.x, mouse.y)){
@@ -64,11 +65,11 @@ Item {
                     cr.tak=a
                 }
             }
-
             onCanceled: {
                 console.log("onCanceled")
             }
         }
+
         rotation: 122
         transform: Rotation {
             origin.x: 223; origin.y: 223;
@@ -94,5 +95,20 @@ Item {
             }
         }
     }
+    states: [
+        State {
+            name: "earth"
+
+            PropertyChanges {
+                target: marble1
+                visible: true
+            }
+
+            PropertyChanges {
+                target: mousearea
+                visible: false
+            }
+        }
+    ]
     transform: Rotation {id: cr_rot; origin.x: 239; origin.y: 239; axis { x: 1; y: 1; z: 0 } angle: 0 }
 }

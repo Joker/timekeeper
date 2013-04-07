@@ -4,7 +4,7 @@ import "calendar"
 import "luna"
 import "clock/wheels"
 import "timekeeper"
-import org.kde.plasma.core 0.1 as PlasmaCore
+// import org.kde.plasma.core 0.1 as PlasmaCore
 import "luna/phases.js"   as Phases
 import "luna/lunacalc.js" as LunaCalc
 
@@ -17,12 +17,10 @@ Rectangle {
     property alias lx : luna.x
     property alias ly : luna.y
 
-    FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf"}
+    FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf" }
 
     Component.onCompleted: {
-//*
-        plasmoid.setBackgroundHints(NoBackground);
-
+/*
         // refresh moon image
         plasmoid.addEventListener("dataUpdated", dataUpdated);
         dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
@@ -30,6 +28,7 @@ Rectangle {
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
 // */
         dataUpdated()
+        plasmoid.setBackgroundHints(NoBackground);
     }
 
     function dataUpdated(today) {
@@ -47,6 +46,7 @@ Rectangle {
         luna.phase = LunaCalc.getTodayPhases(today);
         luna.svg_sourse = "luna-gskbyte" + luna.phase + ".svg"
         luna.degree = 185 + 12.41 * luna.phase
+        // console.log(luna.phase)
     }
     function timeChanged() {
         var date = new Date;
@@ -68,6 +68,7 @@ Rectangle {
             clock.wc   = clock.seconds * 6 * -1;
             clock.wcs  = clock.seconds * 6 * -1;
         }
+        if(Qt.formatDateTime(date, "hhmmss") == "000000") dataUpdated()
 
     }
 
@@ -86,6 +87,22 @@ Rectangle {
         Timekeeper{
             id: timekeeper;
             x: 285;y: 186
+            MouseArea {
+                x: 154; y: 90
+                width: 10; height: 30
+            }
+            MouseArea {
+                x: 178; y: 32
+                width: 12; height: 14
+                onClicked: dataUpdated()
+            }
+            MouseArea {
+                x: 0; y: 49
+                width: 13; height: 14
+                onClicked: {
+                    if(main.state == "marble") { main.state = ""; calendar.state = "" } else main.state = "marble";
+                }
+            }
         }
     }
     Clock {
@@ -99,7 +116,9 @@ Rectangle {
             width: 14; height: 14
 
             onClicked:{
+                if(main.state == "marble") calendar.state = ""
                 if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
+
                 //if (clock.whell_st != "hide") clock.whell_st = clock.state;
             }
         }
@@ -120,22 +139,7 @@ Rectangle {
 
             onClicked: clock.whell_st == "hide" ? clock.whell_st = clock.state : clock.whell_st = "hide";
         }
-        states: [
-            State {
-                name: "out"
-                PropertyChanges { target: clock; x: -9; y: 42; }
-            },
-            State {
-                name: "in"
-                PropertyChanges { target: clock; x: 29; y: 60; }
-            }
-        ]
-        Behavior on x {
-                 NumberAnimation { duration: 1000 }
-        }
-        Behavior on y {
-                 NumberAnimation { duration: 700 }
-        }
+
         z: 5
     }
     Luna  {
@@ -162,6 +166,23 @@ Rectangle {
                 state: "home"
             }
 
+        },
+        State {
+            name: "marble"
+            PropertyChanges {
+                target: timekeeper
+                state:    "out"
+            }
+            PropertyChanges {
+                target: clock
+                whell_st: "out"
+                state:    "out"
+            }
+            PropertyChanges {
+                target: luna
+                state: "big_earth"
+                moon_z: -1
+            }
         }
     ]
     transitions: [

@@ -102,16 +102,16 @@ Item {
             color: "#333333"
 
         }
-
-        MouseArea {
-            x: 0; y: 50
-            width: 20; height: 13
-            onClicked: dataUpdated()
-        }
-
-        MouseArea {
-            x: 154; y: 90
-            width: 10; height: 30
-        }
     }
+    states: [
+        State {
+            name: "out"
+            PropertyChanges { target: timekeeper; x: 354;}
+        }
+    ]
+    transitions: [
+        Transition {
+            NumberAnimation { properties: "x"; duration: 1000 }
+        }
+    ]
 }

@@ -167,4 +167,21 @@ Item {
     }
 
     Image { x: 26; y: 10; source: "clockglass.png"}
+
+    states: [
+        State {
+            name: "out"
+            PropertyChanges { target: clock; x: -9; y: 42; }
+        },
+        State {
+            name: "in"
+            PropertyChanges { target: clock; x: 29; y: 60; }
+        }
+    ]
+    Behavior on x {
+             NumberAnimation { duration: 1000 }
+    }
+    Behavior on y {
+             NumberAnimation { duration: 700 }
+    }
 }

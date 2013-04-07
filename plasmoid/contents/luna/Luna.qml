@@ -8,6 +8,7 @@ Item {
     property double degree: 0
     property int    phase: 29
     property int    earth_degree: 0
+    property alias  moon_z: moon.z
     //state: "home3"
 
     Item {
@@ -96,6 +97,32 @@ Item {
             PropertyChanges { target:home; degree: 0; earth_degree: 0;  z: 4 }
             PropertyChanges { target:main; lx: 150 ;  ly: 150 }
             onCompleted: luna.state = ""
+        },
+        State {
+            name: "big_earth"
+            PropertyChanges { target:home; degree: 0; earth_degree: 0; }
+            PropertyChanges {
+                target: earth
+                x: -65; y: -65
+                width: 215; height: 215
+
+            }
+            PropertyChanges { target:main; lx: 162 ;  ly: 167 }
+            onCompleted:  {calendar.state = "earth"; home.state = "big_earth2"}
+        },
+        State {
+            name: "big_earth2"
+            PropertyChanges { target:home; degree: 0; earth_degree: 0; }
+            PropertyChanges {
+                target: earth
+                x: -65; y: -65
+                width: 215; height: 215
+                opacity: 0
+            }
+            PropertyChanges { target:main; lx: 162 ;  ly: 167 }
+            PropertyChanges { target: earth_sh; visible: false }
+            PropertyChanges { target: moon;     visible: false }
+
         }
     ]
 
@@ -116,6 +143,18 @@ Item {
         Transition {
             from: "*"; to: "home3"
             NumberAnimation { properties: "lx,ly"; duration: 1500;}
+        },
+        Transition {
+            from: "*"; to: "big_earth"
+            NumberAnimation { properties: "earth_degree, degree,x,y, width,height, lx,ly"; duration: 1000;}
+        },
+        Transition {
+            from: "big_earth"; to: "big_earth2"
+            NumberAnimation { properties: "opacity"; duration: 300;}
+        },
+        Transition {
+            from: "big_earth2"; to: "*"
+            NumberAnimation { properties: "earth_degree, degree,x,y, width,height, lx,ly"; duration: 900;}
         }
     ]
 

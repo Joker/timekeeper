@@ -41,7 +41,7 @@ Item{
                             map.setGeoSceneProperty( "otherplaces", false )
                             map.setGeoSceneProperty( "places", false )
                             map.setGeoSceneProperty( "citylights", true )
-                        console.log(settings.quitLongitude, settings.quitLatitude)
+                        // console.log(settings.quitLongitude, settings.quitLatitude)
                     }
             }
             // */

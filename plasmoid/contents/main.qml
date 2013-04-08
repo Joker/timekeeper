@@ -28,6 +28,8 @@ Rectangle {
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
 // */
         dataUpdated()
+
+
         plasmoid.setBackgroundHints(NoBackground);
     }
 

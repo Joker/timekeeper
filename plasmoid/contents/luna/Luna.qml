@@ -9,13 +9,13 @@ Item {
     property int    phase: 29
     property int    earth_degree: 0
     property alias  moon_z: moon.z
-    //state: "home3"
+    // state: "big_earth2"
 
     Item {
         x: 34; y: 34
         width: 84; height: 84
         Image {id: earth_sh; x: 1; y: 1; smooth: true; source: "earthUnderShadow.png" }
-        Image {id: earth;    x: 8; y: 8; smooth: true; source: "earth.png" }
+        Image {id: earth;    x: 8; y: 8; width: 68; height: 68; smooth: true; source: "e1.png" }
     }
 
     Item {
@@ -103,8 +103,8 @@ Item {
             PropertyChanges { target:home; degree: 0; earth_degree: 0; }
             PropertyChanges {
                 target: earth
-                x: -65; y: -65
-                width: 215; height: 215
+                x: -58; y: -57
+                width: 200; height: 200
 
             }
             PropertyChanges { target:main; lx: 162 ;  ly: 167 }
@@ -115,14 +115,13 @@ Item {
             PropertyChanges { target:home; degree: 0; earth_degree: 0; }
             PropertyChanges {
                 target: earth
-                x: -65; y: -65
-                width: 215; height: 215
+                x: -58; y: -57
+                width: 200; height: 200
                 opacity: 0
             }
             PropertyChanges { target:main; lx: 162 ;  ly: 167 }
             PropertyChanges { target: earth_sh; visible: false }
             PropertyChanges { target: moon;     visible: false }
-
         }
     ]
 

@@ -8,10 +8,12 @@ Item {
     property int tak
     property bool lock: false
     property alias rangle: cr_rot.angle
+    // property alias mar: marble1.source
 
+    // state: "earth"
     Image  { x: 2; y: 0; source: "innerFramesAndGlass.png" }
-    Marble { id: marble1; x: 2;y: 0 ;visible: false}
-
+    Marble { id: marble1; x: 2; y: 0; visible: false; }
+    // Loader { id: marble1; x: 2; y: 0 ; visible: false; }
     Image { source: "woodSurround.png" }
 
     Image {

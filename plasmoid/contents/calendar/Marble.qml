@@ -20,12 +20,13 @@ Item{
 
                     mapThemeId: "earth/bluemarble/bluemarble.dgml"
                     // mapThemeId: "earth/citylights/citylights.dgml"
+                    // mapThemeId: "earth/schagen1689/schagen1689.dgml"
                     activeFloatItems: [ ]
 
                     Component.onCompleted: {
                             map.center.longitude = 55.45 //settings.quitLongitude
                             map.center.latitude = 37.37 //settings.quitLatitude
-                            map.radius = 100 //settings.quitRadius
+                            map.radius = 100 // 150
 
 
                             var plugins = settings.defaultRenderPlugins
@@ -35,12 +36,14 @@ Item{
                             settings.activeRenderPlugins = plugins
 
                             map.activeRenderPlugins = settings.activeRenderPlugins
-                            map.setGeoSceneProperty( "clouds_data", true )
-                            map.setGeoSceneProperty( "terrain", false )
-                            map.setGeoSceneProperty( "cities", false )
+
+                            map.setGeoSceneProperty( "terrain",     false )
+                            map.setGeoSceneProperty( "cities",      false )
                             map.setGeoSceneProperty( "otherplaces", false )
-                            map.setGeoSceneProperty( "places", false )
-                            map.setGeoSceneProperty( "citylights", true )
+                            map.setGeoSceneProperty( "places",      false )
+
+                            map.setGeoSceneProperty( "clouds_data", true )
+                            map.setGeoSceneProperty( "citylights",  true )
                         // console.log(settings.quitLongitude, settings.quitLatitude)
                     }
             }

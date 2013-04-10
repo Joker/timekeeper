@@ -5,9 +5,8 @@ import "luna"
 import "clock/wheels"
 import "timekeeper"
 // import org.kde.plasma.core 0.1 as PlasmaCore
-import "luna/phases.js"   as Phases
-import "luna/lunacalc.js" as LunaCalc
-
+import "luna/phase.js"    as Moon
+import "luna/earth.js"    as Eth
 
 Rectangle {
     id: main
@@ -33,22 +32,34 @@ Rectangle {
         plasmoid.setBackgroundHints(NoBackground);
     }
 
-    function dataUpdated(today) {
-        var MM = [0, -31, -62, -93, -123, -153, -182.5, -241.5, -300, -329.5]
+    function dataUpdated(today) {        
         if(!today) today = new Date();
+        Moon.touch(today)
+
+//      today.setDate(today.getDate()+Moon.A)
+//      Moon.A++
 
 //        var aDate = new Date();
 //            aDate.setMonth(aDate.getMonth()+1, 0)
 //        var num = aDate.getDate();
+
+        var MM = [0, -31, -62, -93, -123, -153, -182.5, -241.5, -300, -329.5]
         var month = today.getMonth()
         var date  = today.getDate()-1
         calendar.month_degree = MM[month] - date;
+            luna.earth_degree = month * 30 * -1 - date
 
-        luna.earth_degree = month * 30 * -1 - date
-        luna.phase = LunaCalc.getTodayPhases(today);
-        luna.svg_sourse = "luna-gskbyte" + luna.phase + ".svg"
-        luna.degree = 185 + 12.41 * luna.phase
-        // console.log(luna.phase)
+
+        var age = Math.round(Moon.AGE)
+        if(age == 0) luna.phase = 29
+                else luna.phase = age
+        luna.degree = Moon.LON + 185
+
+        // var degree = 185 + 12.41 * luna.phase
+
+        //console.log(old_phase, luna.phase, Phase.AGE, Phase.Phase, Phase.Zodiac)
+        //console.log(12.41 * luna.phase, Phase.LON)
+        // Eth.compute()
     }
     function timeChanged() {
         var date = new Date;

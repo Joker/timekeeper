@@ -74,12 +74,15 @@ Rectangle {
 
         if(calendar.lock){
             calendar.tak  = clock.seconds * 6;
+            timekeeper.cog    = (clock.seconds|3) * 6 * -1;
+            timekeeper.cog_sh = (clock.seconds|3) * 6 * -1;
         }
         if(clock.lock){
-            clock.wr   = clock.seconds * 6;
-            clock.wrs  = clock.seconds * 6;
-            clock.wc   = clock.seconds * 6 * -1;
-            clock.wcs  = clock.seconds * 6 * -1;
+            clock.whl         = clock.seconds * 6;
+            clock.whl_sh      = clock.seconds * 6;
+            clock.cog         = clock.seconds * 6 * -1;
+            clock.cog_sh      = clock.seconds * 6 * -1;
+
         }
         if(Qt.formatDateTime(date, "hhmmss") == "000000") dataUpdated()
 
@@ -142,7 +145,7 @@ Rectangle {
 
             onClicked: {
                 clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                if (clock.whell_st != "hide") clock.whell_st = clock.state;
+                if (clock.whl_state != "hide") clock.whl_state = clock.state;
             }
         }
         MouseArea {
@@ -150,7 +153,7 @@ Rectangle {
             x: 101; y: 86
             width: 11; height: 12
 
-            onClicked: clock.whell_st == "hide" ? clock.whell_st = clock.state : clock.whell_st = "hide";
+            onClicked: clock.whl_state == "hide" ? clock.whl_state = clock.state : clock.whl_state = "hide";
         }
 
         z: 5
@@ -172,7 +175,7 @@ Rectangle {
             }
             PropertyChanges {
                 target: clock
-                whell_st: "hide"
+                whl_state: "hide"
             }
             PropertyChanges {
                 target: luna
@@ -188,7 +191,7 @@ Rectangle {
             }
             PropertyChanges {
                 target: clock
-                whell_st: "out"
+                whl_state: "out"
                 state:    "out"
             }
             PropertyChanges {

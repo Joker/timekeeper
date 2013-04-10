@@ -10,13 +10,13 @@ Item {
     property int seconds
     property real shift
     property string day
-    property alias whell_st : whell.state
-    property alias whell_x  : whell.x
-    property alias whell_y  : whell.y
-    property alias wr : wr_img.rotation
-    property alias wrs: wrs_img.rotation
-    property alias wc : wc_img.rotation
-    property alias wcs: wcs_img.rotation
+    property alias whl_state : whell.state
+    property alias whl_x     : whell.x
+    property alias whl_y     : whell.y
+    property alias whl       : wr_img.rotation
+    property alias whl_sh    : wrs_img.rotation
+    property alias cog       : wc_img.rotation
+    property alias cog_sh    : wcs_img.rotation
     property bool lock: false
 
     Item{

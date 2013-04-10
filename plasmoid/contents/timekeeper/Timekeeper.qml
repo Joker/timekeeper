@@ -7,13 +7,33 @@ Item {
     property string day: "31"
     property string month: "NOV"
     property string year: "54"
+    property alias cog    : cog.rotation
+    property alias cog_sh : cog_sh.rotation
+    property bool lock: false
 
     Item {
         id: cogMonth
         x: 29;y: 13
         width: 84; height: 84
-        Image { x: -6; y: -5; source: "monthCogShadow.png"}
-        Image { x: 1; y: 0; width: 82; height: 84; source: "monthCog.png"}
+        Image {
+            id: cog
+            x: -6; y: -5;
+            source: "monthCogShadow.png"
+            smooth: true;
+            Behavior on rotation {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+        }
+        Image {
+            id: cog_sh
+            x: 1; y: 0;
+            width: 82; height: 84;
+            source: "monthCog.png"
+            smooth: true;
+            Behavior on rotation {
+                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            }
+        }
     }
     Rectangle {
         x: 95;y: 70
@@ -107,6 +127,7 @@ Item {
         State {
             name: "out"
             PropertyChanges { target: timekeeper; x: 354;}
+            PropertyChanges { target: calendar;   lock: false;}
         }
     ]
     transitions: [

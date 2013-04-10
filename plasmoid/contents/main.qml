@@ -5,8 +5,8 @@ import "luna"
 import "clock/wheels"
 import "timekeeper"
 // import org.kde.plasma.core 0.1 as PlasmaCore
-import "luna/phase.js"    as Moon
-import "luna/earth.js"    as Eth
+import "luna/phase.js" as Moon
+import "luna/earth.js" as Eth
 
 Rectangle {
     id: main
@@ -32,7 +32,7 @@ Rectangle {
         plasmoid.setBackgroundHints(NoBackground);
     }
 
-    function dataUpdated(today) {        
+    function dataUpdated(today) {
         if(!today) today = new Date();
         Moon.touch(today)
 
@@ -46,20 +46,20 @@ Rectangle {
         var MM = [0, -31, -62, -93, -123, -153, -182.5, -241.5, -300, -329.5]
         var month = today.getMonth()
         var date  = today.getDate()-1
-        calendar.month_degree = MM[month] - date;
-            luna.earth_degree = month * 30 * -1 - date
+        calendar.ring_degree = MM[month] - date;
+            luna.earth_degree = Eth.angle(today)
+            // luna.earth_degree = month * 30 * -1 - date
 
 
         var age = Math.round(Moon.AGE)
         if(age == 0) luna.phase = 29
                 else luna.phase = age
-        luna.degree = Moon.LON + 185
+        //luna.degree = Moon.LON
 
-        // var degree = 185 + 12.41 * luna.phase
+        luna.degree = 180 + 12.41 * luna.phase
 
         //console.log(old_phase, luna.phase, Phase.AGE, Phase.Phase, Phase.Zodiac)
         //console.log(12.41 * luna.phase, Phase.LON)
-        // Eth.compute()
     }
     function timeChanged() {
         var date = new Date;
@@ -73,7 +73,7 @@ Rectangle {
         timekeeper.year  = Qt.formatDateTime(date, "yy")
 
         if(calendar.lock){
-            calendar.tak  = clock.seconds * 6;
+            calendar.count_angle  = clock.seconds * 6;
             timekeeper.cog    = (clock.seconds|3) * 6 * -1;
             timekeeper.cog_sh = (clock.seconds|3) * 6 * -1;
         }
@@ -170,35 +170,16 @@ Rectangle {
                 target: calendar
                 scale: 0.3
                 rotation: 360
-                // rangle:2
                 x: -119; y: -88
             }
-            PropertyChanges {
-                target: clock
-                whl_state: "hide"
-            }
-            PropertyChanges {
-                target: luna
-                state: "home"
-            }
-
+            PropertyChanges { target: clock; whl_state: "hide" }
+            PropertyChanges { target: luna;  state: "home" }
         },
         State {
             name: "marble"
-            PropertyChanges {
-                target: timekeeper
-                state:    "out"
-            }
-            PropertyChanges {
-                target: clock
-                whl_state: "out"
-                state:    "out"
-            }
-            PropertyChanges {
-                target: luna
-                state: "big_earth"
-                moon_z: -1
-            }
+            PropertyChanges { target: timekeeper; state: "out" }
+            PropertyChanges { target: clock;      state: "out"; whl_state: "out" }
+            PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
         }
     ]
     transitions: [

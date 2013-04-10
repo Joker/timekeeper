@@ -8,18 +8,20 @@ var pname = ["Mercury", "Venus  ", "Earth  ",
              "Mars   ", "Jupiter", "Saturn ",
              "Uranus ", "Neptune", "Pluto  "];
 
-function compute()
+function angle(date)
 {
-    var dn = day_number();
-    var p, zxc;
-    for (p = 0; p < 9; p++)
-    {
-        zxc = get_coord(p, dn)
-        // console.log(pname[p], zxc.mp, zxc.vp, zxc.rp,  zxc.xh, zxc.yh, zxc.zh )
-        // console.log(zxc.a, zxc.e, zxc.i, zxc.O, zxc.w, zxc.L )
-        console.log(pname[p], zxc.x+"\t"+zxc.y )
-    }
+    var c = get_coord(2, day_number(date))
+    return tri_angle(c.x, c.y)
 }
+
+function tri_angle(x,y){
+    if(x == 0) return (y>0) ? 180 : 0;
+    var a = Math.atan(y/x)*180/Math.PI;
+    a = (x > 0) ? a+90 : a+270;
+
+    return Math.round(a);
+}
+
 // convert angle (deg, min, sec) to degrees as real
 function dms2real( deg, min, sec )
 {
@@ -203,3 +205,15 @@ function true_anomaly( M, e )
 
 
 
+
+
+/*
+var p, zxc;
+for (p = 0; p < 9; p++)
+{
+    zxc = get_coord(p, dn)
+    // console.log(pname[p], zxc.mp, zxc.vp, zxc.rp,  zxc.xh, zxc.yh, zxc.zh )
+    // console.log(zxc.a, zxc.e, zxc.i, zxc.O, zxc.w, zxc.L )
+    console.log(pname[p], zxc.x+"\t"+zxc.y )
+}
+// */

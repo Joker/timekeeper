@@ -5,10 +5,11 @@ Item {
     width: 152; height: 152
 
     property string svg_sourse: "luna-gskbyte13.svg"
-    property alias degree: moon_angle.angle
+    property alias  degree: moon_angle.angle
     property int    phase: 28
     property int    earth_degree: 0
     property alias  moon_z: moon.z
+
     // state: "big_earth2"
 
     Item {
@@ -130,40 +131,29 @@ Item {
         },
         State {
             name: "home2"
-            PropertyChanges { target:home; degree: 0; earth_degree: 0; z: 4 }
+            extend: "home"
+            PropertyChanges { target:home; z: 4 }
             PropertyChanges { target:main; lx: clock.x+10 ;  ly: clock.y+10 }
         },
         State {
             name: "home3"
             PropertyChanges { target:home; degree: 0; earth_degree: 0;  z: 4 }
-            PropertyChanges { target:main; lx: 150 ;  ly: 150 }
+            PropertyChanges { target:main; lx: 200 ;  ly: 200 }
             onCompleted: luna.state = ""
         },
         State {
             name: "big_earth"
-            PropertyChanges { target:home; degree: 0; earth_degree: 0; }
-            PropertyChanges {
-                target: earth
-                x: -58; y: -57
-                width: 200; height: 200
-
-            }
-            PropertyChanges { target:main; lx: 162 ;  ly: 167 }
+            PropertyChanges { target: main;     lx: 162 ; ly: 167 }
+            PropertyChanges { target: home;     degree: 0; earth_degree: 0; }
+            PropertyChanges { target: earth;    x:-58; y: -57;  width: 150; height: 150 }
             PropertyChanges { target: earth_sh; x: 59; y: 59; }
-
-            onCompleted:  {calendar.state = "earth"; home.state = "big_earth2"}
+            onCompleted: {calendar.state = "earth"; home.state = "big_earth2"}
         },
         State {
             name: "big_earth2"
-            PropertyChanges { target:home; degree: 0; earth_degree: 0; }
-            PropertyChanges {
-                target: earth
-                x: -58; y: -57
-                width: 200; height: 200
-                opacity: 0
-            }
-            PropertyChanges { target:main; lx: 162 ;  ly: 167 }
-            PropertyChanges { target: earth_sh; x: 59; y: 59; visible: false }
+            extend: "big_earth"
+            PropertyChanges { target: earth;    opacity: 0 }
+            PropertyChanges { target: earth_sh; visible: false }
             PropertyChanges { target: moon;     visible: false }
         }
     ]
@@ -192,7 +182,7 @@ Item {
         },
         Transition {
             from: "big_earth"; to: "big_earth2"
-            NumberAnimation { properties: "opacity"; duration: 300;}
+            NumberAnimation { properties: "opacity"; duration: 100;}
         },
         Transition {
             from: "big_earth2"; to: "*"

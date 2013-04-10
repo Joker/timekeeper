@@ -5,8 +5,7 @@ Item{
     width: 475; height: 475
     Rectangle {
             id: screen
-            x: 137
-            y: 93
+            x: 137; y: 93
             width: 200; height: 250
             color: "green"
             //*
@@ -43,7 +42,7 @@ Item{
                             map.setGeoSceneProperty( "places",      false )
 
                             map.setGeoSceneProperty( "clouds_data", true )
-                            map.setGeoSceneProperty( "citylights",  true )
+                            // map.setGeoSceneProperty( "citylights",  true )
                         // console.log(settings.quitLongitude, settings.quitLatitude)
                     }
             }

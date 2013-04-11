@@ -22,11 +22,11 @@ Item {
              width: 68; height: 68
 
              property bool flipped: false
-             property int  n: 1
+             property int  n: 2
              Image {id: earth_sh; x: -7; y: -7; z:-1; smooth: true; source: "earthUnderShadow.png" }
 
-             front: Image { id: e_f; source: "e12.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
-             back:  Image { id: e_b; source: "e1.png";  smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+             front: Image { id: e_f; source: "e1.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+             back:  Image { id: e_b; source: "e2.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
 
              transform: Rotation {
                  id: rotation
@@ -36,14 +36,22 @@ Item {
                  angle: 0    // the default angle
              }
 
-             states: State {
-                 name: "back"
-                 PropertyChanges { target: rotation; angle: 180 }
-                 when: earth.flipped
-             }
+             states: [
+                 State {
+                     name: "back"
+                     PropertyChanges { target: rotation; angle: 180 }
+                     when: earth.flipped
+                 },
+                 State {
+                     name: "front"
+                     PropertyChanges { target: rotation; angle: 0 }
+                     when: !earth.flipped
+                 }
+             ]
 
              transitions: Transition {
-                 NumberAnimation { target: rotation; property: "angle"; duration: 400 }
+                 // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
+                 SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
              }
 
              MouseArea {
@@ -52,7 +60,7 @@ Item {
                      earth.flipped = !earth.flipped
                      if(earth.flipped) e_b.source = "e"+earth.n+".png"; else e_f.source = "e"+earth.n+".png"
                      earth.n++
-                     if(earth.n == 13) earth.n = 1
+                     if(earth.n == 7) earth.n = 1
                  // console.log(earth.flipped)
                  }
              }
@@ -182,7 +190,7 @@ Item {
         },
         Transition {
             from: "big_earth"; to: "big_earth2"
-            NumberAnimation { properties: "opacity"; duration: 90;}
+            NumberAnimation { properties: "opacity"; duration: 2000;}
         },
         Transition {
             from: "big_earth2"; to: "*"

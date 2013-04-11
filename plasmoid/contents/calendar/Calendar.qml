@@ -48,8 +48,11 @@ Item {
         id: mousearea
         x: 16; y: 18
         width: 446; height: 445
-        property int real_angle
+        property int start_angle
         property int ostanov
+        property int a_pred
+
+
         function inner(x, y){
             var dx = x - 223;
             var dy = y - 223;
@@ -59,6 +62,11 @@ Item {
             var inn = (150 * 150) <=  xy;
 
             if(out && inn) return true; else return false;
+        }
+        function ringUpdated(count) {
+            var today = new Date();
+            today.setDate(today.getDate()+count)
+            toEarthMoonTime(today)
         }
         function tri_angle(x,y){
             x = x - 223;
@@ -72,22 +80,38 @@ Item {
 
         onPressed: {
             if(inner(mouse.x, mouse.y)){
-                glass.lock = false;
-                real_angle = tri_angle(mouse.x, mouse.y)
-                ostanov    = glass.ring_degree
+                glass.lock  = false;
+
+                start_angle = tri_angle(mouse.x, mouse.y)
+                ostanov     = glass.ring_degree
+                a_pred      = start_angle
             }
         }
         onReleased: {
             glass.lock = clock.lock
         }
         onPositionChanged: {
-            var a, b
+            var a, b, c
             if(inner(mouse.x, mouse.y)){
                 a = tri_angle(mouse.x, mouse.y)
-                b = ostanov + (a - real_angle)
+
+                b = ostanov + (a - start_angle)
                 glass.ring_degree = b
                 glass.count_angle = b
+
+                c = (a_pred - a)
+                if(c < 90 && -90 < c ) count += c
+                a_pred = a
+
+                ringUpdated(count)
+            }else{
+                start_angle = tri_angle(mouse.x, mouse.y)
+                ostanov     = glass.ring_degree
+                a_pred      = start_angle
             }
+            if(ostanov > 360)ostanov -= 360
+            if(ostanov < -360)ostanov += 360
+            // console.log(b, ostanov, a, start_angle)
         }
 //                 onClicked: {
 //                     if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))

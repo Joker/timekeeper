@@ -5,7 +5,7 @@ Item {
     width: 152; height: 152
 
     property string svg_sourse: "luna-gskbyte13.svg"
-    property alias  degree: moon_angle.angle
+    property alias  moon_degree: moon_angle.angle
     property int    phase: 28
     property int    earth_degree: 0
     property alias  moon_z: moon.z
@@ -122,11 +122,11 @@ Item {
                 width: 31;height: 32
             }
             PropertyChanges { target:main; lx: 162 ;  ly: 165         }
-            PropertyChanges { target:home; degree: 0; earth_degree: 0 }
+            PropertyChanges { target:home; moon_degree: 0; earth_degree: 0 }
         },
         State {
             name: "home"
-            PropertyChanges { target:home; degree: 0; earth_degree: 0; }
+            PropertyChanges { target:home; moon_degree: 0; earth_degree: 0; }
             onCompleted: luna.state = "home2"
         },
         State {
@@ -137,14 +137,14 @@ Item {
         },
         State {
             name: "home3"
-            PropertyChanges { target:home; degree: 0; earth_degree: 0;  z: 4 }
+            PropertyChanges { target:home; moon_degree: 0; earth_degree: 0;  z: 4 }
             PropertyChanges { target:main; lx: 200 ;  ly: 200 }
             onCompleted: luna.state = ""
         },
         State {
             name: "big_earth"
             PropertyChanges { target: main;     lx: 162 ; ly: 167 }
-            PropertyChanges { target: home;     degree: 0; earth_degree: 0; }
+            PropertyChanges { target: home;     moon_degree: 0; earth_degree: 0; }
             PropertyChanges { target: earth;    x:-58; y: -57;  width: 150; height: 150 }
             PropertyChanges { target: earth_sh; x: 59; y: 59; }
             onCompleted: {calendar.state = "earth"; home.state = "big_earth2"}

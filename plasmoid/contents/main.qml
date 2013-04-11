@@ -15,6 +15,7 @@ Rectangle {
 
     property alias lx : luna.x
     property alias ly : luna.y
+    property int count: 0
 
     FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf" }
 
@@ -26,40 +27,43 @@ Rectangle {
 
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
 // */
-        dataUpdated()
+        defaultDate()
 
 
         plasmoid.setBackgroundHints(NoBackground);
     }
 
-    function dataUpdated(today) {
+
+    function toEarthMoonTime(today) {
         if(!today) today = new Date();
+
         Moon.touch(today)
+        var age = Math.round(Moon.AGE)
+        if( age == 0 || age == 30 ) luna.phase = 29
+                               else luna.phase = age
 
-//      today.setDate(today.getDate()+Moon.A)
-//      Moon.A++
+        luna.earth_degree = Eth.angle(today)
+        luna.moon_degree  = 180 + 12.41 * luna.phase
 
-//        var aDate = new Date();
-//            aDate.setMonth(aDate.getMonth()+1, 0)
-//        var num = aDate.getDate();
+        timekeeper.day   = Qt.formatDateTime(today, "dd")
+        timekeeper.month = Qt.formatDateTime(today, "MMM")
+        timekeeper.year  = Qt.formatDateTime(today, "yy")
+    }
+
+    function defaultDate(today) {
+        if(!today) today = new Date();
 
         var MM = [0, -31, -62, -93, -123, -153, -182.5, -241.5, -300, -329.5]
         var month = today.getMonth()
         var date  = today.getDate()-1
         calendar.ring_degree = MM[month] - date;
-            luna.earth_degree = Eth.angle(today)
-            // luna.earth_degree = month * 30 * -1 - date
 
+        toEarthMoonTime(today)
+        count = 0
 
-        var age = Math.round(Moon.AGE)
-        if(age == 0) luna.phase = 29
-                else luna.phase = age
-        //luna.degree = Moon.LON
-
-        luna.degree = 180 + 12.41 * luna.phase
-
-        //console.log(old_phase, luna.phase, Phase.AGE, Phase.Phase, Phase.Zodiac)
-        //console.log(12.41 * luna.phase, Phase.LON)
+//        var aDate = new Date();
+//            aDate.setMonth(aDate.getMonth()+1, 0)
+//        var num = aDate.getDate();
     }
     function timeChanged() {
         var date = new Date;
@@ -67,10 +71,6 @@ Rectangle {
         clock.minutes  = clock ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
         clock.seconds  = date.getUTCSeconds();
         clock.day      = Qt.formatDateTime(date, "ddd")
-
-        timekeeper.day   = Qt.formatDateTime(date, "dd")
-        timekeeper.month = Qt.formatDateTime(date, "MMM")
-        timekeeper.year  = Qt.formatDateTime(date, "yy")
 
         if(calendar.lock){
             calendar.count_angle  = clock.seconds * 6;
@@ -84,8 +84,7 @@ Rectangle {
             clock.cog_sh      = clock.seconds * 6 * -1;
 
         }
-        if(Qt.formatDateTime(date, "hhmmss") == "000000") dataUpdated()
-
+        if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
     }
 
     Timer {
@@ -98,7 +97,6 @@ Rectangle {
     Calendar {
         id:calendar;
         z: 1
-        // anchors.centerIn: parent
 
         Timekeeper{
             id: timekeeper;
@@ -110,7 +108,7 @@ Rectangle {
             MouseArea {
                 x: 178; y: 32
                 width: 12; height: 14
-                onClicked: dataUpdated()
+                onClicked: defaultDate()
             }
             MouseArea {
                 x: 0; y: 49
@@ -134,8 +132,6 @@ Rectangle {
             onClicked:{
                 if(main.state == "marble") calendar.state = ""
                 if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
-
-                //if (clock.whell_st != "hide") clock.whell_st = clock.state;
             }
         }
         MouseArea {

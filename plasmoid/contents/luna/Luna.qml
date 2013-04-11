@@ -138,14 +138,14 @@ Item {
         State {
             name: "home3"
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0;  z: 4 }
-            PropertyChanges { target:main; lx: 200 ;  ly: 200 }
+            PropertyChanges { target:main; lx: 150 ;  ly: 150 }
             onCompleted: luna.state = ""
         },
         State {
             name: "big_earth"
             PropertyChanges { target: main;     lx: 162 ; ly: 167 }
             PropertyChanges { target: home;     moon_degree: 0; earth_degree: 0; }
-            PropertyChanges { target: earth;    x:-58; y: -57;  width: 150; height: 150 }
+            PropertyChanges { target: earth;    x:-58; y: -57;  width: 200; height: 200 }
             PropertyChanges { target: earth_sh; x: 59; y: 59; }
             onCompleted: {calendar.state = "earth"; home.state = "big_earth2"}
         },
@@ -178,11 +178,11 @@ Item {
         },
         Transition {
             from: "*"; to: "big_earth"
-            NumberAnimation { properties: "earth_degree, degree,x,y, width,height, lx,ly"; duration: 1000;}
+            NumberAnimation { properties: "earth_degree, degree,x,y, width,height, lx,ly"; duration: 1500; easing.type: Easing.InOutBack; }
         },
         Transition {
             from: "big_earth"; to: "big_earth2"
-            NumberAnimation { properties: "opacity"; duration: 100;}
+            NumberAnimation { properties: "opacity"; duration: 90;}
         },
         Transition {
             from: "big_earth2"; to: "*"

@@ -42,8 +42,10 @@ Rectangle {
         if( age == 0 || age == 30 ) luna.phase = 29
                                else luna.phase = age
 
-        luna.earth_degree = Eth.angle(today)
-        luna.moon_degree  = 180 + 12.41 * luna.phase
+        if(luna.state != "big_moon"){
+            luna.earth_degree = Eth.angle(today)
+            luna.moon_degree  = 180 + 12.41 * luna.phase
+        }
 
         timekeeper.day   = Qt.formatDateTime(today, "dd")
         timekeeper.month = Qt.formatDateTime(today, "MMM")

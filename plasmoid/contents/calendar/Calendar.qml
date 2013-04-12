@@ -7,6 +7,7 @@ Item {
     property double ring_degree
     property int    count_angle
     property bool   lock: false
+    property alias  sa: mousearea.start_angle
 
     Image  { x: 2; y: 0; source: "innerFramesAndGlass.png" }
 
@@ -48,7 +49,7 @@ Item {
         id: mousearea
         x: 16; y: 18
         width: 446; height: 445
-        property int start_angle
+        property int start_angle:0
         property int ostanov
         property int a_pred
 

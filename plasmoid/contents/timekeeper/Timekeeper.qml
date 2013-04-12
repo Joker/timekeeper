@@ -36,15 +36,16 @@ Item {
         }
     }
     Rectangle {
+        id: rectangle3
         x: 95;y: 70
         width: 36;height: 36
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
+                id: gradientstop5
                 position: 0.16
                 color: "#766139"
             }
-
             GradientStop {
                 position: 0.68
                 color: "#ffffff"
@@ -52,47 +53,59 @@ Item {
         }
     }
     Rectangle {
+        id: rectangle2
         x: 95;y: 5
         width: 36;height: 36
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
+                id: gradientstop7
                 position: 0.46
                 color: "#b8a38b"
             }
-
             GradientStop {
+                id: gradientstop8
                 position: 1
                 color: "#ffffff"
             }
         }
     }
     Rectangle {
+        id: rectangle1
         x: 50;y: 17
         width: 21;height: 76
         gradient: Gradient {
             GradientStop {
+                id: gradientstop1
                 position: 0
                 color: "#766139"
             }
-
             GradientStop {
                 position: 0.35
                 color: "#ffffff"
             }
-
             GradientStop {
                 position: 0.58
                 color: "#ffffff"
             }
-
             GradientStop {
+                id: gradientstop4
                 position: 1
                 color: "#766139"
             }
         }
         rotation: 270
     }
+    Rectangle {
+        id: rectangle_glass
+        x: 139; y: 36
+        opacity: 0.53
+        visible: false
+        width: 40;height: 40
+        color: "#206f4a"
+        radius: width*0.5
+    }
+
     Image { x: 0; y: 0; source: "timekeeper.png"
         Text {
             x: 102; y: 14
@@ -128,6 +141,26 @@ Item {
             name: "out"
             PropertyChanges { target: timekeeper; x: 354;}
             PropertyChanges { target: calendar;   lock: false;}
+        },
+        State {
+            name: "green"
+            PropertyChanges { target: gradientstop1; position: 0; color: "#206f4a" }
+            PropertyChanges { target: gradientstop4; position: 1; color: "#206f4a" }
+
+            PropertyChanges { target: gradientstop5; position: 0.16; color: "#206f4a" }
+            PropertyChanges { target: gradientstop7; position: 0.51; color: "#8ac0a6" }
+            PropertyChanges { target: gradientstop8; position: 0.7 ; color: "#ffffff" }
+
+            PropertyChanges { target: rectangle_glass; visible: true }
+
+            PropertyChanges { target: rectangle1; opacity: 0.65 }
+            PropertyChanges { target: rectangle2; opacity: 0.65 }
+            PropertyChanges { target: rectangle3; opacity: 0.65 }
+
+            when: calendar.sa != 0
+        },
+        State {
+            name: "purple"
         }
     ]
     transitions: [

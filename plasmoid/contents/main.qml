@@ -42,7 +42,7 @@ Rectangle {
         if( age == 0 || age == 30 ) luna.phase = 29
                                else luna.phase = age
 
-        if(luna.state != "big_moon"){
+        if(luna.state != "big_moon" && main.state != "small"){
             luna.earth_degree = Eth.angle(today)
             luna.moon_degree  = 180 + 12.41 * luna.phase
         }
@@ -62,6 +62,7 @@ Rectangle {
 
         toEarthMoonTime(today)
         count = 0
+        timekeeper.state = ""
 
 //        var aDate = new Date();
 //            aDate.setMonth(aDate.getMonth()+1, 0)

@@ -24,13 +24,13 @@ Item{
 
                     Component.onCompleted: {
                             map.center.longitude = 55.45 //settings.quitLongitude
-                            map.center.latitude = 37.37 //settings.quitLatitude
+                            map.center.latitude = 37.37  //settings.quitLatitude
                             map.radius = 100 // 150
 
 
                             var plugins = settings.defaultRenderPlugins
                             settings.removeElementsFromArray(plugins, ["compass",  "coordinate-grid", "progress", "crosshairs", "stars", "scalebar"])
-                            plugins.push( "atmosphere" )
+                            // plugins.push( "atmosphere" )
 
                             settings.activeRenderPlugins = plugins
 
@@ -43,10 +43,10 @@ Item{
 
                             map.setGeoSceneProperty( "clouds_data", true )
                             // map.setGeoSceneProperty( "citylights",  true )
-                        // console.log(settings.quitLongitude, settings.quitLatitude)
+                            // console.log(settings.quitLongitude, settings.quitLatitude)
                     }
             }
             // */
     }
-    Image {source: "innerFrame_sh.png" }
+    Image { source: "innerFrame_sh.png" }
 }

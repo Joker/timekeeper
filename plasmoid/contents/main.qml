@@ -31,6 +31,7 @@ Rectangle {
 
 
         plasmoid.setBackgroundHints(NoBackground);
+        // calendar.ms = "calendar/Marble.qml"
     }
 
 
@@ -88,6 +89,14 @@ Rectangle {
 
         }
         if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
+
+        if(main.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
+            console.log(clock.seconds)
+            calendar.mar.citylights_off();
+            calendar.mar.citylights_on();
+        }
+        // console.log(clock.minutes)
+
     }
 
     Timer {
@@ -100,24 +109,48 @@ Rectangle {
     Calendar {
         id:calendar;
         z: 1
+        property bool ch: true
 
         Timekeeper{
             id: timekeeper;
-            x: 285;y: 186
-            MouseArea {
-                x: 154; y: 90
-                width: 10; height: 30
+            x: 285;y: 186;
+
+            Item{
+                id: def
+                MouseArea {
+                    x: 131; y: 25
+                    width: 9; height: 11
+                    onClicked: {
+                        if(timekeeper.state != "green" ) {timekeeper.color = "purple"; timekeeper.state = "green" }
+                                                    else {timekeeper.color = "green" ; timekeeper.state = "purple"}
+                    }
+                }
+                MouseArea {
+                    x: 154; y: 90
+                    width: 10; height: 30
+                }
+                MouseArea {
+
+                    x: 178; y: 32
+                    width: 12; height: 14
+                    onClicked: defaultDate()
+                }
             }
-            MouseArea {
-                x: 178; y: 32
-                width: 12; height: 14
-                onClicked: defaultDate()
-            }
+
             MouseArea {
                 x: 0; y: 49
                 width: 13; height: 14
                 onClicked: {
-                    if(main.state == "marble") { main.state = ""; calendar.state = "" } else main.state = "marble";
+                    // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
+                    if(main.state == "marble") {
+                        main.state = ""; calendar.state = ""
+                    } else {
+                        main.state = "marble";
+                        if(calendar.ch){
+                            calendar.mar.citylights_off();
+                            calendar.mar.citylights_on();
+                        }
+                    }
                 }
             }
         }
@@ -176,7 +209,8 @@ Rectangle {
         },
         State {
             name: "marble"
-            PropertyChanges { target: timekeeper; state: "out" }
+            PropertyChanges { target: timekeeper; state: "out"; }
+            PropertyChanges { target: def;      visible: false; }
             PropertyChanges { target: clock;      state: "out"; whl_state: "out" }
             PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
         }

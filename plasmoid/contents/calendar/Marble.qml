@@ -24,7 +24,7 @@ Item{
 
                     Component.onCompleted: {
                             map.center.longitude = 55.45 //settings.quitLongitude
-                            map.center.latitude = 37.37  //settings.quitLatitude
+                            map.center.latitude  = 37.37 //settings.quitLatitude
                             map.radius = 100 // 150
 
 
@@ -42,11 +42,22 @@ Item{
                             map.setGeoSceneProperty( "places",      false )
 
                             map.setGeoSceneProperty( "clouds_data", true )
-                            // map.setGeoSceneProperty( "citylights",  true )
+                            map.setGeoSceneProperty( "citylights",  true )
                             // console.log(settings.quitLongitude, settings.quitLatitude)
                     }
+
             }
             // */
     }
     Image { source: "innerFrame_sh.png" }
+
+    function citylights_on()  { map.setGeoSceneProperty( "citylights",  true ) }
+    function citylights_off() { map.setGeoSceneProperty( "citylights",  false) }
+    function clouds_data_off(){ map.setGeoSceneProperty( "clouds_data", false) }
+    function clouds_data_on() { map.setGeoSceneProperty( "clouds_data", true ) }
+    function defaultPt()      {
+        map.center.longitude = 55.45
+        map.center.latitude  = 37.37
+        map.radius = 100
+    }
 }

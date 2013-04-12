@@ -4,11 +4,12 @@ Item {
     id: timekeeper
     width: 193; height: 131
 
-    property string day: "31"
+    property string day:   "31"
     property string month: "NOV"
-    property string year: "54"
+    property string year:  "54"
     property alias cog    : cog.rotation
     property alias cog_sh : cog_sh.rotation
+    property alias color  : color.extend
     property bool lock: false
 
     Item {
@@ -47,6 +48,7 @@ Item {
                 color: "#766139"
             }
             GradientStop {
+                id: gradientstop6
                 position: 0.68
                 color: "#ffffff"
             }
@@ -81,10 +83,12 @@ Item {
                 color: "#766139"
             }
             GradientStop {
+                id: gradientstop2
                 position: 0.35
                 color: "#ffffff"
             }
             GradientStop {
+                id: gradientstop3
                 position: 0.58
                 color: "#ffffff"
             }
@@ -102,7 +106,6 @@ Item {
         opacity: 0.53
         visible: false
         width: 40;height: 40
-        color: "#206f4a"
         radius: width*0.5
     }
 
@@ -136,6 +139,7 @@ Item {
 
         }
     }
+
     states: [
         State {
             name: "out"
@@ -151,17 +155,34 @@ Item {
             PropertyChanges { target: gradientstop7; position: 0.51; color: "#8ac0a6" }
             PropertyChanges { target: gradientstop8; position: 0.7 ; color: "#ffffff" }
 
-            PropertyChanges { target: rectangle_glass; visible: true }
+            PropertyChanges { target: rectangle_glass; color: "#206f4a"; visible: true }
 
             PropertyChanges { target: rectangle1; opacity: 0.65 }
             PropertyChanges { target: rectangle2; opacity: 0.65 }
             PropertyChanges { target: rectangle3; opacity: 0.65 }
-
-            when: calendar.sa != 0
         },
         State {
             name: "purple"
+            PropertyChanges { target: gradientstop1; position: 0; color: "#187c8b" }
+            PropertyChanges { target: gradientstop4; position: 1; color: "#187c8b" }
+
+            PropertyChanges { target: gradientstop5; position: 0.16; color: "#187c8b" }
+            PropertyChanges { target: gradientstop7; position: 0.51; color: "#66b7c2" }
+            PropertyChanges { target: gradientstop8; position: 0.68; color: "#ffffff" }
+
+            PropertyChanges { target: rectangle_glass; color: "#187c8b"; visible: true }
+
+            PropertyChanges { target: rectangle1; opacity: 0.65 }
+            PropertyChanges { target: rectangle2; opacity: 0.65 }
+            PropertyChanges { target: rectangle3; opacity: 0.65 }
+        },
+        State {
+            id: color
+            name: "color"
+            extend: "green"
+            when: count != 0
         }
+
     ]
     transitions: [
         Transition {

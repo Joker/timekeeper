@@ -9,7 +9,8 @@ It is written entirely in QML + JavaScript.
 
 Graphics in this plasmoid orginate from [Steampunk orrery](http://lightquick.co.uk/downloads/steampunk-orrery-xwidget.html)  
 For the Moon graphics from [Luna QML](http://kde-apps.org/content/show.php?content=140204) were used.  
-
+Marble Virtual Globe is required.  
+[Video preview](http://vimeo.com/69154043)  
 
 Create package
 --------------

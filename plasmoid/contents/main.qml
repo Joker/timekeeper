@@ -71,9 +71,13 @@ Rectangle {
     }
     function timeChanged() {
         var date = new Date;
-        clock.hours    = clock ? date.getUTCHours()   + Math.floor(clock.shift)  : date.getHours()
-        clock.minutes  = clock ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
-        clock.seconds  = date.getUTCSeconds();
+//        clock.hours    = clock ? date.getUTCHours()   + Math.floor(clock.shift)  : date.getHours()
+//        clock.minutes  = clock ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
+
+        clock.hours    = date.getHours()
+        clock.minutes  = date.getMinutes()
+        clock.seconds  = date.getSeconds()
+
         clock.day      = Qt.formatDateTime(date, "ddd")
 
         if(calendar.lock){
@@ -158,7 +162,7 @@ Rectangle {
     Clock {
         id: clock;
         x: 29; y: 60
-        shift: 4
+//        shift: 4
         state: "in"
         MouseArea {
             id: center

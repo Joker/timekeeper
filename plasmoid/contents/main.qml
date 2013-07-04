@@ -111,7 +111,10 @@ Rectangle {
 
 
     Flipable {
-        state: "otherside"
+        id: side
+        property bool flipped: true
+
+
         front: Item {
             Calendar {
                 id:calendar;
@@ -133,11 +136,11 @@ Rectangle {
                             }
                         }
                         MouseArea {
-                            x: 154; y: 90
-                            width: 10; height: 30
+                            x: 154; y: 96
+                            width: 10; height: 24
+                            onClicked: { side.flipped = !side.flipped }
                         }
                         MouseArea {
-
                             x: 178; y: 32
                             width: 12; height: 14
                             onClicked: defaultDate()
@@ -204,24 +207,33 @@ Rectangle {
             }
 
         }
-        back: Otherside {
-            z: 1
+        back: Item {
+            Otherside {
+                z: 1
+            }
         }
+
         states: [
             State {
                 name: "otherside"
                 PropertyChanges { target: rotation; angle: 180 }
+                when: side.flipped
             },
             State {
                 name: "calendar"
                 PropertyChanges { target: rotation; angle: 0 }
+                when: !side.flipped
             }
         ]
         transform: Rotation {
             id: rotation
             origin.x: 239; origin.y: 239
-            axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+            axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
             angle: 0    // the default angle
+        }
+        transitions: Transition {
+            // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
+            SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :4;}// velocity: 490}
         }
     }
 

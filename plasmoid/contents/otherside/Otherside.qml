@@ -4,36 +4,79 @@ Item {
     id: other
     width: 478; height: 478
 //rotation: 180
-    Image { id: bg; x: 2; y: 0; source: "bg2.png" }
-    Image { id: surround; source: "woodSurround.png"; rotation: 0}
+    Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
+    Image { id: surround; source: "woodSurround.png"; rotation: 0 }
 
-    Image {
-        id: moon_iron
-        x: 318
-        y: 296
-        source: "moon1.png"
-    }
-
-    Image {
-        id: sun_iron
-        x: 105
-        y: 296
-        source: "sun2.png"
-    }
-
-    Image {
-        id: moon
-        x: 105
-        y: 176
-        source: "m0.png"
-    }
-
-    Image {
+    Item {
         id: sun
-        x: 296
-        y: 71
-        source: "sun1.png"
+        x: 322
+        y: 200
+        width: 76
+        height: 76
+
+        Item {
+            id: s_up
+            width: 76
+            height: 40
+            anchors.top: parent.top
+            clip: true
+
+            Image {
+                anchors.top: parent.top
+                source: "sun1.png"
+            }
+        }
+
+        Item {
+            id: s_dn
+            width: 76
+            height: 37
+            anchors.bottom: parent.bottom
+            clip: true
+
+            Image {
+                anchors.bottom: parent.bottom
+                source: "sun2.png"
+            }
+        }
+
     }
+
+
+    Item {
+        id: moon
+        x: 93
+        y: 212
+        width: 56
+        height: 56
+
+        Item {
+            id: m_up
+            width: 56
+            height: 28
+            anchors.top: parent.top
+            clip: true
+            Image {
+                anchors.top: parent.top
+                source: "m0.png"
+            }
+        }
+
+        Item {
+            id: m_dn
+            width: 56
+            height: 28
+            anchors.bottom: parent.bottom
+            clip: true
+
+            Image {
+                anchors.bottom: parent.bottom
+                source: "moon1.png"
+            }
+        }
+    }
+
+
 
     Image {
         id: stick_l
@@ -79,13 +122,4 @@ Item {
         height: 83
         source: "dusk.png"
     }
-/*
-    Image {
-        id:ring
-        x: 16; y: 18
-        source: "rotatingring.png"
-        smooth: true
-        rotation: 122
-    }
-// */
 }

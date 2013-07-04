@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import "clock"
 import "calendar"
+import "otherside"
 import "luna"
 import "clock/wheels"
 import "timekeeper"
@@ -109,96 +110,121 @@ Rectangle {
     }
 
 
+    Flipable {
+        state: "otherside"
+        front: Item {
+            Calendar {
+                id:calendar;
+                z: 1
+                property bool ch: true
 
-    Calendar {
-        id:calendar;
-        z: 1
-        property bool ch: true
+                Timekeeper{
+                    id: timekeeper;
+                    x: 285;y: 186;
 
-        Timekeeper{
-            id: timekeeper;
-            x: 285;y: 186;
+                    Item{
+                        id: def
+                        MouseArea {
+                            x: 131; y: 25
+                            width: 9; height: 11
+                            onClicked: {
+                                if(timekeeper.state != "green" ) {timekeeper.color = "purple"; timekeeper.state = "green" }
+                                                            else {timekeeper.color = "green" ; timekeeper.state = "purple"}
+                            }
+                        }
+                        MouseArea {
+                            x: 154; y: 90
+                            width: 10; height: 30
+                        }
+                        MouseArea {
 
-            Item{
-                id: def
-                MouseArea {
-                    x: 131; y: 25
-                    width: 9; height: 11
-                    onClicked: {
-                        if(timekeeper.state != "green" ) {timekeeper.color = "purple"; timekeeper.state = "green" }
-                                                    else {timekeeper.color = "green" ; timekeeper.state = "purple"}
+                            x: 178; y: 32
+                            width: 12; height: 14
+                            onClicked: defaultDate()
+                        }
                     }
-                }
-                MouseArea {
-                    x: 154; y: 90
-                    width: 10; height: 30
-                }
-                MouseArea {
 
-                    x: 178; y: 32
-                    width: 12; height: 14
-                    onClicked: defaultDate()
-                }
-            }
-
-            MouseArea {
-                x: 0; y: 49
-                width: 13; height: 14
-                onClicked: {
-                    // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
-                    if(main.state == "marble") {
-                        main.state = ""; calendar.state = ""
-                    } else {
-                        main.state = "marble";
-                        if(calendar.ch){
-                            calendar.mar.citylights_off();
-                            calendar.mar.citylights_on();
+                    MouseArea {
+                        x: 0; y: 49
+                        width: 13; height: 14
+                        onClicked: {
+                            // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
+                            if(main.state == "marble") {
+                                main.state = ""; calendar.state = ""
+                            } else {
+                                main.state = "marble";
+                                if(calendar.ch){
+                                    calendar.mar.citylights_off();
+                                    calendar.mar.citylights_on();
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-    }
-    Clock {
-        id: clock;
-        x: 29; y: 60
-//        shift: 4
-        state: "in"
-        MouseArea {
-            id: center
-            x: 80; y: 76
-            width: 14; height: 14
+            Clock {
+                id: clock;
+                x: 29; y: 60
+        //        shift: 4
+                state: "in"
+                MouseArea {
+                    id: center
+                    x: 80; y: 76
+                    width: 14; height: 14
 
-            onClicked:{
-                if(main.state == "marble") calendar.state = ""
-                if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
+                    onClicked:{
+                        if(main.state == "marble") calendar.state = ""
+                        if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
+                    }
+                }
+                MouseArea {
+                    id: in_out
+                    x: 62; y: 86
+                    width: 11; height: 12
+
+                    onClicked: {
+                        clock.state == "out" ? clock.state = "in" : clock.state = "out";
+                        if (clock.whl_state != "hide") clock.whl_state = clock.state;
+                    }
+                }
+                MouseArea {
+                    id: right
+                    x: 101; y: 86
+                    width: 11; height: 12
+
+                    onClicked: clock.whl_state == "hide" ? clock.whl_state = clock.state : clock.whl_state = "hide";
+                }
+
+                z: 5
             }
-        }
-        MouseArea {
-            id: in_out
-            x: 62; y: 86
-            width: 11; height: 12
-
-            onClicked: {
-                clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                if (clock.whl_state != "hide") clock.whl_state = clock.state;
+            Luna  {
+                id:luna;
+                x: 162; y: 90
+                z: 7
             }
-        }
-        MouseArea {
-            id: right
-            x: 101; y: 86
-            width: 11; height: 12
 
-            onClicked: clock.whl_state == "hide" ? clock.whl_state = clock.state : clock.whl_state = "hide";
         }
+        back: Otherside {
+            z: 1
+        }
+        states: [
+            State {
+                name: "otherside"
+                PropertyChanges { target: rotation; angle: 180 }
+            },
+            State {
+                name: "calendar"
+                PropertyChanges { target: rotation; angle: 0 }
+            }
+        ]
+        transform: Rotation {
+            id: rotation
+            origin.x: 239; origin.y: 239
+            axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+            angle: 0    // the default angle
+        }
+    }
 
-        z: 5
-    }
-    Luna  {
-        id:luna;
-        x: 162; y: 90
-        z: 7
-    }
     states: [
         State {
             name: "small"
@@ -231,4 +257,5 @@ Rectangle {
             NumberAnimation { properties: "rotation, x, y "; duration: 2700 }
         }
     ]
+
 }

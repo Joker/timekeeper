@@ -1,4 +1,5 @@
 import QtQuick 1.1
+import "../luna"
 
 Item {
     id: other
@@ -9,15 +10,15 @@ Item {
 
     Item {
         id: sun
-        x: 322
-        y: 200
+        x: 201
+        y: 41
         width: 76
         height: 76
 
         Item {
             id: s_up
             width: 76
-            height: 40
+            height: 76
             anchors.top: parent.top
             clip: true
 
@@ -30,7 +31,7 @@ Item {
         Item {
             id: s_dn
             width: 76
-            height: 37
+            height: 0
             anchors.bottom: parent.bottom
             clip: true
 
@@ -45,27 +46,31 @@ Item {
 
     Item {
         id: moon
-        x: 93
-        y: 212
+        x: 212
+        y: 117
         width: 56
         height: 56
 
         Item {
             id: m_up
             width: 56
-            height: 28
+            height: 56
             anchors.top: parent.top
             clip: true
-            Image {
+            Item {
+                width: 52
+                height: 52
+                anchors.topMargin: 2
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
-                source: "m0.png"
+                Luna { id: luna }
             }
         }
 
         Item {
             id: m_dn
             width: 56
-            height: 28
+            height: 0
             anchors.bottom: parent.bottom
             clip: true
 

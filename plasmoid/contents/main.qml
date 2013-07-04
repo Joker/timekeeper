@@ -2,12 +2,12 @@ import QtQuick 1.1
 import "clock"
 import "calendar"
 import "otherside"
-import "luna"
+import "terra"
 import "clock/wheels"
 import "timekeeper"
 // import org.kde.plasma.core 0.1 as PlasmaCore
 import "luna/phase.js" as Moon
-import "luna/earth.js" as Eth
+import "terra/planets.js" as Eth
 
 Rectangle {
     id: main
@@ -112,7 +112,7 @@ Rectangle {
 
     Flipable {
         id: side
-        property bool flipped: true
+        property bool flipped: false
 
 
         front: Item {
@@ -200,7 +200,7 @@ Rectangle {
 
                 z: 5
             }
-            Luna  {
+            Terra {
                 id:luna;
                 x: 162; y: 90
                 z: 7

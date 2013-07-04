@@ -1,5 +1,7 @@
 //Script from http://mysite.verizon.net/res148h4j/javascript/script_planet_orbits.html
 
+.pragma library
+
 var DEGS = 180/Math.PI;                  // convert radians to degrees
 var RADS = Math.PI/180;                  // convert degrees to radians
 var EPS  = 1.0e-12;                      // machine error constant

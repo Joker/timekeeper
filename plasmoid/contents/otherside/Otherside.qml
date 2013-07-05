@@ -6,41 +6,63 @@ Item {
     width: 478; height: 478
 //rotation: 180
     Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
-    Image { id: surround; source: "woodSurround.png"; rotation: 0 }
+    Image { id: surround; source: "woodSurround.png"; rotation: 0
 
+    }
+//Image { x: 239; y: 239; width: 76; height: 160; source: "zxc.png"}
+// x: 239; y: 79; height: 160;
     Item {
         id: sun
         x: 201
         y: 41
         width: 76
         height: 76
-
+        property double an: 0
+        property double pr: 0
         Item {
             id: s_up
             width: 76
-            height: 76
+            height: 38
             anchors.top: parent.top
             clip: true
 
             Image {
                 anchors.top: parent.top
                 source: "sun1.png"
+                smooth: true
             }
         }
-
         Item {
             id: s_dn
             width: 76
-            height: 0
+            height: 38
             anchors.bottom: parent.bottom
             clip: true
 
             Image {
                 anchors.bottom: parent.bottom
                 source: "sun2.png"
+                smooth: true
             }
         }
+/*
+        transform:[
+            Rotation {
+                id: sun_a
+                origin.x: 38; origin.y: 38;
+                angle: sun_angle.angle * -1
+            },
+            Rotation {
+                id: sun_angle
+                origin.x: 38; origin.y: 198;
+                angle: clock.seconds * 6
+                Behavior on angle {
+                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                }
+            }
 
+        ]
+// */
     }
 
 
@@ -99,7 +121,6 @@ Item {
             source: "stick_end.png"
         }
     }
-
     Image {
         id: stick_r
         x: 281
@@ -116,9 +137,6 @@ Item {
             source: "stick_end.png"
         }
     }
-
-
-
     Image {
         id: earth
         x: 197
@@ -127,4 +145,51 @@ Item {
         height: 83
         source: "dusk.png"
     }
+
+
+    MouseArea {
+        id: mousearea1
+        x: 92
+        y: 178
+        width: 27
+        height: 28
+        onClicked: { }
+    }
+    MouseArea {
+        id: mousearea2
+        x: 257
+        y: 323
+        width: 27
+        height: 28
+        onClicked: {
+            sun_angle.angle -= 1;
+            sun_a.angle = sun_angle.angle * -1;
+
+            if(sun_angle.angle > 75 && sun_angle.angle < 102){
+
+            }
+            if(sun_angle.angle > 255 && sun_angle.angle < 282){
+
+            }
+            console.log(sun_angle.angle)
+        }
+    }
+    MouseArea {
+        id: mousearea3
+        x: 307
+        y: 200
+        width: 27
+        height: 28
+        onClicked: {
+            console.log("==", sun.x, sun.y)
+            sun.pr = 30 * Math.PI/180
+            sun.an += sun.pr
+            var radius = 160
+            sun.x = other.height/2 + Math.cos(sun.an)*radius - 38
+            sun.y = other.width/2  + Math.sin(sun.an)*radius - 38
+            console.log(sun.x, sun.y)
+
+        }
+    }
+
 }

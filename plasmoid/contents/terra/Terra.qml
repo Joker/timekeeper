@@ -73,6 +73,7 @@ Item {
         id: moon
         x: 60; y: 0
         width: 33; height: 33
+
         Image { id: moon_big_sh; x: -9; y: -8; opacity: 0; smooth: true; source: "moonBigShadow.png" }
         Image { id: moon_sh; x: -6; y: -6; smooth: true; source: "moonUnderShadow.png" }
         Luna  { id: svg }

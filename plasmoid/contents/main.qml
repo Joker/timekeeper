@@ -78,30 +78,31 @@ Rectangle {
         clock.hours    = date.getHours()
         clock.minutes  = date.getMinutes()
         clock.seconds  = date.getSeconds()
+        if(!side.flipped){
+            clock.day      = Qt.formatDateTime(date, "ddd")
 
-        clock.day      = Qt.formatDateTime(date, "ddd")
+            if(calendar.lock){
+                calendar.count_angle  = clock.seconds * 6;
+                timekeeper.cog    = (clock.seconds|3) * 6 * -1;
+                timekeeper.cog_sh = (clock.seconds|3) * 6 * -1;
+            }
+            if(clock.lock){
+                clock.whl         = clock.seconds * 6;
+                clock.whl_sh      = clock.seconds * 6;
+                clock.cog         = clock.seconds * 6 * -1;
+                clock.cog_sh      = clock.seconds * 6 * -1;
 
-        if(calendar.lock){
-            calendar.count_angle  = clock.seconds * 6;
-            timekeeper.cog    = (clock.seconds|3) * 6 * -1;
-            timekeeper.cog_sh = (clock.seconds|3) * 6 * -1;
+            }
+            if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
+
+            if(main.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
+                //console.log(clock.seconds)
+                calendar.mar.citylights_off();
+                calendar.mar.citylights_on();
+            }
+        }else{
+
         }
-        if(clock.lock){
-            clock.whl         = clock.seconds * 6;
-            clock.whl_sh      = clock.seconds * 6;
-            clock.cog         = clock.seconds * 6 * -1;
-            clock.cog_sh      = clock.seconds * 6 * -1;
-
-        }
-        if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
-
-        if(main.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
-            console.log(clock.seconds)
-            calendar.mar.citylights_off();
-            calendar.mar.citylights_on();
-        }
-        // console.log(clock.minutes)
-
     }
 
     Timer {
@@ -112,7 +113,7 @@ Rectangle {
 
     Flipable {
         id: side
-        property bool flipped: false
+        property bool flipped: true
 
 
         front: Item {

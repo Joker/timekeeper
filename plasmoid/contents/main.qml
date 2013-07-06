@@ -8,6 +8,8 @@ import "timekeeper"
 // import org.kde.plasma.core 0.1 as PlasmaCore
 import "luna/phase.js" as Moon
 import "terra/planets.js" as Eth
+import "otherside/riseset.js" as RS
+
 
 Rectangle {
     id: main
@@ -17,6 +19,9 @@ Rectangle {
     property alias lx : luna.x
     property alias ly : luna.y
     property int count: 0
+
+    property double lon: 37.620789
+    property double lat: 55.750513
 
     FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf" }
 
@@ -30,6 +35,22 @@ Rectangle {
 // */
         defaultDate()
 
+        RS.sun_riseset (lat, lon, new Date())
+        RS.moon_riseset(lat, lon, new Date())
+
+        var sinkS = {
+          dataUpdated: function (name, data) {
+            console.log(data.Sunrise, data.Sunset);
+          }
+        };
+        var sinkM = {
+          dataUpdated: function (name, data) {
+            console.log(data.Moonrise, data.Moonset);
+          }
+        };
+        var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
+        dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
+        dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
 
         plasmoid.setBackgroundHints(NoBackground);
         // calendar.ms = "calendar/Marble.qml"
@@ -113,7 +134,7 @@ Rectangle {
 
     Flipable {
         id: side
-        property bool flipped: true
+        property bool flipped: false
 
 
         front: Item {

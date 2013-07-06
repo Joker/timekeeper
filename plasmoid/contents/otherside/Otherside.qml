@@ -6,7 +6,7 @@ Item {
     width: 478; height: 478
 //rotation: 180
     Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
-    Image { id: surround; source: "woodSurround.png"; rotation: 0
+    Image { id: surround; source: "../calendar/woodSurround.png"; rotation: 0
 
     }
 //Image { x: 239; y: 239; width: 76; height: 160; source: "zxc.png"}
@@ -98,7 +98,7 @@ Item {
 
             Image {
                 anchors.bottom: parent.bottom
-                source: "moon1.png"
+                source: "luna2.png"
             }
         }
     }

@@ -135,6 +135,8 @@ Rectangle {
     Flipable {
         id: side
         property bool flipped: false
+        anchors.left: parent.left
+        anchors.leftMargin: 30
 
 
         front: Item {
@@ -250,7 +252,7 @@ Rectangle {
         transform: Rotation {
             id: rotation
             origin.x: 239; origin.y: 239
-            axis.x: 0; axis.y: 1; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+            axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
             angle: 0    // the default angle
         }
         transitions: Transition {

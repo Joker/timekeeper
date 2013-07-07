@@ -1,16 +1,22 @@
 import QtQuick 1.1
 import "../luna"
+import "../clock/back"
 
 Item {
     id: other
     width: 478; height: 478
-//rotation: 180
-    Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
-    Image { id: surround; source: "../calendar/woodSurround.png"; rotation: 0
 
+    Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
+    Image { id: surround; source: "../calendar/woodSurround.png"; }
+
+    Back {
+        x: -15; y: 9; z: -1
     }
+
+
 //Image { x: 239; y: 239; width: 76; height: 160; source: "zxc.png"}
 // x: 239; y: 79; height: 160;
+
     Item {
         id: sun
         x: 201
@@ -192,4 +198,15 @@ Item {
         }
     }
 
+
+
+
+    //*
+    transform: Rotation {
+        origin.x: 239
+        origin.y: 239
+        axis.x: 1; axis.y: 0; axis.z: 0
+        angle: 180
+    }
+    // */
 }

@@ -7,10 +7,34 @@ Item {
     width: 478; height: 478
 
     Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
-    Image { id: surround; source: "../calendar/woodSurround.png"; }
+    Image { id: surround; source: "../calendar/woodSurround.png";
+
+ }
 
     Back {
-        x: -15; y: 9; z: -1
+        // x: -15; y: 9; z: -1
+        x: 10; y: -2; z: -1
+        MouseArea {
+            x: 67
+            y: 32
+            width: 16
+            height: 15
+            onClicked: {
+                 side.flipped = !side.flipped
+            }
+        }
+        MouseArea {
+            x: 92
+            y: 25
+            width: 11
+            height: 11
+        }
+        MouseArea {
+            x: 42
+            y: 17
+            width: 11
+            height: 11
+        }
     }
 
 
@@ -197,6 +221,8 @@ Item {
 
         }
     }
+
+
 
 
 

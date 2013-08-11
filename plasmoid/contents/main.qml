@@ -9,7 +9,7 @@ import "timekeeper"
 import "luna/phase.js" as Moon
 import "terra/planets.js" as Eth
 import "otherside/riseset.js" as RS
-
+// import QtMultimediaKit 1.1 as QtMultimediaKit
 
 Rectangle {
     id: main
@@ -279,6 +279,12 @@ Rectangle {
             PropertyChanges { target: def;      visible: false; }
             PropertyChanges { target: clock;      state: "out"; whl_state: "out" }
             PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
+        },
+        State {
+            name: "otherside"
+            PropertyChanges { target: clock; whl_state: "hide"; x: -20;y: 309}
+            PropertyChanges { target: timekeeper; state: "otherside"; }
+            PropertyChanges { target: luna;       state: "otherside"; }
         }
     ]
     transitions: [

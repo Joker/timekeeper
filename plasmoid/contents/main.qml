@@ -56,7 +56,7 @@ Rectangle {
     function defaultDate(today) {
         if(!today) today = new Date();
 
-        var MM = [0, -31, -62, -93, -123, -153, -182.5, -241.5, -300, -329.5]
+        var MM = [0, -31, -62, -93, -123, -153, -182.5, -212, -241.5, -270.5, -299.5, -329.2]
         var month = today.getMonth()
         var date  = today.getDate()-1
         calendar.ring_degree = MM[month] - date;

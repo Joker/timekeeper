@@ -23,8 +23,13 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 				<label>timekeeperState</label>
 				<default></default>
 			</entry>
-			<entry name="lunaState" type="String">
-				<label>lunaState</label>
+			<entry name="terraState" type="String">
+				<label>terraState</label>
+				<default></default>
+			</entry>
+
+			<entry name="terraImage" type="String">
+				<label>terraImage</label>
 				<default></default>
 			</entry>
 		</group>

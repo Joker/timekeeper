@@ -37,7 +37,7 @@ Rectangle {
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
 // */
         defaultDate()
-
+/*
         RS.sun_riseset (lat, lon, new Date())
         RS.moon_riseset(lat, lon, new Date())
 
@@ -54,9 +54,21 @@ Rectangle {
         var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
         dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
         dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-
+// */
         plasmoid.setBackgroundHints(NoBackground);
         // calendar.ms = "calendar/Marble.qml"
+
+
+        var mainState       = plasmoid.readConfig("mainState").toString();
+        var clockState      = plasmoid.readConfig("clockState").toString();
+        var whellState      = plasmoid.readConfig("whellState").toString();
+        var timekeeperState = plasmoid.readConfig("timekeeperState").toString();
+
+        if (clockState.length > 0)      { clock.state      = clockState }
+        if (whellState.length > 0)      { clock.whl_state  = whellState }
+        if (timekeeperState.length > 0) { timekeeper.state = timekeeperState }
+        if (mainState.length > 0)       { main.state       = mainState }
+
     }
 
 
@@ -160,6 +172,7 @@ Rectangle {
                             onClicked: {
                                 if(timekeeper.state != "green" ) {timekeeper.color = "purple"; timekeeper.state = "green" }
                                                             else {timekeeper.color = "green" ; timekeeper.state = "purple"}
+                                plasmoid.writeConfig("timekeeperState", timekeeper.state);
                             }
                         }
                         MouseArea {
@@ -188,6 +201,7 @@ Rectangle {
                                     calendar.mar.citylights_on();
                                 }
                             }
+                            plasmoid.writeConfig("mainState", main.state);
                         }
                     }
                 }
@@ -205,6 +219,7 @@ Rectangle {
                     onClicked:{
                         if(main.state == "marble") calendar.state = ""
                         if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
+                        plasmoid.writeConfig("mainState", main.state);
                     }
                 }
                 MouseArea {
@@ -215,6 +230,7 @@ Rectangle {
                     onClicked: {
                         clock.state == "out" ? clock.state = "in" : clock.state = "out";
                         if (clock.whl_state != "hide") clock.whl_state = clock.state;
+                        plasmoid.writeConfig("clockState", clock.state);
                     }
                 }
                 MouseArea {
@@ -222,7 +238,11 @@ Rectangle {
                     x: 101; y: 86
                     width: 11; height: 12
 
-                    onClicked: clock.whl_state == "hide" ? clock.whl_state = clock.state : clock.whl_state = "hide";
+                    onClicked: {
+                        clock.whl_state == "hide" ? clock.whl_state = clock.state : clock.whl_state = "hide";
+                        plasmoid.writeConfig("whellState", clock.whl_state);
+                    }
+
                 }
 
                 z: 5

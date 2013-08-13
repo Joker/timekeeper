@@ -10,6 +10,13 @@ Item {
     property int    earth_degree: 0
     property alias  moon_z: moon.z
 
+    Component.onCompleted: {
+        var terraImage = plasmoid.readConfig("terraImage").toString();
+        var terraState = plasmoid.readConfig("terraState").toString();
+        if (terraImage.length > 0) { e_f.source = terraImage }
+        if (terraState.length > 0) { home.state = terraState }
+    }
+
     // state: "big_earth2"
 
     Item {
@@ -58,11 +65,14 @@ Item {
              MouseArea {
                  anchors.fill: parent
                  onClicked: {
+                     var img = "e"+earth.n+".png"
+
                      earth.flipped = !earth.flipped
-                     if(earth.flipped) e_b.source = "e"+earth.n+".png"; else e_f.source = "e"+earth.n+".png"
+                     if(earth.flipped) e_b.source = img; else e_f.source = img
                      earth.n++
                      if(earth.n == 7) earth.n = 1
-                 // console.log(earth.flipped)
+
+                     plasmoid.writeConfig("terraImage", img);
                  }
              }
         }
@@ -88,12 +98,12 @@ Item {
         }
 
         MouseArea {
-            id: mousearea1
             x: 60; y: 0
             anchors.fill: parent
 
             onClicked: {
                 home.state == "big_moon" ? home.state = "" : home.state = "big_moon";
+                plasmoid.writeConfig("terraState", home.state);
             }
         }
     }

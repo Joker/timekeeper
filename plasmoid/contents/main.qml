@@ -1,15 +1,18 @@
 import QtQuick 1.1
+
 import "clock"
-import "calendar"
-import "otherside"
-import "terra"
 import "clock/wheels"
+import "terra"
+import "calendar"
 import "timekeeper"
-// import org.kde.plasma.core 0.1 as PlasmaCore
-import "luna/phase.js" as Moon
-import "terra/planets.js" as Eth
+import "otherside"
+
+import "luna/phase.js"        as Moon
+import "terra/planets.js"     as Eth
 import "otherside/riseset.js" as RS
+
 // import QtMultimediaKit 1.1 as QtMultimediaKit
+// import org.kde.plasma.core 0.1 as PlasmaCore
 
 Rectangle {
     id: main
@@ -135,11 +138,11 @@ Rectangle {
     Flipable {
         id: side
         property bool flipped: false
-        anchors.left: parent.left
-        anchors.leftMargin: 30
-
+        //anchors.left: parent.left
+        //anchors.leftMargin: 30
 
         front: Item {
+            width: 478; height: 478
             Calendar {
                 id:calendar;
                 z: 1
@@ -162,7 +165,7 @@ Rectangle {
                         MouseArea {
                             x: 154; y: 96
                             width: 10; height: 24
-                            onClicked: { side.flipped = !side.flipped }
+                            // onClicked: { side.flipped = !side.flipped }
                         }
                         MouseArea {
                             x: 178; y: 32
@@ -232,6 +235,7 @@ Rectangle {
 
         }
         back: Item {
+            width: 478; height: 478
             Otherside {
                 z: 1
             }

@@ -221,18 +221,4 @@ Item {
 
         }
     }
-
-
-
-
-
-
-    //*
-    transform: Rotation {
-        origin.x: 239
-        origin.y: 239
-        axis.x: 1; axis.y: 0; axis.z: 0
-        angle: 180
-    }
-    // */
 }

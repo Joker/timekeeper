@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+	http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+		<kcfgfile name=""/>
+
+		<group name="General">
+			<entry name="mainState" type="String">
+				<label>mainState</label>
+				<default></default>
+			</entry>
+			<entry name="clockState" type="String">
+				<label>clockState</label>
+				<default></default>
+			</entry>
+			<entry name="whellState" type="String">
+				<label>whellState</label>
+				<default></default>
+			</entry>
+
+			<entry name="timekeeperState" type="String">
+				<label>timekeeperState</label>
+				<default></default>
+			</entry>
+			<entry name="lunaState" type="String">
+				<label>lunaState</label>
+				<default></default>
+			</entry>
+		</group>
+</kcfg>

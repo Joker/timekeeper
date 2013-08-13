@@ -32,5 +32,12 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 				<label>terraImage</label>
 				<default></default>
 			</entry>
+
+			<entry name="lat" type="Double">
+				<default>0</default>
+			</entry>
+			<entry name="lon" type="Double">
+				<default>0</default>
+			</entry>
 		</group>
 </kcfg>

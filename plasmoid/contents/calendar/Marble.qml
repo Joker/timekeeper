@@ -60,4 +60,10 @@ Item{
         map.center.latitude  = main.lat
         map.radius = 100
     }
+    function saveLatLon(){
+        main.lon = map.center.longitude
+        main.lat = map.center.latitude
+        plasmoid.writeConfig("lat", map.center.latitude)
+        plasmoid.writeConfig("lon", map.center.longitude)
+    }
 }

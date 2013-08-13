@@ -144,19 +144,24 @@ Item {
         onClicked: { if(!ch) marble.clouds_data_on(); else marble.clouds_data_off(); ch = !ch }
     }
     MouseArea {
-        id: marble_default; x: 332; y: 84;  width: 11; height: 11; visible: false
+        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: false
         onClicked: { marble.defaultPt() }
+    }
+    MouseArea {
+        id: save_latlon;   x: 388; y: 401; width: 11; height: 11; visible: false
+        onClicked: { marble.saveLatLon() }
     }
 
     states: [
         State {
             name: "earth"
-            PropertyChanges { target: marble; visible: true }
+            PropertyChanges { target: marble;       visible: true }
             PropertyChanges { target: mouse_rotate; visible: false }
 
             PropertyChanges { target: om_off_citylights; visible: true }
             PropertyChanges { target: on_off_clouds;     visible: true }
-            PropertyChanges { target: marble_default;    visible: true }
+            PropertyChanges { target: marble_latlon;     visible: true }
+            PropertyChanges { target: save_latlon;       visible: true }
         }
     ]
     //transform: Rotation { origin.x: 239; origin.y: 239; axis { x: 1; y: 1; z: 0 } angle: 0 }

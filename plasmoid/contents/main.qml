@@ -64,11 +64,14 @@ Rectangle {
         var whellState      = plasmoid.readConfig("whellState").toString();
         var timekeeperState = plasmoid.readConfig("timekeeperState").toString();
 
-        if (clockState.length > 0)      { clock.state      = clockState }
         if (whellState.length > 0)      { clock.whl_state  = whellState }
+        if (clockState.length > 0)      { clock.state      = clockState }
         if (timekeeperState.length > 0) { timekeeper.state = timekeeperState }
         if (mainState.length > 0)       { main.state       = mainState }
 
+        var vlat = plasmoid.readConfig("lat")
+        var vlon = plasmoid.readConfig("lon")
+        if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
     }
 
 

@@ -20,6 +20,7 @@ Item {
     // state: "big_earth2"
 
     Item {
+        id:terra
         x: 34; y: 34
         width: 84; height: 84
 
@@ -137,6 +138,9 @@ Item {
             }
             PropertyChanges { target:main; lx: 162 ;  ly: 165         }
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0 }
+
+            PropertyChanges { target: calendar.moon_l; visible: true }
+            PropertyChanges { target: calendar.moon_r; visible: true }
         },
         State {
             name: "home"

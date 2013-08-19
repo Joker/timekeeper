@@ -145,7 +145,7 @@ Rectangle {
     }
 
     Timer {
-        interval: 100; running: true; repeat: true;
+        interval: 500; running: true; repeat: true;
         onTriggered: timeChanged()
     }
 

@@ -37,7 +37,7 @@ Item {
         }
     }
     Rectangle {
-        id: rectangle3
+        id: yearBackground
         x: 95;y: 70
         width: 36;height: 36
         radius: width*0.5
@@ -55,7 +55,7 @@ Item {
         }
     }
     Rectangle {
-        id: rectangle2
+        id: dayBackground
         x: 95;y: 5
         width: 36;height: 36
         radius: width*0.5
@@ -73,7 +73,7 @@ Item {
         }
     }
     Rectangle {
-        id: rectangle1
+        id: monthBackground
         x: 50;y: 17
         width: 21;height: 76
         gradient: Gradient {

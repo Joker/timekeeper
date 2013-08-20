@@ -38,8 +38,8 @@ Item {
     }
     Rectangle {
         id: yearBackground
-        x: 95;y: 70
-        width: 36;height: 36
+        x: 65;y: 70
+        width: 66;height: 36
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
@@ -130,8 +130,8 @@ Item {
 
         }
         Text {
-            x: 102; y: 78
-            width: 28; height: 22
+            x: 73; y: 78
+            width: 58; height: 22
             text: year
             font.pointSize: 15
             font.family: fixedFont.name

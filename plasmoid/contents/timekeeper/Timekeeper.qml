@@ -37,9 +37,9 @@ Item {
         }
     }
     Rectangle {
-        id: rectangle3
-        x: 95;y: 70
-        width: 36;height: 36
+        id: yearBackground
+        x: 65;y: 70
+        width: 66;height: 36
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
@@ -55,7 +55,7 @@ Item {
         }
     }
     Rectangle {
-        id: rectangle2
+        id: dayBackground
         x: 95;y: 5
         width: 36;height: 36
         radius: width*0.5
@@ -73,7 +73,7 @@ Item {
         }
     }
     Rectangle {
-        id: rectangle1
+        id: monthBackground
         x: 50;y: 17
         width: 21;height: 76
         gradient: Gradient {
@@ -130,8 +130,8 @@ Item {
 
         }
         Text {
-            x: 102; y: 78
-            width: 28; height: 22
+            x: 73; y: 78
+            width: 58; height: 22
             text: year
             font.pointSize: 15
             font.family: fixedFont.name

@@ -6,6 +6,7 @@ import "terra"
 import "calendar"
 import "timekeeper"
 import "otherside"
+import "config"
 
 import "luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
@@ -26,7 +27,9 @@ Rectangle {
     property double lon: 37.620789
     property double lat: 55.750513
 
-    FontLoader { id: fixedFont; source: "clock/Engravers_MT.ttf" }
+    property string fontPath: "clock/Engravers_MT.ttf"
+
+    FontLoader { id: fixedFont; source: fontPath }
 
     Component.onCompleted: {
 /*
@@ -168,6 +171,7 @@ Rectangle {
                     Item{
                         id: def
                         MouseArea {
+                            id: color_ma
                             x: 131; y: 25
                             width: 9; height: 11
                             onClicked: {
@@ -178,11 +182,13 @@ Rectangle {
                             }
                         }
                         MouseArea {
+                            id: flip_ma
                             x: 154; y: 96
                             width: 10; height: 24
                             // onClicked: { side.flipped = !side.flipped }
                         }
                         MouseArea {
+                            id: default_ma
                             x: 178; y: 32
                             width: 12; height: 14
                             onClicked: defaultDate()
@@ -190,6 +196,7 @@ Rectangle {
                     }
 
                     MouseArea {
+                        id: marble_ma
                         x: 0; y: 49
                         width: 13; height: 14
                         onClicked: {
@@ -205,6 +212,15 @@ Rectangle {
                             }
                             plasmoid.writeConfig("mainState", main.state);
                         }
+                    }
+                }
+
+                MouseArea {
+                    id: setings_ma
+                    x: 388; y: 67
+                    width: 10; height: 10
+                    onClicked: {
+
                     }
                 }
             }
@@ -286,7 +302,10 @@ Rectangle {
             SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :4;}// velocity: 490}
         }
     }
-
+    Config {
+        x: 375; y: 74
+        width: 200; height: 150
+    }
     states: [
         State {
             name: "small"

@@ -140,7 +140,12 @@ Item {
             font.pointSize: 15
             font.family: fixedFont.name
             color: "#333333"
-
+            states: State {
+                name: "yyyy"
+                PropertyChanges { target: yy; text: yyyy; x:71; width:58; }
+                PropertyChanges { target: yearBackground; x:65; width:66; }
+                PropertyChanges { target: tk_img; source: "timekeeper_yyyy.png"; }
+            }
         }
     }
 
@@ -148,28 +153,12 @@ Item {
         id: yearFormat
         x: 129; y: 81
         width: 8; height: 8
-        onClicked: change_yearFormat()
+        onClicked: change_yearFormat();
     }
     function change_yearFormat() {
-        if(sw){
-            yy.x = 71;
-            yy.width = 58;
-            yy.text = yyyy
+        if(sw) yy.state = "yyyy"
+        else   yy.state = ""
 
-            tk_img.source = "timekeeper_yyyy.png"
-
-            yearBackground.x = 65;
-            yearBackground.width = 66;
-        } else {
-            yy.x = 100;
-            yy.width = 28;
-            yy.text = year
-
-            tk_img.source = "timekeeper.png"
-
-            yearBackground.x = 95;
-            yearBackground.width = 36;
-        }
         sw = !sw
     }
 
@@ -223,7 +212,6 @@ Item {
             extend: "green"
             when: count != 0
         }
-
     ]
     transitions: [
         Transition {

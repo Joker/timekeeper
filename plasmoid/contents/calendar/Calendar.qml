@@ -72,7 +72,7 @@ Item {
         function ringUpdated(count) {
             var today = new Date();
             today.setDate(today.getDate()+count)
-            toEarthMoonTime(today)
+            nowTimeAndMoonPhase(today)
         }
         function tri_angle(x,y){
             x = x - 223;

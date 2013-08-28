@@ -75,7 +75,7 @@ Rectangle {
     }
 
 
-    function toEarthMoonTime(today) {
+    function nowTimeAndMoonPhase(today) {
         if(!today) today = new Date();
 
         Moon.touch(today)
@@ -88,10 +88,13 @@ Rectangle {
             luna.moon_degree  = 180 + 12.41 * luna.phase
         }
 
-        timekeeper.day   = Qt.formatDateTime(today, "dd")
-        timekeeper.month = Qt.formatDateTime(today, "MMM")
-        timekeeper.year  = Qt.formatDateTime(today, "yy")
-        timekeeper.yyyy  = Qt.formatDateTime(today, "yyyy")
+        var dtime = Qt.formatDateTime(today, "ddd,dd,MMM,yy,yyyy")
+        var now = dtime.toString().split(",")
+        clock.week_day   = now[0]
+        timekeeper.day   = now[1]
+        timekeeper.month = now[2]
+        timekeeper.year  = now[3]
+        timekeeper.yyyy  = now[4]
     }
 
     function defaultDate(today) {
@@ -102,7 +105,7 @@ Rectangle {
         var date  = today.getDate()-1
         calendar.ring_degree = MM[month] - date;
 
-        toEarthMoonTime(today)
+        nowTimeAndMoonPhase(today)
         count = 0
         timekeeper.state = ""
 
@@ -110,7 +113,7 @@ Rectangle {
 //            aDate.setMonth(aDate.getMonth()+1, 0)
 //        var num = aDate.getDate();
     }
-    function timeChanged() {
+    function forTimer() {
         var date = new Date;
 //        clock.hours    = clock ? date.getUTCHours()   + Math.floor(clock.shift)  : date.getHours()
 //        clock.minutes  = clock ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
@@ -119,7 +122,6 @@ Rectangle {
         clock.minutes  = date.getMinutes()
         clock.seconds  = date.getSeconds()
         if(!side.flipped){
-            clock.day      = Qt.formatDateTime(date, "ddd")
 
             if(calendar.lock){
                 calendar.count_angle  = clock.seconds * 6;
@@ -140,6 +142,7 @@ Rectangle {
                 calendar.mar.citylights_off();
                 calendar.mar.citylights_on();
             }
+
         }else{
 
         }
@@ -147,7 +150,7 @@ Rectangle {
 
     Timer {
         interval: 500; running: true; repeat: true;
-        onTriggered: timeChanged()
+        onTriggered: forTimer()
     }
 
 

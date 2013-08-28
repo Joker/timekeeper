@@ -8,7 +8,7 @@ Item {
     property int minutes
     property int seconds
     property real shift
-    property string day
+    property string week_day
     property alias whl_state : whell.state
     property alias whl_x     : whell.x
     property alias whl_y     : whell.y
@@ -132,7 +132,7 @@ Item {
     Text {
         x: 66; y: 104
         width: 42; height: 17
-        text: clock.day
+        text: clock.week_day
         horizontalAlignment: Text.AlignHCenter
         font.pointSize: 11
         font.family: fixedFont.name

@@ -90,7 +90,8 @@ Rectangle {
 
         timekeeper.day   = Qt.formatDateTime(today, "dd")
         timekeeper.month = Qt.formatDateTime(today, "MMM")
-        timekeeper.year  = Qt.formatDateTime(today, "yyyy")
+        timekeeper.year  = Qt.formatDateTime(today, "yy")
+        timekeeper.yyyy  = Qt.formatDateTime(today, "yyyy")
     }
 
     function defaultDate(today) {

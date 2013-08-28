@@ -7,10 +7,12 @@ Item {
     property string day:   "31"
     property string month: "NOV"
     property string year:  "54"
+    property string yyyy:  "1854"
     property alias cog    : cog.rotation
     property alias cog_sh : cog_sh.rotation
     property alias color  : color.extend
     property bool lock: false
+    property bool sw:   true
 
     Item {
         id: cogMonth
@@ -38,8 +40,8 @@ Item {
     }
     Rectangle {
         id: yearBackground
-        x: 65;y: 70
-        width: 66;height: 36
+        x: 95;y: 70
+        width: 36;height: 36
         radius: width*0.5
         gradient: Gradient {
             GradientStop {
@@ -109,7 +111,7 @@ Item {
         radius: width*0.5
     }
 
-    Image { x: 0; y: 0; source: "timekeeper.png"
+    Image { id:tk_img; x: 0; y: 0; source: "timekeeper.png"
         Text {
             x: 102; y: 14
             width: 28; height: 22
@@ -130,8 +132,9 @@ Item {
 
         }
         Text {
-            x: 71; y: 78
-            width: 58; height: 22
+            id: yy
+            x: 100; y: 78
+            width: 28; height: 22
             text: year
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 15
@@ -139,6 +142,35 @@ Item {
             color: "#333333"
 
         }
+    }
+
+    MouseArea {
+        id: yearFormat
+        x: 129; y: 81
+        width: 8; height: 8
+        onClicked: change_yearFormat()
+    }
+    function change_yearFormat() {
+        if(sw){
+            yy.x = 71;
+            yy.width = 58;
+            yy.text = yyyy
+
+            tk_img.source = "timekeeper_yyyy.png"
+
+            yearBackground.x = 65;
+            yearBackground.width = 66;
+        } else {
+            yy.x = 100;
+            yy.width = 28;
+            yy.text = year
+
+            tk_img.source = "timekeeper.png"
+
+            yearBackground.x = 95;
+            yearBackground.width = 36;
+        }
+        sw = !sw
     }
 
     states: [

@@ -10,7 +10,10 @@ Item {
     property string yyyy:  "1854"
     property alias cog    : cog.rotation
     property alias cog_sh : cog_sh.rotation
+
+    property alias stained_glass: stglass.state
     property alias color  : color.extend
+
     property bool lock: false
     property bool sw:   true
     Component.onCompleted: {
@@ -42,77 +45,128 @@ Item {
             }
         }
     }
-    Rectangle {
-        id: yearBackground
-        x: 95;y: 70
-        width: 36;height: 36
-        radius: width*0.5
-        gradient: Gradient {
-            GradientStop {
-                id: gradientstop5
-                position: 0.16
-                color: "#766139"
-            }
-            GradientStop {
-                id: gradientstop6
-                position: 0.68
-                color: "#ffffff"
-            }
-        }
-    }
-    Rectangle {
-        id: dayBackground
-        x: 95;y: 5
-        width: 36;height: 36
-        radius: width*0.5
-        gradient: Gradient {
-            GradientStop {
-                id: gradientstop7
-                position: 0.46
-                color: "#b8a38b"
-            }
-            GradientStop {
-                id: gradientstop8
-                position: 1
-                color: "#ffffff"
+    Item {
+        id:stglass
+
+        Rectangle {
+            id: yearBackground
+            x: 95;y: 70
+            width: 36;height: 36
+            radius: width*0.5
+            gradient: Gradient {
+                GradientStop {
+                    id: gradientstop5
+                    position: 0.16
+                    color: "#766139"
+                }
+                GradientStop {
+                    id: gradientstop6
+                    position: 0.68
+                    color: "#ffffff"
+                }
             }
         }
-    }
-    Rectangle {
-        id: monthBackground
-        x: 50;y: 17
-        width: 21;height: 76
-        gradient: Gradient {
-            GradientStop {
-                id: gradientstop1
-                position: 0
-                color: "#766139"
-            }
-            GradientStop {
-                id: gradientstop2
-                position: 0.35
-                color: "#ffffff"
-            }
-            GradientStop {
-                id: gradientstop3
-                position: 0.58
-                color: "#ffffff"
-            }
-            GradientStop {
-                id: gradientstop4
-                position: 1
-                color: "#766139"
+        Rectangle {
+            id: dayBackground
+            x: 95;y: 5
+            width: 36;height: 36
+            radius: width*0.5
+            gradient: Gradient {
+                GradientStop {
+                    id: gradientstop7
+                    position: 0.46
+                    color: "#b8a38b"
+                }
+                GradientStop {
+                    id: gradientstop8
+                    position: 1
+                    color: "#ffffff"
+                }
             }
         }
-        rotation: 270
-    }
-    Rectangle {
-        id: rectangle_glass
-        x: 139; y: 36
-        opacity: 0.53
-        visible: false
-        width: 40;height: 40
-        radius: width*0.5
+        Rectangle {
+            id: monthBackground
+            x: 50;y: 17
+            width: 21;height: 76
+            gradient: Gradient {
+                GradientStop {
+                    id: gradientstop1
+                    position: 0
+                    color: "#766139"
+                }
+                GradientStop {
+                    id: gradientstop2
+                    position: 0.35
+                    color: "#ffffff"
+                }
+                GradientStop {
+                    id: gradientstop3
+                    position: 0.58
+                    color: "#ffffff"
+                }
+                GradientStop {
+                    id: gradientstop4
+                    position: 1
+                    color: "#766139"
+                }
+            }
+            rotation: 270
+        }
+        Rectangle {
+            id: rectangle_glass
+            x: 139; y: 36
+            opacity: 0.53
+            visible: false
+            width: 40;height: 40
+            radius: width*0.5
+        }
+
+        states: [
+            State {
+                name: "green"
+                PropertyChanges { target: gradientstop1; position: 0; color: "#206f4a" }
+                PropertyChanges { target: gradientstop4; position: 1; color: "#206f4a" }
+
+                PropertyChanges { target: gradientstop5; position: 0.16; color: "#206f4a" }
+                PropertyChanges { target: gradientstop7; position: 0.51; color: "#8ac0a6" }
+                PropertyChanges { target: gradientstop8; position: 0.7 ; color: "#ffffff" }
+
+                PropertyChanges { target: rectangle_glass;  color: "#206f4a"; visible: true }
+
+                PropertyChanges { target: clock.text_glass; visible: true }
+                PropertyChanges { target: clock.week_bgd;   visible: false }
+                PropertyChanges { target: clock;            gradient: "#206f4a" }
+
+                PropertyChanges { target: monthBackground; opacity: 0.65 }
+                PropertyChanges { target: dayBackground;   opacity: 0.65 }
+                PropertyChanges { target: yearBackground;  opacity: 0.65 }
+            },
+            State {
+                name: "purple"
+                PropertyChanges { target: gradientstop1; position: 0; color: "#187c8b" }
+                PropertyChanges { target: gradientstop4; position: 1; color: "#187c8b" }
+
+                PropertyChanges { target: gradientstop5; position: 0.16; color: "#187c8b" }
+                PropertyChanges { target: gradientstop7; position: 0.51; color: "#66b7c2" }
+                PropertyChanges { target: gradientstop8; position: 0.68; color: "#ffffff" }
+
+                PropertyChanges { target: rectangle_glass;  color: "#187c8b"; visible: true }
+
+                PropertyChanges { target: clock.text_glass; visible: true }
+                PropertyChanges { target: clock.week_bgd;   visible: false }
+                PropertyChanges { target: clock;            gradient: "#187c8b" }
+
+                PropertyChanges { target: monthBackground; opacity: 0.65 }
+                PropertyChanges { target: dayBackground;   opacity: 0.65 }
+                PropertyChanges { target: yearBackground;  opacity: 0.65 }
+            },
+            State {
+                id: color
+                name: "color"
+                extend: "green"
+                when: count != 0
+            }
+        ]
     }
 
     Image { id:tk_img; x: 0; y: 0; source: "timekeeper.png"
@@ -167,57 +221,12 @@ Item {
         plasmoid.writeConfig("yearState", yy.state);
     }
 
-    states: [
-        State {
-            name: "out"
-            PropertyChanges { target: timekeeper; x: 354;}
-            PropertyChanges { target: calendar;   lock: false;}
-        },
-        State {
-            name: "green"
-            PropertyChanges { target: gradientstop1; position: 0; color: "#206f4a" }
-            PropertyChanges { target: gradientstop4; position: 1; color: "#206f4a" }
+    states: State {
+                name: "out"
+                PropertyChanges { target: timekeeper; x: 354;}
+                PropertyChanges { target: calendar;   lock: false;}
+            }
 
-            PropertyChanges { target: gradientstop5; position: 0.16; color: "#206f4a" }
-            PropertyChanges { target: gradientstop7; position: 0.51; color: "#8ac0a6" }
-            PropertyChanges { target: gradientstop8; position: 0.7 ; color: "#ffffff" }
-
-            PropertyChanges { target: rectangle_glass;  color: "#206f4a"; visible: true }
-
-            PropertyChanges { target: clock.text_glass; visible: true }
-            PropertyChanges { target: clock.week_bgd;   visible: false }
-            PropertyChanges { target: clock;            gradient: "#206f4a" }
-
-            PropertyChanges { target: monthBackground; opacity: 0.65 }
-            PropertyChanges { target: dayBackground;   opacity: 0.65 }
-            PropertyChanges { target: yearBackground;  opacity: 0.65 }
-        },
-        State {
-            name: "purple"
-            PropertyChanges { target: gradientstop1; position: 0; color: "#187c8b" }
-            PropertyChanges { target: gradientstop4; position: 1; color: "#187c8b" }
-
-            PropertyChanges { target: gradientstop5; position: 0.16; color: "#187c8b" }
-            PropertyChanges { target: gradientstop7; position: 0.51; color: "#66b7c2" }
-            PropertyChanges { target: gradientstop8; position: 0.68; color: "#ffffff" }
-
-            PropertyChanges { target: rectangle_glass;  color: "#187c8b"; visible: true }
-
-            PropertyChanges { target: clock.text_glass; visible: true }
-            PropertyChanges { target: clock.week_bgd;   visible: false }
-            PropertyChanges { target: clock;            gradient: "#187c8b" }
-
-            PropertyChanges { target: monthBackground; opacity: 0.65 }
-            PropertyChanges { target: dayBackground;   opacity: 0.65 }
-            PropertyChanges { target: yearBackground;  opacity: 0.65 }
-        },
-        State {
-            id: color
-            name: "color"
-            extend: "green"
-            when: count != 0
-        }
-    ]
     transitions: [
         Transition {
             NumberAnimation { properties: "x"; duration: 1000 }

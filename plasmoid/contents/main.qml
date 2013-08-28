@@ -59,15 +59,15 @@ Rectangle {
         // calendar.ms = "calendar/Marble.qml"
 
 
-        var mainState       = plasmoid.readConfig("mainState").toString();
-        var clockState      = plasmoid.readConfig("clockState").toString();
-        var whellState      = plasmoid.readConfig("whellState").toString();
-        var timekeeperState = plasmoid.readConfig("timekeeperState").toString();
+        var mainState         = plasmoid.readConfig("mainState").toString();
+        var clockState        = plasmoid.readConfig("clockState").toString();
+        var whellState        = plasmoid.readConfig("whellState").toString();
+        var stainedglassState = plasmoid.readConfig("stainedglassState").toString();
 
-        if (timekeeperState.length > 0) { timekeeper.state = timekeeperState }
-        if (mainState.length  > 0)      { main.state       = mainState  }
-        if (clockState.length > 0)      { clock.state      = clockState }
-        if (whellState.length > 0)      { clock.whl_state  = whellState }
+        clock.state      = clockState
+        main.state       = mainState
+        clock.whl_state  = whellState
+        timekeeper.stained_glass = stainedglassState
 
         var vlat = plasmoid.readConfig("lat")
         var vlon = plasmoid.readConfig("lon")
@@ -106,7 +106,7 @@ Rectangle {
 
         nowTimeAndMoonPhase(today)
         count = 0
-        timekeeper.state = ""
+        timekeeper.stained_glass = ""
 
 //        var aDate = new Date();
 //            aDate.setMonth(aDate.getMonth()+1, 0)
@@ -176,10 +176,10 @@ Rectangle {
                             x: 131; y: 25
                             width: 9; height: 11
                             onClicked: {
-                                if(timekeeper.state != "green" ) {timekeeper.color = "purple"; timekeeper.state = "green" }
-                                                            else {timekeeper.color = "green" ; timekeeper.state = "purple"}
+                                if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
+                                                                    else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
 
-                                plasmoid.writeConfig("timekeeperState", timekeeper.state);
+                                plasmoid.writeConfig("stainedglassState", timekeeper.stained_glass);
                             }
                         }
                         MouseArea {

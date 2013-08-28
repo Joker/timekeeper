@@ -19,10 +19,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 				<default></default>
 			</entry>
 
-			<entry name="timekeeperState" type="String">
-				<label>timekeeperState</label>
-				<default></default>
-			</entry>
+                        <entry name="stainedglassState" type="String">
+                                <label>stainedglassState</label>
+                                <default></default>
+                        </entry>
 
 			<entry name="terraState" type="String">
 				<label>terraState</label>

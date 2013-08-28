@@ -135,7 +135,7 @@ Item {
 
 
     MouseArea {
-        id: om_off_citylights; x: 137; y: 386; width: 11; height: 11; visible: false
+        id: on_off_citylights; x: 137; y: 386; width: 11; height: 11; visible: false
         onClicked: { if(!glass.ch) marble.citylights_on(); else marble.citylights_off(); glass.ch = !glass.ch }
     }
     MouseArea {
@@ -158,7 +158,7 @@ Item {
             PropertyChanges { target: marble;       visible: true }
             PropertyChanges { target: mouse_rotate; visible: false }
 
-            PropertyChanges { target: om_off_citylights; visible: true }
+            PropertyChanges { target: on_off_citylights; visible: true }
             PropertyChanges { target: on_off_clouds;     visible: true }
             PropertyChanges { target: marble_latlon;     visible: true }
             PropertyChanges { target: save_latlon;       visible: true }

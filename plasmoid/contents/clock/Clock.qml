@@ -113,7 +113,7 @@ Item {
     Image { x: 77; y: 74;  source: "center.png" }
 
     Text {
-        x: 67; y: 104
+        x: 66; y: 104
         text: clock.day
         font.pointSize: 11
         font.family: fixedFont.name

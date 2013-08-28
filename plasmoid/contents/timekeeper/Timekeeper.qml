@@ -157,9 +157,9 @@ Item {
 
             PropertyChanges { target: rectangle_glass; color: "#206f4a"; visible: true }
 
-            PropertyChanges { target: rectangle1; opacity: 0.65 }
-            PropertyChanges { target: rectangle2; opacity: 0.65 }
-            PropertyChanges { target: rectangle3; opacity: 0.65 }
+            PropertyChanges { target: monthBackground; opacity: 0.65 }
+            PropertyChanges { target: dayBackground;   opacity: 0.65 }
+            PropertyChanges { target: yearBackground;  opacity: 0.65 }
         },
         State {
             name: "purple"
@@ -172,9 +172,9 @@ Item {
 
             PropertyChanges { target: rectangle_glass; color: "#187c8b"; visible: true }
 
-            PropertyChanges { target: rectangle1; opacity: 0.65 }
-            PropertyChanges { target: rectangle2; opacity: 0.65 }
-            PropertyChanges { target: rectangle3; opacity: 0.65 }
+            PropertyChanges { target: monthBackground; opacity: 0.65 }
+            PropertyChanges { target: dayBackground;   opacity: 0.65 }
+            PropertyChanges { target: yearBackground;  opacity: 0.65 }
         },
         State {
             id: color

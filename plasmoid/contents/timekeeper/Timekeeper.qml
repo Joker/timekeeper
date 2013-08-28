@@ -130,9 +130,10 @@ Item {
 
         }
         Text {
-            x: 73; y: 78
+            x: 71; y: 78
             width: 58; height: 22
             text: year
+            horizontalAlignment: Text.AlignHCenter
             font.pointSize: 15
             font.family: fixedFont.name
             color: "#333333"

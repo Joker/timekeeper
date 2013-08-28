@@ -1,5 +1,4 @@
 import QtQuick 1.1
-import "wheels"
 
 Item {
     id: clock
@@ -17,6 +16,11 @@ Item {
     property alias whl_sh    : wrs_img.rotation
     property alias cog       : wc_img.rotation
     property alias cog_sh    : wcs_img.rotation
+
+    property alias text_glass: glass
+    property alias week_bgd  : week_bg
+    property string gradient : "#206f4a"
+
     property bool lock: false
 
     Item{
@@ -109,17 +113,34 @@ Item {
 
     } // x: -13;y: 178
 
-    Image { id: background; source: "clock.png" }
-    Image { x: 77; y: 74;  source: "center.png" }
-
+    Rectangle {
+        id: glass
+        x: 77; y: 89
+        width: 20; height: 46
+        opacity: 0.65
+        visible: false
+        gradient: Gradient {
+            GradientStop { position: 0;    color: gradient  }
+            GradientStop { position: 0.38; color: "#ffffff" }
+            GradientStop { position: 0.57; color: "#ffffff" }
+            GradientStop { position: 1;    color: gradient  }
+        }
+        rotation: 270
+    }
+    Image { id: background; source: "clock_old.png" }
+    Image { id: week_bg; x: 64; y: 102;    source: "week_bg.png" }
     Text {
         x: 66; y: 104
+        width: 42; height: 17
         text: clock.day
+        horizontalAlignment: Text.AlignHCenter
         font.pointSize: 11
         font.family: fixedFont.name
         color: "#333333"
 
     }
+
+    Image { x: 77; y: 74;  source: "center.png" }
 
     Image {
         x: 75; y: 29

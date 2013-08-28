@@ -188,7 +188,11 @@ Item {
             PropertyChanges { target: gradientstop7; position: 0.51; color: "#8ac0a6" }
             PropertyChanges { target: gradientstop8; position: 0.7 ; color: "#ffffff" }
 
-            PropertyChanges { target: rectangle_glass; color: "#206f4a"; visible: true }
+            PropertyChanges { target: rectangle_glass;  color: "#206f4a"; visible: true }
+
+            PropertyChanges { target: clock.text_glass; visible: true }
+            PropertyChanges { target: clock.week_bgd;   visible: false }
+            PropertyChanges { target: clock;            gradient: "#206f4a" }
 
             PropertyChanges { target: monthBackground; opacity: 0.65 }
             PropertyChanges { target: dayBackground;   opacity: 0.65 }
@@ -203,7 +207,11 @@ Item {
             PropertyChanges { target: gradientstop7; position: 0.51; color: "#66b7c2" }
             PropertyChanges { target: gradientstop8; position: 0.68; color: "#ffffff" }
 
-            PropertyChanges { target: rectangle_glass; color: "#187c8b"; visible: true }
+            PropertyChanges { target: rectangle_glass;  color: "#187c8b"; visible: true }
+
+            PropertyChanges { target: clock.text_glass; visible: true }
+            PropertyChanges { target: clock.week_bgd;   visible: false }
+            PropertyChanges { target: clock;            gradient: "#187c8b" }
 
             PropertyChanges { target: monthBackground; opacity: 0.65 }
             PropertyChanges { target: dayBackground;   opacity: 0.65 }

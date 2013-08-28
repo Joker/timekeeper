@@ -13,6 +13,10 @@ Item {
     property alias color  : color.extend
     property bool lock: false
     property bool sw:   true
+    Component.onCompleted: {
+        var year = plasmoid.readConfig("yearState").toString();
+        yy.state = year
+    }
 
     Item {
         id: cogMonth
@@ -160,6 +164,7 @@ Item {
         else   yy.state = ""
 
         sw = !sw
+        plasmoid.writeConfig("yearState", yy.state);
     }
 
     states: [

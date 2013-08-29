@@ -28,7 +28,8 @@ Rectangle {
     property double lat: 55.750513
 
     property string fontPath: "clock/Engravers_MT.ttf"
-
+    property int fontWeekSize: 11
+    property int fontMonthSize:14
     FontLoader { id: fixedFont; source: fontPath }
 
     Component.onCompleted: {
@@ -304,6 +305,7 @@ Rectangle {
     }
     Config {
         x: 375; y: 74
+//        x: 105; y: 231
         width: 200; height: 150
     }
     states: [

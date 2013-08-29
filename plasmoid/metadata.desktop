@@ -20,3 +20,4 @@ X-Plasma-API=declarativeappletscript
 X-Plasma-DefaultSize=450,450
 X-Plasma-MainScript=main.qml
 X-Plasma-RemoteLocation=
+X-Plasma-RequiredExtensions=FileDialog

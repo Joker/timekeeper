@@ -3,6 +3,7 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 import "/usr/lib/kde4/imports/org/kde/plasma/components/"
 
 Item {
+    id: conf
     width: 200; height: 150
     Image {
         source: "background.png"
@@ -96,5 +97,25 @@ Item {
             }
         }
     }
+
+
+    states: [
+        State {
+            name: "up"
+
+            PropertyChanges {
+                target: conf
+                visible: false
+            }
+        },
+        State {
+            name: "down"
+
+            PropertyChanges {
+                target: conf
+                visible: true
+            }
+        }
+    ]
 }
 

@@ -191,7 +191,7 @@ Item {
             width: 69; height: 19
             text: month
             horizontalAlignment: Text.AlignHCenter
-            font.pointSize: 14
+            font.pointSize: main.fontMonthSize
             font.family: fixedFont.name
             color: "#333333"
 

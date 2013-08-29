@@ -70,7 +70,12 @@ Item {
                 x: 4; y: 3; width: 56; height: 25
 
                 onClicked: {
-                    console.log(font_path.text)
+                    main.fontWeekSize  = week_size.text
+                    main.fontMonthSize = month_size.text
+                    if (font_path.text.length > 0)
+                        main.fontPath = font_path.text
+                    else
+                        main.fontPath = "clock/Engravers_MT.ttf"
                 }
             }
         }
@@ -81,6 +86,13 @@ Item {
 
             MouseArea {
                 x: 0; y: 0; width: 22; height: 21
+                onClicked: {
+                    def.forceActiveFocus()
+                    font_path.text = qsTr("")
+                    font_path_text.visible = true
+                    week_size.text = qsTr("11")
+                    month_size.text = qsTr("14")
+                }
             }
         }
     }

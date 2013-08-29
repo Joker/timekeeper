@@ -30,7 +30,10 @@ Rectangle {
     property string fontPath: "clock/Engravers_MT.ttf"
     property int fontWeekSize: 11
     property int fontMonthSize:14
-    FontLoader { id: fixedFont; source: fontPath }
+    FontLoader {
+        id: fixedFont; source: fontPath;
+        onStatusChanged: if (fixedFont.status == FontLoader.Error) console.log("Cannot load font")
+    }
 
     Component.onCompleted: {
 /*
@@ -144,6 +147,7 @@ Rectangle {
 
         }
     }
+
 
     Timer {
         id: time

@@ -68,7 +68,7 @@ Item {
         width: 42; height: 17
         text: clock.week_day
         horizontalAlignment: Text.AlignHCenter
-        font.pointSize: 11
+        font.pointSize: main.fontWeekSize
         font.family: fixedFont.name
         color: "#333333"
 

@@ -67,6 +67,7 @@ Item {
         x: 66; y: 104
         width: 42; height: 17
         text: clock.week_day
+        verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pointSize: main.fontWeekSize
         font.family: fixedFont.name

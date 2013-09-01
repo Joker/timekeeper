@@ -225,7 +225,8 @@ Rectangle {
                     x: 388; y: 67
                     width: 10; height: 10
                     onClicked: {
-
+                        if(conf.state == "up") conf.state = "down"
+                                          else conf.state = "up"
                     }
                 }
             }
@@ -308,6 +309,7 @@ Rectangle {
         }
     }
     Config {
+        id:conf
         x: 375; y: 74
 //        x: 105; y: 231
         width: 200; height: 150

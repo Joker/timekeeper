@@ -187,9 +187,10 @@ Item {
 
         }
         Text {
-            x: 25; y: 44
+            x: 25; y: 45
             width: 69; height: 19
             text: month
+            verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: main.fontMonthSize
             font.family: fixedFont.name

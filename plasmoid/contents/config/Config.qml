@@ -3,8 +3,11 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 import "/usr/lib/kde4/imports/org/kde/plasma/components/"
 
 Item {
-    id: conf
+    id: cf
     width: 200; height: 150
+
+    state: "up"
+
     Image {
         source: "background.png"
 
@@ -77,6 +80,7 @@ Item {
                         main.fontPath = font_path.text
                     else
                         main.fontPath = "clock/Engravers_MT.ttf"
+                    cf.state = "up"
                 }
             }
         }
@@ -102,20 +106,35 @@ Item {
     states: [
         State {
             name: "up"
-
-            PropertyChanges {
-                target: conf
-                visible: false
-            }
+            PropertyChanges { target: cf; visible: false }
+            PropertyChanges { target: rotation; angle: 90 }
         },
         State {
             name: "down"
-
-            PropertyChanges {
-                target: conf
-                visible: true
+            PropertyChanges { target: cf; visible: true }
+            PropertyChanges { target: rotation; angle: 0 }
+        }
+    ]
+    transform: Rotation {
+        id: rotation
+        origin.x: cf.width/2
+        origin.y: 0
+        axis.x: 1; axis.y: 0; axis.z: 0
+        angle: 90
+    }
+    transitions: [
+        Transition {
+            from: "up"; to: "down"
+            SpringAnimation { target: rotation; property: "angle"; spring: 4; damping: 0.3; modulus: 360 ;mass :5}
+        },
+        Transition {
+            from: "down"; to: "up"
+            SequentialAnimation {
+                NumberAnimation { target: rotation; property: "angle";   duration: 400  }
+                PropertyAction  { target: cf;       property: "visible"; value: "false" }
             }
         }
     ]
+
 }
 

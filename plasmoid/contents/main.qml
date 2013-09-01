@@ -128,10 +128,7 @@ Rectangle {
                 timekeeper.cog_sh = (clock.seconds|3) * 6 * -1;
             }
             if(clock.lock){
-                clock.whl         = clock.seconds * 6;
-                clock.whl_sh      = clock.seconds * 6;
-                clock.cog         = clock.seconds * 6 * -1;
-                clock.cog_sh      = clock.seconds * 6 * -1;
+                clock.a         = clock.seconds * 6;
 
             }
             if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()

@@ -1,4 +1,5 @@
 import QtQuick 1.1
+import "wheels"
 
 Item {
     id: clock
@@ -12,10 +13,7 @@ Item {
     property alias whl_state : whell.state
     property alias whl_x     : whell.x
     property alias whl_y     : whell.y
-    property alias whl       : wr_img.rotation
-    property alias whl_sh    : wrs_img.rotation
-    property alias cog       : wc_img.rotation
-    property alias cog_sh    : wcs_img.rotation
+    property alias a: whell.ang
 
     property alias text_glass: glass
     property alias week_bgd  : week_bg
@@ -23,102 +21,10 @@ Item {
 
     property bool lock: false
 
-    Item{
+    Wheels {
         id: whell
         x: -26;y: 137
-
-        width: 132; height: 93
-        Image {
-            id: wcs_img
-            x: 43; y: -5;
-            source: "wheels/cogShadow.png"
-            smooth: true;
-            Behavior on rotation {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
-            }
-        }
-        Image {
-            id: wc_img
-            x: 50; y: -17;
-            width: 82; height: 84;
-            source: "wheels/cog.png"
-            smooth: true;
-            Behavior on rotation {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
-            }
-        }
-        Image {
-            id: wrs_img
-            x: 3; y: 2;
-            source: "wheels/wheelShadow.png"
-            smooth: true;
-            Behavior on rotation {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
-            }
-        }
-        Image {
-            id: wr_img
-            source: "wheels/wheel.png"
-            smooth: true;
-            Behavior on rotation {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
-            }
-        }
-        Image {
-            x: 26; y: 2;
-            source: "wheels/driveBand.png"
-            MouseArea {
-                id: cog
-                x: 15; y: 36
-                width: 14; height: 14
-                onClicked: {
-                    if(!lock){
-                        lock = !lock
-                        return
-                    }
-                    if(!calendar.lock){
-                        calendar.lock = !calendar.lock
-                        return
-                    }
-                    lock = !lock
-                    calendar.lock = !calendar.lock
-
-                    calendar.count_angle = 0
-                    timekeeper.cog       = 0
-                    timekeeper.cog_sh    = 0
-                    clock.whl         = 0
-                    clock.whl_sh      = 0
-                    clock.cog         = 0
-                    clock.cog_sh      = 0
-                }
-            }
-        }
-
-        state: "in"
-
-        states: [
-            State {
-                name: "hide"
-                PropertyChanges { target: whell; x: 10; y: 25; }
-            },
-            State {
-                name: "out"
-                PropertyChanges { target: whell; x: -5; }
-            },
-            State {
-                name: "in"
-                PropertyChanges { target: whell; x: -26; y: 137; }
-            }
-        ]
-
-        Behavior on x {
-                 NumberAnimation { duration: 1500 }
-        }
-        Behavior on y {
-                 NumberAnimation { duration: 800 }
-        }
-
-    } // x: -13;y: 178
+    }
 
     Rectangle {
         id: glass

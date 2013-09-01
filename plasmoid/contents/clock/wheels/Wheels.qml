@@ -1,7 +1,8 @@
 import QtQuick 1.1
 
 Item{
-    property real ang
+    id:wh
+    property int ang
 
     width: 132; height: 93
     Image {
@@ -56,50 +57,18 @@ Item{
             }
         }
     }
-    Image {
-        x: 26; y: 2;
-        source: "driveBand.png"
-        MouseArea {
-            x: 15; y: 36
-            width: 14; height: 14
-            onClicked: {
-                if(!lock){
-                    lock = !lock
-                    return
-                }
-                if(!calendar.lock){
-                    calendar.lock = !calendar.lock
-                    return
-                }
-                lock = !lock
-                calendar.lock = !calendar.lock
-            }
-        }
-    }
+    Image { x: 26; y: 2; source: "driveBand.png" }
 
 
     state: "in"
 
     states: [
-        State {
-            name: "hide"
-            PropertyChanges { target: whell; x: 10; y: 25; }
-        },
-        State {
-            name: "out"
-            PropertyChanges { target: whell; x: -5; }
-        },
-        State {
-            name: "in"
-            PropertyChanges { target: whell; x: -26; y: 137; }
-        }
+        State { name: "in";   PropertyChanges { target: wh; x: -26; y: 137; } },
+        State { name: "out";  PropertyChanges { target: wh; x: -5;          } },
+        State { name: "hide"; PropertyChanges { target: wh; x: 10;  y: 25;  } }
     ]
-
-    Behavior on x {
-             NumberAnimation { duration: 1500 }
+    transitions: Transition {
+        NumberAnimation { properties: "x"; duration: 1500 }
+        NumberAnimation { properties: "y"; duration: 800  }
     }
-    Behavior on y {
-             NumberAnimation { duration: 800 }
-    }
-
 }

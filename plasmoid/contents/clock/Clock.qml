@@ -8,22 +8,43 @@ Item {
     property int hours
     property int minutes
     property int seconds
-    property real shift
+
     property string week_day
+    property alias  week_bgd   : week_bg
+    property alias  week_glass : glass
+    property string gradient   : "#206f4a"
+
     property alias whl_state : whell.state
     property alias whl_x     : whell.x
     property alias whl_y     : whell.y
-    property alias a: whell.ang
-
-    property alias text_glass: glass
-    property alias week_bgd  : week_bg
-    property string gradient : "#206f4a"
+    property alias whl_angle : whell.ang
 
     property bool lock: false
 
     Wheels {
         id: whell
         x: -26;y: 137
+
+        MouseArea {
+            x: 41; y: 38
+            width: 14; height: 14
+            onClicked: {
+                if(!lock){
+                    lock = !lock
+                    return
+                }
+                if(!calendar.lock){
+                    calendar.lock = !calendar.lock
+                    return
+                }
+                lock = !lock
+                calendar.lock = !calendar.lock
+
+                whell.ang = 0
+                timekeeper.ang = 0
+                calendar.count_angle = 0
+            }
+        }
     }
 
     Rectangle {
@@ -103,19 +124,11 @@ Item {
     Image { x: 26; y: 10; source: "clockglass.png"}
 
     states: [
-        State {
-            name: "out"
-            PropertyChanges { target: clock; x: -9; y: 42; }
-        },
-        State {
-            name: "in"
-            PropertyChanges { target: clock; x: 29; y: 60; }
-        }
+        State { name: "out"; PropertyChanges { target: clock; x: -9; y: 42; } },
+        State { name: "in";  PropertyChanges { target: clock; x: 29; y: 60; } }
     ]
-    Behavior on x {
-             NumberAnimation { duration: 1000 }
-    }
-    Behavior on y {
-             NumberAnimation { duration: 700 }
+    transitions: Transition {
+        NumberAnimation { properties: "x"; duration: 1000 }
+        NumberAnimation { properties: "y"; duration: 700  }
     }
 }

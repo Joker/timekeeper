@@ -8,8 +8,8 @@ Item {
     property string month: "NOV"
     property string year:  "54"
     property string yyyy:  "1854"
-    property alias cog    : cog.rotation
-    property alias cog_sh : cog_sh.rotation
+
+    property int ang
 
     property alias stained_glass: stglass.state
     property alias color  : color.extend
@@ -22,7 +22,6 @@ Item {
     }
 
     Item {
-        id: cogMonth
         x: 29;y: 13
         width: 84; height: 84
         Image {
@@ -30,8 +29,12 @@ Item {
             x: -6; y: -5;
             source: "monthCogShadow.png"
             smooth: true;
-            Behavior on rotation {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            transform: Rotation {
+                angle: ang
+                origin.x: cog.width/2; origin.y: cog.height/2;
+                Behavior on angle {
+                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                }
             }
         }
         Image {
@@ -40,8 +43,12 @@ Item {
             width: 82; height: 84;
             source: "monthCog.png"
             smooth: true;
-            Behavior on rotation {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+            transform: Rotation {
+                angle: ang
+                origin.x: cog_sh.width/2; origin.y: cog_sh.height/2;
+                Behavior on angle {
+                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                }
             }
         }
     }
@@ -133,7 +140,7 @@ Item {
 
                 PropertyChanges { target: rectangle_glass;  color: "#206f4a"; visible: true }
 
-                PropertyChanges { target: clock.text_glass; visible: true }
+                PropertyChanges { target: clock.week_glass; visible: true }
                 PropertyChanges { target: clock.week_bgd;   visible: false }
                 PropertyChanges { target: clock;            gradient: "#206f4a" }
 
@@ -152,7 +159,7 @@ Item {
 
                 PropertyChanges { target: rectangle_glass;  color: "#187c8b"; visible: true }
 
-                PropertyChanges { target: clock.text_glass; visible: true }
+                PropertyChanges { target: clock.week_glass; visible: true }
                 PropertyChanges { target: clock.week_bgd;   visible: false }
                 PropertyChanges { target: clock;            gradient: "#187c8b" }
 

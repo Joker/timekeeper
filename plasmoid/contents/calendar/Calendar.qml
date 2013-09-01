@@ -23,7 +23,7 @@ Item {
     Image { source: "woodSurround.png" }
 
     Image {
-        id:ring
+        id:month_ring
         x: 16; y: 18
         source: "rotatingring.png"
         smooth: true

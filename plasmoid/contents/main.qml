@@ -114,8 +114,6 @@ Rectangle {
     }
     function forTimer() {
         var date = new Date;
-//        clock.hours    = clock ? date.getUTCHours()   + Math.floor(clock.shift)  : date.getHours()
-//        clock.minutes  = clock ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
 
         clock.hours    = date.getHours()
         clock.minutes  = date.getMinutes()
@@ -123,14 +121,13 @@ Rectangle {
         if(!side.flipped){
 
             if(calendar.lock){
-                calendar.count_angle  = clock.seconds * 6;
-                timekeeper.cog    = (clock.seconds|3) * 6 * -1;
-                timekeeper.cog_sh = (clock.seconds|3) * 6 * -1;
+                timekeeper.ang = (clock.seconds|3) * 6 * -1;
+                calendar.count_angle = clock.seconds * 6;
             }
             if(clock.lock){
-                clock.a         = clock.seconds * 6;
-
+                clock.whl_angle = clock.seconds * 6;
             }
+
             if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
 
             if(main.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){

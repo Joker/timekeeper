@@ -148,7 +148,8 @@ Rectangle {
     }
 
     Timer {
-        interval: 500; running: true; repeat: true;
+        id: time
+        interval: 1000; running: true; repeat: true;
         onTriggered: forTimer()
     }
 

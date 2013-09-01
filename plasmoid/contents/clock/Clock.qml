@@ -72,7 +72,6 @@ Item {
                 x: 15; y: 36
                 width: 14; height: 14
                 onClicked: {
-                    //console.log(calendar.lock, lock )
                     if(!lock){
                         lock = !lock
                         return
@@ -83,6 +82,14 @@ Item {
                     }
                     lock = !lock
                     calendar.lock = !calendar.lock
+
+                    calendar.count_angle = 0
+                    timekeeper.cog       = 0
+                    timekeeper.cog_sh    = 0
+                    clock.whl         = 0
+                    clock.whl_sh      = 0
+                    clock.cog         = 0
+                    clock.cog_sh      = 0
                 }
             }
         }

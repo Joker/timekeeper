@@ -94,7 +94,7 @@ Item {
             }
         }
         onReleased: {
-            glass.lock = clock.lock
+            glass.lock = whell.lock
         }
         onPositionChanged: {
             var a, b, c

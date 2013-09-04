@@ -1,5 +1,4 @@
 import QtQuick 1.1
-import "wheels"
 
 Item {
     id: clock
@@ -14,42 +13,9 @@ Item {
     property alias  week_glass : glass
     property string gradient   : "#206f4a"
 
-    property alias whl_state : whell.state
-    property alias whl_x     : whell.x
-    property alias whl_y     : whell.y
-    property alias whl_angle : whell.ang
-
-    property bool lock: false
-
-    Wheels {
-        id: whell
-        x: -26;y: 137
-
-        MouseArea {
-            x: 41; y: 38
-            width: 14; height: 14
-            onClicked: {
-                if(!lock){
-                    lock = !lock
-                    return
-                }
-                if(!calendar.lock){
-                    calendar.lock = !calendar.lock
-                    return
-                }
-                lock = !lock
-                calendar.lock = !calendar.lock
-
-                whell.ang = 0
-                timekeeper.ang = 0
-                calendar.count_angle = 0
-            }
-        }
-    }
-
     Rectangle {
         id: glass
-        x: 77; y: 89
+        x: 77; y: 89; z: 5
         width: 20; height: 46
         opacity: 0.65
         visible: false
@@ -61,10 +27,10 @@ Item {
         }
         rotation: 270
     }
-    Image { id: background; source: "clock_old.png" }
-    Image { id: week_bg; x: 64; y: 102;    source: "week_bg.png" }
+    Image { id: background; source: "clock_old.png" ; z: 5}
+    Image { id: week_bg; x: 64; y: 102; z: 5;    source: "week_bg.png" }
     Text {
-        x: 66; y: 104
+        x: 66; y: 104; z: 5
         width: 42; height: 17
         text: clock.week_day
         verticalAlignment: Text.AlignVCenter
@@ -75,10 +41,10 @@ Item {
 
     }
 
-    Image { x: 77; y: 74;  source: "center.png" }
+    Image { x: 77; y: 74; z: 5;  source: "center.png" }
 
     Image {
-        x: 75; y: 29
+        x: 75; y: 29; z: 5
         source: "hour.png"
         smooth: true
 
@@ -93,7 +59,7 @@ Item {
     }
 
     Image {
-        x: 79; y: 13
+        x: 79; y: 13; z: 5
         source: "minute.png"
         smooth: true
 
@@ -108,7 +74,7 @@ Item {
     }
 
     Image {
-        x: 85; y: 32
+        x: 85; y: 32; z: 5
         source: "second.png"
         smooth: true
 
@@ -122,7 +88,7 @@ Item {
         }
     }
 
-    Image { x: 26; y: 10; source: "clockglass.png"}
+    Image { x: 26; y: 10; z: 5; source: "clockglass.png"}
 
     states: [
         State { name: "out"; PropertyChanges { target: clock; x: -9; y: 42; } },

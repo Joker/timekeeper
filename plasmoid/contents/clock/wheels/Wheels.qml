@@ -2,7 +2,9 @@ import QtQuick 1.1
 
 Item{
     id:wh
-    property int ang
+    property int ang: 0
+    property bool hide: false
+    property bool lock: false
 
     width: 132; height: 93
     Image {
@@ -63,9 +65,18 @@ Item{
     state: "in"
 
     states: [
-        State { name: "in";   PropertyChanges { target: wh; x: -26; y: 137; } },
-        State { name: "out";  PropertyChanges { target: wh; x: -5;          } },
-        State { name: "hide"; PropertyChanges { target: wh; x: 10;  y: 25;  } }
+        State {
+            name: "hide"; PropertyChanges { target: wh; x: 10;  y: 25; }
+            when: hide
+        },
+        State {
+            name: "in";   PropertyChanges { target: wh; x: -26; y: 137; }
+            when: {clock.state === "in" && !hide}
+        },
+        State {
+            name: "out";  PropertyChanges { target: wh; x: -5; }
+            when: {clock.state === "out" && !hide}
+        }
     ]
     transitions: Transition {
         NumberAnimation { properties: "x"; duration: 1500 }

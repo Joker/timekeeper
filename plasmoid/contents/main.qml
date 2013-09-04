@@ -68,12 +68,12 @@ Rectangle {
 
         var mainState         = plasmoid.readConfig("mainState").toString();
         var clockState        = plasmoid.readConfig("clockState").toString();
-        var whellState        = plasmoid.readConfig("whellState").toString();
+        var whellState        = plasmoid.readConfig("whellState")
         var stainedglassState = plasmoid.readConfig("stainedglassState").toString();
 
         clock.state      = clockState
         main.state       = mainState
-        clock.whl_state  = whellState
+        whell.hide       = whellState
         timekeeper.stained_glass = stainedglassState
 
         var vlat = plasmoid.readConfig("lat")
@@ -131,8 +131,8 @@ Rectangle {
                 timekeeper.ang = (clock.seconds|3) * 6 * -1;
                 calendar.count_angle = clock.seconds * 6;
             }
-            if(clock.lock){
-                clock.whl_angle = clock.seconds * 6;
+            if(whell.lock){
+                whell.ang = clock.seconds * 6;
             }
 
             if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
@@ -232,11 +232,43 @@ Rectangle {
             }
             Clock {
                 id: clock;
-                x: 29; y: 60
+                x: 29; y: 60; z: 5
         //        shift: 4
                 state: "in"
+
+
+                Wheels {
+                    id: whell
+                    x: -26;y: 137;
+
+                    MouseArea {
+                        id: tiktak_ma
+                        x: 41; y: 38
+                        width: 14; height: 14
+                        onClicked: {
+                            if(!whell.lock){
+                                whell.ang = -10
+                                whell.lock = !whell.lock
+                                return
+                            }
+                            if(!calendar.lock){
+                                calendar.count_angle = 10
+                                calendar.lock = !calendar.lock
+                                return
+                            }
+                            whell.lock = !whell.lock
+                            calendar.lock = !calendar.lock
+
+                            whell.ang = 0
+                            timekeeper.ang = 0
+                            calendar.count_angle = 0
+                        }
+                    }
+                }
+
+
                 MouseArea {
-                    id: center
+                    id: center_ma
                     x: 80; y: 76
                     width: 14; height: 14
 
@@ -247,29 +279,26 @@ Rectangle {
                     }
                 }
                 MouseArea {
-                    id: in_out
+                    id: in_out_ma
                     x: 62; y: 86
                     width: 11; height: 12
 
                     onClicked: {
                         clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                        if (clock.whl_state != "hide") clock.whl_state = clock.state;
                         plasmoid.writeConfig("clockState", clock.state);
                     }
                 }
                 MouseArea {
-                    id: right
+                    id: hide_ma
                     x: 101; y: 86
                     width: 11; height: 12
 
                     onClicked: {
-                        clock.whl_state == "hide" ? clock.whl_state = clock.state : clock.whl_state = "hide";
-                        plasmoid.writeConfig("whellState", clock.whl_state);
+                        whell.hide = !whell.hide
+                        plasmoid.writeConfig("whellState", whell.hide);
                     }
 
                 }
-
-                z: 5
             }
             Terra {
                 id:luna;
@@ -323,19 +352,18 @@ Rectangle {
                 rotation: 360
                 x: -119; y: -88
             }
-            PropertyChanges { target: clock; whl_state: "hide" }
+            PropertyChanges { target: whell; hide:   true  }
             PropertyChanges { target: luna;  state: "home" }
         },
         State {
             name: "marble"
-            PropertyChanges { target: timekeeper; state: "out"; }
             PropertyChanges { target: def;      visible: false; }
-            PropertyChanges { target: clock;      state: "out"; whl_state: "out" }
+            PropertyChanges { target: timekeeper; state: "out"; }
+            PropertyChanges { target: clock;      state: "out"; }
             PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
         },
         State {
             name: "otherside"
-            PropertyChanges { target: clock; whl_state: "hide"; x: -20;y: 309}
             PropertyChanges { target: timekeeper; state: "otherside"; }
             PropertyChanges { target: luna;       state: "otherside"; }
         }

@@ -9,21 +9,24 @@ Item {
     property string year:  "54"
     property string yyyy:  "1854"
 
-    property int ang
+    property int ang: 0
 
     property alias stained_glass: stglass.state
-    property alias color  : color.extend
+    property alias color:         color.extend
 
     property bool lock: false
     property bool sw:   true
+
     Component.onCompleted: {
         var year = plasmoid.readConfig("yearState").toString();
         yy.state = year
     }
 
     Item {
-        x: 29;y: 13
+        id:cog_with_shadow
+        x: 29;     y: 13
         width: 84; height: 84
+
         Image {
             id: cog
             x: -6; y: -5;
@@ -51,7 +54,15 @@ Item {
                 }
             }
         }
+
+        Timer {
+            id: cog_ani
+            property int a: 12
+            interval: 100; repeat: true;
+            onTriggered: { if(ang >= 360 || ang <= -360){ ang = 0; }; ang += a; }
+        }
     }
+
     Item {
         id:stglass
 
@@ -237,7 +248,12 @@ Item {
 
     transitions: [
         Transition {
-            NumberAnimation { properties: "x"; duration: 1000 }
+            SequentialAnimation {
+                PropertyAction  { target: cog_ani; property: "running"; value: "true"  }
+                NumberAnimation { properties: "x"; duration: 1000                      }
+                PropertyAction  { target: cog_ani; property: "running"; value: "false" }
+                ScriptAction    { script: { cog_ani.a = cog_ani.a * -1 }               }
+            }
         }
     ]
 }

@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import org.kde.plasma.components 0.1 as PlasmaComponents
-import "/usr/lib/kde4/imports/org/kde/plasma/components/"
 
 Item {
     id: cf

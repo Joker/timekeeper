@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ $1 == --install ]]; then
+    plasmapkg2 --install package
+else
+    plasmapkg2 --upgrade package
+fi
+
+echo
+echo '------------------------------------------------'
+echo
+
+plasmoidviewer -a org.kde.userbase.plasma.timekeeper

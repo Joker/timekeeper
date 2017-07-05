@@ -1,4 +1,5 @@
-import QtQuick 1.1
+import QtQuick 2.1
+import org.kde.plasma.plasmoid 2.0
 
 import "clock"
 import "clock/wheels"
@@ -19,6 +20,8 @@ Rectangle {
     id: main
     width: 478; height: 478
     color: "transparent"
+
+	Plasmoid.backgroundHints: "NoBackground"
 
     property alias lx : luna.x
     property alias ly : luna.y

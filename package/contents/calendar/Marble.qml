@@ -1,6 +1,20 @@
-import QtQuick 1.1
-import org.kde.edu.marble 0.11
+import QtQuick 2.1
 
+//TODO - Qt5 Marble is currently blocked 
+//import org.kde.edu.marble 0.11
+
+//TODO - this is a dummy
+Item{
+    width: 475; height: 475
+    Rectangle {
+            id: screen
+            x: 137; y: 93
+            width: 200; height: 250
+            color: "green"
+    }
+}
+
+/*TODO - re-enable if Qt5 marble is available
 Item{
     width: 475; height: 475
     Rectangle {
@@ -47,7 +61,6 @@ Item{
                     }
 
             }
-            // */
     }
     Image { source: "innerFrame_sh.png" }
 
@@ -67,3 +80,4 @@ Item{
         plasmoid.writeConfig("lon", map.center.longitude)
     }
 }
+*/

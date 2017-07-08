@@ -47,7 +47,7 @@ Item {
         property string mainState: Plasmoid.configuration.mainState
         property string clockState: Plasmoid.configuration.clockState
         property bool whellState: Plasmoid.configuration.whellState
-        property string stainedglassState: Plasmoid.configuration.stainedglassState
+        property string stainedGlassState: Plasmoid.configuration.stainedGlassState
 
         property string terraState: Plasmoid.configuration.terraState
 
@@ -59,6 +59,11 @@ Item {
         onShortYearChanged: {
             console.log("compact.shortYear changed!")
             timekeeper.shortYear = shortYear
+        }
+
+        onStainedGlassStateChanged: {
+          console.log("compact.stainedglassState changed!")
+          timekeeper.stained_glass = stainedGlassState
         }
 
         FontLoader {
@@ -102,7 +107,7 @@ Item {
             clock.state      = compact.clockState
             compact.state    = compact.mainState
             whell.hide       = compact.whellState
-            timekeeper.stained_glass = compact.stainedglassState
+            timekeeper.stained_glass = compact.stainedGlassState
             timekeeper.shortYear = compact.shortYear
 
             console.log("**** TODO (WJB)- Fix Lat-lon load");
@@ -216,11 +221,16 @@ Item {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: {
                                     // The left upper tick on the date selector window
-                                    // /toggle the glass colour
-                                    if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
-                                                                        else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
+                                    // Toggle the glass colour
+                                    // TODO Why is this not handled in timekeeper itself??
+                                    if (timekeeper.stained_glass==="green")
+                                        timekeeper.stained_glass = "purple"
+                                    else if (timekeeper.stained_glass==="purple")
+                                        timekeeper.stained_glass = "plain"
+                                    else
+                                        timekeeper.stained_glass = "green"
 
-                                    compact.stainedglassState = timekeeper.stained_glass;
+                                    compact.stainedGlassState = timekeeper.stained_glass;
                                 }
                             }
                             MouseArea {

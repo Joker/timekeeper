@@ -18,9 +18,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 				<default></default>
 			</entry>
 
-      <entry name="stainedglassState" type="String">
-				<!-- "green" or "purple" -->
-        <default></default>
+      <entry name="stainedGlassState" type="String">
+				<!-- "green" or "purple" or "plain"-->
+        <default>green</default>
       </entry>
 
 			<entry name="terraState" type="String">

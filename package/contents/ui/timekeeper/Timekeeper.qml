@@ -13,7 +13,6 @@ Item {
     property int ang: 0
 
     property alias stained_glass: stglass.state
-    property alias color:         color.extend
 
     property bool lock: false
     property bool shortYear:   true
@@ -187,10 +186,10 @@ Item {
                 PropertyChanges { target: yearBackground;  opacity: 0.65 }
             },
             State {
-                id: color
-                name: "color"
-                extend: "green"
-                when: count != 0
+              name: "plain"
+
+              PropertyChanges { target: clock.week_glass; visible: false }
+              PropertyChanges { target: clock.week_bgd;   visible: true }
             }
         ]
     }

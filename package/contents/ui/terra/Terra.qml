@@ -10,11 +10,16 @@ Item {
     property int    earth_degree: 0
     property alias  moon_z: moon.z
 
+    //property string terraImage: ""
+    property string terraState: ""
+
+
     Component.onCompleted: {
-        var terraImage = plasmoid.readConfig("terraImage").toString();
-        var terraState = plasmoid.readConfig("terraState").toString();
-        if (terraImage.length > 0) { e_f.source = terraImage }
+        var terraImage = main.terraImage;
+        var terraState = home.terraState;
+        if (terraImage.length > 0) { e_f.source = main.terraImage }
         if (terraState.length > 0) { home.state = terraState }
+        console.log("**** Terra Completed");
     }
 
     // state: "big_earth2"
@@ -65,6 +70,7 @@ Item {
 
              MouseArea {
                  anchors.fill: parent
+                 cursorShape: Qt.PointingHandCursor
                  onClicked: {
                      var img = "e"+earth.n+".png"
 
@@ -73,7 +79,7 @@ Item {
                      earth.n++
                      if(earth.n == 7) earth.n = 1
 
-                     plasmoid.writeConfig("terraImage", img);
+                     main.terraImage = img;
                  }
              }
         }
@@ -101,10 +107,11 @@ Item {
         MouseArea {
             x: 60; y: 0
             anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
 
             onClicked: {
                 home.state == "big_moon" ? home.state = "" : home.state = "big_moon";
-                plasmoid.writeConfig("terraState", home.state);
+                compact.terraState = home.state;
             }
         }
     }
@@ -136,7 +143,7 @@ Item {
                 x: -3; y: -3
                 width: 31;height: 32
             }
-            PropertyChanges { target:main; lx: 162 ;  ly: 165         }
+            PropertyChanges { target:compact; lx: 162 ;  ly: 165         }
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0 }
 
             PropertyChanges { target: calendar.moon_l; visible: true }
@@ -151,17 +158,17 @@ Item {
             name: "home2"
             extend: "home"
             PropertyChanges { target:home; z: 4 }
-            PropertyChanges { target:main; lx: clock.x+10 ;  ly: clock.y+10 }
+            PropertyChanges { target:compact; lx: clock.x+10 ;  ly: clock.y+10 }
         },
         State {
             name: "home3"
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0;  z: 4 }
-            PropertyChanges { target:main; lx: 150 ;  ly: 150 }
+            PropertyChanges { target:compact; lx: 150 ;  ly: 150 }
             onCompleted: luna.state = ""
         },
         State {
             name: "big_earth"
-            PropertyChanges { target: main;     lx: 162 ; ly: 167 }
+            PropertyChanges { target: compact;     lx: 162 ; ly: 167 }
             PropertyChanges { target: home;     moon_degree: 0; earth_degree: 0; }
             PropertyChanges { target: earth;    x:-58; y: -57;  width: 200; height: 200 }
             PropertyChanges { target: earth_sh; x: 59; y: 59; }

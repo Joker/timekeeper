@@ -1,4 +1,5 @@
 import QtQuick 2.1
+import org.kde.plasma.plasmoid 2.0
 
 Item {
     id: timekeeper
@@ -15,11 +16,18 @@ Item {
     property alias color:         color.extend
 
     property bool lock: false
-    property bool sw:   true
+    property bool shortYear:   true
+
+    onShortYearChanged: {
+        console.log("**** Timekeeper shortYear changed");
+        if (shortYear)
+            yy.state = ""
+        else
+            yy.state = "yyyy"
+    }
 
     Component.onCompleted: {
-        var year = plasmoid.readConfig("yearState").toString();
-        yy.state = year
+        console.log("**** Timekeeper completed");
     }
 
     Item {
@@ -203,7 +211,7 @@ Item {
             text: month
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pointSize: main.fontMonthSize
+            font.pointSize: compact.fontMonthSize
             font.family: fixedFont.name
             color: "#333333"
 
@@ -230,14 +238,11 @@ Item {
         id: yearFormat
         x: 129; y: 81
         width: 8; height: 8
+        cursorShape: Qt.PointingHandCursor
         onClicked: change_yearFormat();
     }
     function change_yearFormat() {
-        if(sw) yy.state = "yyyy"
-        else   yy.state = ""
-
-        sw = !sw
-        plasmoid.writeConfig("yearState", yy.state);
+        shortYear = !shortYear
     }
 
     states: State {

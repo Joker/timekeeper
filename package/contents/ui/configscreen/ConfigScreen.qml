@@ -27,6 +27,7 @@ Item {
             font.pixelSize: 12
             MouseArea {
                 anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     font_path_text.visible = false;
                     font_path.forceActiveFocus()
@@ -72,6 +73,7 @@ Item {
             MouseArea {
                 x: 4; y: 3; width: 56; height: 25
 
+                cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     main.fontWeekSize  = week_size.text
                     main.fontMonthSize = month_size.text
@@ -90,6 +92,7 @@ Item {
 
             MouseArea {
                 x: 0; y: 0; width: 22; height: 21
+                cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     def.forceActiveFocus()
                     font_path.text = qsTr("")
@@ -136,4 +139,3 @@ Item {
     ]
 
 }
-

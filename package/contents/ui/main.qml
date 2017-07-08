@@ -7,7 +7,7 @@ import "terra"
 import "calendar"
 import "timekeeper"
 import "otherside"
-import "config"
+import "configscreen"
 
 import "luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
@@ -16,372 +16,421 @@ import "otherside/riseset.js" as RS
 // import QtMultimediaKit 1.1 as QtMultimediaKit
 // import org.kde.plasma.core 0.1 as PlasmaCore
 
-Rectangle {
+Item {
     id: main
     width: 478; height: 478
-    color: "transparent"
 
-	Plasmoid.backgroundHints: "NoBackground"
+    property string terraImage: Plasmoid.configuration.terraImage
 
-    property alias lx : luna.x
-    property alias ly : luna.y
-    property int count: 0
+    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
-    property double lon: 37.620789
-    property double lat: 55.750513
-
-    property string fontPath: "clock/Engravers_MT.ttf"
-    property int fontWeekSize: 11
-    property int fontMonthSize:14
-    FontLoader {
-        id: fixedFont; source: fontPath;
-        onStatusChanged: if (fixedFont.status == FontLoader.Error) console.log("Cannot load font")
+    function onTerraImageChanged() {
+        console.log("IT CHANGED!");
     }
 
-    Component.onCompleted: {
-/*
-        // refresh moon image
-        plasmoid.addEventListener("dataUpdated", dataUpdated);
-        dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
+    Plasmoid.compactRepresentation: Item {
+        id: compact
 
-        // plasmoid.setAspectRatioMode(ConstrainedSquare);
-// */
-        defaultDate()
-/*
-        RS.sun_riseset (lat, lon, new Date())
-        RS.moon_riseset(lat, lon, new Date())
+        Plasmoid.backgroundHints: "NoBackground"
 
-        var sinkS = {
-          dataUpdated: function (name, data) {
-            console.log(data.Sunrise, data.Sunset);
-          }
-        };
-        var sinkM = {
-          dataUpdated: function (name, data) {
-            console.log(data.Moonrise, data.Moonset);
-          }
-        };
-        var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
-        dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
-        dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-// */
-        plasmoid.setBackgroundHints(NoBackground);
-        // calendar.ms = "calendar/Marble.qml"
+        property alias lx : luna.x
+        property alias ly : luna.y
+        property int count: 0
 
+        property double lon: Plasmoid.configuration.lon
+        property double lat: Plasmoid.configuration.lat
 
-        var mainState         = plasmoid.readConfig("mainState").toString();
-        var clockState        = plasmoid.readConfig("clockState").toString();
-        var whellState        = plasmoid.readConfig("whellState")
-        var stainedglassState = plasmoid.readConfig("stainedglassState").toString();
+        property string fontPath: "clock/Engravers_MT.ttf"
+        property int fontWeekSize: 11
+        property int fontMonthSize:14
 
-        clock.state      = clockState
-        main.state       = mainState
-        whell.hide       = whellState
-        timekeeper.stained_glass = stainedglassState
+        property string mainState: Plasmoid.configuration.mainState
+        property string clockState: Plasmoid.configuration.clockState
+        property bool whellState: Plasmoid.configuration.whellState
+        property string stainedglassState: Plasmoid.configuration.stainedglassState
 
-        var vlat = plasmoid.readConfig("lat")
-        var vlon = plasmoid.readConfig("lon")
-        if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
-    }
+        property string terraState: Plasmoid.configuration.terraState
 
+        //property alias luna_terraImage: luna.terraImage
+        property alias luna_terraState: luna.terraState
 
-    function nowTimeAndMoonPhase(today) {
-        if(!today) today = new Date();
+        property bool shortYear: Plasmoid.configuration.shortYear
 
-        Moon.touch(today)
-        var age = Math.round(Moon.AGE)
-        if( age == 0 || age == 30 ) luna.phase = 29
-                               else luna.phase = age
-
-        if(luna.state != "big_moon" && main.state != "small"){
-            luna.earth_degree = Eth.angle(today)
-            luna.moon_degree  = 180 + 12.41 * luna.phase
+        onShortYearChanged: {
+            console.log("compact.shortYear changed!")
+            timekeeper.shortYear = shortYear
         }
 
-        var dtime = Qt.formatDateTime(today, "ddd,dd,MMM,yy,yyyy")
-        var now = dtime.toString().split(",")
-        clock.week_day   = now[0]
-        timekeeper.day   = now[1]
-        timekeeper.month = now[2]
-        timekeeper.year  = now[3]
-        timekeeper.yyyy  = now[4]
-    }
-    function defaultDate(today) {
-        if(!today) today = new Date();
-
-        var MM = [0, -31, -62, -93, -123, -153, -182.5, -212, -241.5, -270.5, -299.5, -329.2]
-        var month = today.getMonth()
-        var date  = today.getDate()-1
-        calendar.ring_degree = MM[month] - date;
-
-        nowTimeAndMoonPhase(today)
-        count = 0
-        timekeeper.stained_glass = ""
-
-//        var aDate = new Date();
-//            aDate.setMonth(aDate.getMonth()+1, 0)
-//        var num = aDate.getDate();
-    }
-    function forTimer() {
-        var date = new Date;
-
-        clock.hours    = date.getHours()
-        clock.minutes  = date.getMinutes()
-        clock.seconds  = date.getSeconds()
-        if(!side.flipped){
-
-            if(calendar.lock){
-                timekeeper.ang = (clock.seconds|3) * 6 * -1;
-                calendar.count_angle = clock.seconds * 6;
-            }
-            if(whell.lock){
-                whell.ang = clock.seconds * 6;
-            }
-
-            if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
-
-            if(main.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
-                //console.log(clock.seconds)
-                calendar.mar.citylights_off();
-                calendar.mar.citylights_on();
-            }
-
-        }else{
-
+        FontLoader {
+            id: fixedFont; source: fontPath;
+            onStatusChanged: if (fixedFont.status == FontLoader.Error) console.log("Cannot load font")
         }
-    }
+
+        Component.onCompleted: {
+    /*
+            // refresh moon image
+            plasmoid.addEventListener("dataUpdated", dataUpdated);
+            dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
+
+            // plasmoid.setAspectRatioMode(ConstrainedSquare);
+    // */
+            defaultDate()
+    /*
+            RS.sun_riseset (lat, lon, new Date())
+            RS.moon_riseset(lat, lon, new Date())
+
+            var sinkS = {
+            dataUpdated: function (name, data) {
+                console.log(data.Sunrise, data.Sunset);
+            }
+            };
+            var sinkM = {
+            dataUpdated: function (name, data) {
+                console.log(data.Moonrise, data.Moonset);
+            }
+            };
+            var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
+            dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
+            dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
+    // */
+            //plasmoid.setBackgroundHints(NoBackground);
+            // calendar.ms = "calendar/Marble.qml"
+
+            //luna.terraImage = main.terraImage
+            luna_terraState = compact.terraState
+
+            clock.state      = compact.clockState
+            compact.state    = compact.mainState
+            whell.hide       = compact.whellState
+            timekeeper.stained_glass = compact.stainedglassState
+            timekeeper.shortYear = compact.shortYear
+
+            console.log("**** TODO (WJB)- Fix Lat-lon load");
+            //var vlat = plasmoid.readConfig("lat")
+            //var vlon = plasmoid.readConfig("lon")
+            //if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
+        }
 
 
-    Timer {
-        id: time
-        interval: 1000; running: true; repeat: true;
-        onTriggered: forTimer()
-    }
+        function nowTimeAndMoonPhase(today) {
+            if(!today) today = new Date();
+
+            Moon.touch(today)
+            var age = Math.round(Moon.AGE)
+            if( age == 0 || age == 30 ) luna.phase = 29
+                                else luna.phase = age
+
+            if(luna.state != "big_moon" && compact.state != "small"){
+                luna.earth_degree = Eth.angle(today)
+                luna.moon_degree  = 180 + 12.41 * luna.phase
+            }
+
+            var dtime = Qt.formatDateTime(today, "ddd,dd,MMM,yy,yyyy")
+            var now = dtime.toString().split(",")
+            clock.week_day   = now[0]
+            timekeeper.day   = now[1]
+            timekeeper.month = now[2]
+            timekeeper.year  = now[3]
+            timekeeper.yyyy  = now[4]
+        }
+
+        function defaultDate(today) {
+            if(!today) today = new Date();
+
+            var MM = [0, -31, -62, -93, -123, -153, -182.5, -212, -241.5, -270.5, -299.5, -329.2]
+            var month = today.getMonth()
+            var date  = today.getDate()-1
+            calendar.ring_degree = MM[month] - date;
+
+            nowTimeAndMoonPhase(today)
+            count = 0
+            timekeeper.stained_glass = ""
+
+    //        var aDate = new Date();
+    //            aDate.setMonth(aDate.getMonth()+1, 0)
+    //        var num = aDate.getDate();
+        }
+
+        function forTimer() {
+            var date = new Date;
+
+            clock.hours    = date.getHours()
+            clock.minutes  = date.getMinutes()
+            clock.seconds  = date.getSeconds()
+            if(!side.flipped){
+
+                if(calendar.lock){
+                    timekeeper.ang = (clock.seconds|3) * 6 * -1;
+                    calendar.count_angle = clock.seconds * 6;
+                }
+                if(whell.lock){
+                    whell.ang = clock.seconds * 6;
+                }
+
+                if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
+
+                if(compact.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
+                    //console.log(clock.seconds)
+                    calendar.mar.citylights_off();
+                    calendar.mar.citylights_on();
+                }
+
+            }else{
+
+            }
+        }
 
 
-    Flipable {
-        id: side
-        property bool flipped: false
-        //anchors.left: parent.left
-        //anchors.leftMargin: 30
+        Timer {
+            id: time
+            interval: 1000; running: true; repeat: true;
+            onTriggered: forTimer()
+        }
 
-        front: Item {
-            width: 478; height: 478
-            Calendar {
-                id:calendar;
-                z: 1
-                property bool ch: true
 
-                Timekeeper{
-                    id: timekeeper;
-                    x: 285;y: 186;
+        Flipable {
+            id: side
+            property bool flipped: false
+            //anchors.left: parent.left
+            //anchors.leftMargin: 30
 
-                    Item{
-                        id: def
-                        MouseArea {
-                            id: color_ma
-                            x: 131; y: 25
-                            width: 9; height: 11
-                            onClicked: {
-                                if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
-                                                                    else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
+            front: Item {
+                width: 478; height: 478
+                Calendar {
+                    id:calendar;
+                    z: 1
+                    property bool ch: true
 
-                                plasmoid.writeConfig("stainedglassState", timekeeper.stained_glass);
-                            }
-                        }
-                        MouseArea {
-                            id: flip_ma
-                            x: 154; y: 96
-                            width: 10; height: 24
-                            // onClicked: { side.flipped = !side.flipped }
-                        }
-                        MouseArea {
-                            id: default_ma
-                            x: 178; y: 32
-                            width: 12; height: 14
-                            onClicked: defaultDate()
-                        }
-                    }
+                    Timekeeper{
+                        id: timekeeper;
+                        x: 285;y: 186;
 
-                    MouseArea {
-                        id: marble_ma
-                        x: 0; y: 49
-                        width: 13; height: 14
-                        onClicked: {
-                            // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
-                            if(main.state == "marble") {
-                                main.state = ""; calendar.state = ""
-                            } else {
-                                main.state = "marble";
-                                if(calendar.ch){
-                                    calendar.mar.citylights_off();
-                                    calendar.mar.citylights_on();
+                        shortYear: compact.shortYear
+
+                        Item{
+                            id: def
+                            MouseArea {
+                                id: color_ma
+                                x: 131; y: 25
+                                width: 9; height: 11
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    // The left upper tick on the date selector window
+                                    // /toggle the glass colour
+                                    if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
+                                                                        else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
+
+                                    compact.stainedglassState = timekeeper.stained_glass;
                                 }
                             }
-                            plasmoid.writeConfig("mainState", main.state);
+                            MouseArea {
+                                id: flip_ma
+                                x: 154; y: 96
+                                width: 10; height: 24
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                  // below the date selector
+                                  // turns the device over. There is no back?
+                                  // and nothing to click to return
+                                  side.flipped = !side.flipped
+                                }
+                            }
+                            MouseArea {
+                                id: default_ma
+                                x: 178; y: 32
+                                width: 12; height: 14
+                                onClicked: defaultDate()
+                                cursorShape: Qt.PointingHandCursor
+                            }
+                        }
+
+                        MouseArea {
+                            id: marble_ma
+                            x: 0; y: 49
+                            width: 13; height: 14
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
+                                if(compact.state == "marble") {
+                                    compact.state = ""; calendar.state = ""
+                                } else {
+                                    compact.state = "marble";
+                                    if(calendar.ch){
+                                        calendar.mar.citylights_off();
+                                        calendar.mar.citylights_on();
+                                    }
+                                }
+                                compact.mainState = compact.state;
+                            }
                         }
                     }
-                }
-
-                MouseArea {
-                    id: setings_ma
-                    x: 388; y: 67
-                    width: 10; height: 10
-                    onClicked: {
-                        if(conf.state == "up") conf.state = "down"
-                                          else conf.state = "up"
-                    }
-                }
-            }
-            Clock {
-                id: clock;
-                x: 29; y: 60; z: 5
-        //        shift: 4
-                state: "in"
-
-
-                Wheels {
-                    id: whell
-                    x: -26;y: 137;
 
                     MouseArea {
-                        id: tiktak_ma
-                        x: 41; y: 38
-                        width: 14; height: 14
+                        id: setings_ma
+                        x: 388; y: 67
+                        width: 10; height: 10
+                        cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            if(!whell.lock){
-                                whell.ang = -10
-                                whell.lock = !whell.lock
-                                return
-                            }
-                            if(!calendar.lock){
-                                calendar.count_angle = 10
-                                calendar.lock = !calendar.lock
-                                return
-                            }
-                            whell.lock = !whell.lock
-                            calendar.lock = !calendar.lock
-
-                            whell.ang = 0
-                            timekeeper.ang = 0
-                            calendar.count_angle = 0
+                            if(conf.state == "up") conf.state = "down"
+                                            else conf.state = "up"
                         }
                     }
                 }
+                Clock {
+                    id: clock;
+                    x: 29; y: 60; z: 5
+            //        shift: 4
+                    state: "in"
 
 
-                MouseArea {
-                    id: center_ma
-                    x: 80; y: 76
-                    width: 14; height: 14
+                    Wheels {
+                        id: whell
+                        x: -26;y: 137;
 
-                    onClicked:{
-                        if(main.state == "marble") calendar.state = ""
-                        if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
-                        plasmoid.writeConfig("mainState", main.state);
+                        MouseArea {
+                            id: tiktak_ma
+                            x: 41; y: 38
+                            width: 14; height: 14
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                if(!whell.lock){
+                                    whell.ang = -10
+                                    whell.lock = !whell.lock
+                                    return
+                                }
+                                if(!calendar.lock){
+                                    calendar.count_angle = 10
+                                    calendar.lock = !calendar.lock
+                                    return
+                                }
+                                whell.lock = !whell.lock
+                                calendar.lock = !calendar.lock
+
+                                whell.ang = 0
+                                timekeeper.ang = 0
+                                calendar.count_angle = 0
+                            }
+                        }
+                    }
+
+
+                    MouseArea {
+                        id: center_ma
+                        x: 80; y: 76
+                        width: 14; height: 14
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked:{
+                            if(compact.state == "marble") calendar.state = ""
+                            if(compact.state == "small") {compact.state = "big"; luna.state = "home3"} else compact.state = "small";
+                            compact.mainState = compact.state;
+                        }
+                    }
+                    MouseArea {
+                        id: in_out_ma
+                        x: 62; y: 86
+                        width: 11; height: 12
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: {
+                            clock.state == "out" ? clock.state = "in" : clock.state = "out";
+                            compact.clockState = clock.state;
+                        }
+                    }
+                    MouseArea {
+                        id: hide_ma
+                        x: 101; y: 86
+                        width: 11; height: 12
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: {
+                            whell.hide = !whell.hide
+                            compact.whellState = whell.hide;
+                        }
+
                     }
                 }
-                MouseArea {
-                    id: in_out_ma
-                    x: 62; y: 86
-                    width: 11; height: 12
-
-                    onClicked: {
-                        clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                        plasmoid.writeConfig("clockState", clock.state);
-                    }
+                Terra {
+                    id:luna;
+                    x: 162; y: 90
+                    z: 7
                 }
-                MouseArea {
-                    id: hide_ma
-                    x: 101; y: 86
-                    width: 11; height: 12
 
-                    onClicked: {
-                        whell.hide = !whell.hide
-                        plasmoid.writeConfig("whellState", whell.hide);
-                    }
-
+            }
+            back: Item {
+                width: 478; height: 478
+                Otherside {
+                    z: 1
                 }
             }
-            Terra {
-                id:luna;
-                x: 162; y: 90
-                z: 7
-            }
 
+            states: [
+                State {
+                    name: "otherside"
+                    PropertyChanges { target: rotation; angle: 180 }
+                    when: side.flipped
+                },
+                State {
+                    name: "calendar"
+                    PropertyChanges { target: rotation; angle: 0 }
+                    when: !side.flipped
+                }
+            ]
+            transform: Rotation {
+                id: rotation
+                origin.x: 239; origin.y: 239
+                axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                angle: 0    // the default angle
+            }
+            transitions: Transition {
+                // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
+                SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :4;}// velocity: 490}
+            }
         }
-        back: Item {
-            width: 478; height: 478
-            Otherside {
-                z: 1
-            }
+        ConfigScreen {
+            id:conf
+            x: 375; y: 74
+    //        x: 105; y: 231
+            width: 200; height: 150
         }
-
         states: [
             State {
-                name: "otherside"
-                PropertyChanges { target: rotation; angle: 180 }
-                when: side.flipped
+                name: "small"
+                PropertyChanges {
+                    target: calendar
+                    scale: 0.3
+                    rotation: 360
+                    x: -119; y: -88
+                }
+                PropertyChanges { target: whell; hide:   true  }
+                PropertyChanges { target: luna;  state: "home" }
             },
             State {
-                name: "calendar"
-                PropertyChanges { target: rotation; angle: 0 }
-                when: !side.flipped
+                name: "marble"
+                PropertyChanges { target: def;      visible: false; }
+                PropertyChanges { target: timekeeper; state: "out"; }
+                PropertyChanges { target: clock;      state: "out"; }
+                PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
+            },
+            State {
+                name: "otherside"
+                PropertyChanges { target: timekeeper; state: "otherside"; }
+                PropertyChanges { target: luna;       state: "otherside"; }
             }
         ]
-        transform: Rotation {
-            id: rotation
-            origin.x: 239; origin.y: 239
-            axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
-            angle: 0    // the default angle
-        }
-        transitions: Transition {
-            // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
-            SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :4;}// velocity: 490}
-        }
-    }
-    Config {
-        id:conf
-        x: 375; y: 74
-//        x: 105; y: 231
-        width: 200; height: 150
-    }
-    states: [
-        State {
-            name: "small"
-            PropertyChanges {
-                target: calendar
-                scale: 0.3
-                rotation: 360
-                x: -119; y: -88
+        transitions: [
+            Transition {
+                from: "*"; to: "big"
+                NumberAnimation { properties: "scale"; duration: 2700 } //InOutBack
+                NumberAnimation { properties: "x, y "; duration: 700 }
+            },
+            Transition {
+                from: "*"; to: "small"
+                NumberAnimation { properties: "scale"; duration: 1000 }
+                NumberAnimation { properties: "rotation, x, y "; duration: 2700 }
             }
-            PropertyChanges { target: whell; hide:   true  }
-            PropertyChanges { target: luna;  state: "home" }
-        },
-        State {
-            name: "marble"
-            PropertyChanges { target: def;      visible: false; }
-            PropertyChanges { target: timekeeper; state: "out"; }
-            PropertyChanges { target: clock;      state: "out"; }
-            PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
-        },
-        State {
-            name: "otherside"
-            PropertyChanges { target: timekeeper; state: "otherside"; }
-            PropertyChanges { target: luna;       state: "otherside"; }
-        }
-    ]
-    transitions: [
-        Transition {
-            from: "*"; to: "big"
-            NumberAnimation { properties: "scale"; duration: 2700 } //InOutBack
-            NumberAnimation { properties: "x, y "; duration: 700 }
-        },
-        Transition {
-            from: "*"; to: "small"
-            NumberAnimation { properties: "scale"; duration: 1000 }
-            NumberAnimation { properties: "rotation, x, y "; duration: 2700 }
-        }
-    ]
+        ]
+
+    }
 
 }

@@ -2,6 +2,21 @@ import QtQuick 2.1
 import "../luna"
 import "../clock/back"
 
+/*
+ * Otherside
+ * This looks like the back of the device. The bg2 file is missing, but the
+ * woodsurround is the circle round the outside of the large device.
+ *
+ * Within this, the Back of the clock is shown - seems to have a set of
+ * images (options?). The mouse areas below have a clicky area that
+ * flips (something)
+ *
+ * There are sun and moon icons which are reversible.
+ *
+ * The sun item has a commented out transform some bits of which are
+ * referenced - I think this is unfinished stuff.
+ */
+
 Item {
     id: other
     width: 478; height: 478
@@ -19,6 +34,7 @@ Item {
             y: 32
             width: 16
             height: 15
+            cursorShape: Qt.PointingHandCursor
             onClicked: {
                  side.flipped = !side.flipped
             }
@@ -28,12 +44,14 @@ Item {
             y: 25
             width: 11
             height: 11
+            cursorShape: Qt.PointingHandCursor
         }
         MouseArea {
             x: 42
             y: 17
             width: 11
             height: 11
+            cursorShape: Qt.PointingHandCursor
         }
     }
 
@@ -183,6 +201,7 @@ Item {
         y: 178
         width: 27
         height: 28
+        cursorShape: Qt.PointingHandCursor
         onClicked: { }
     }
     MouseArea {
@@ -191,6 +210,7 @@ Item {
         y: 323
         width: 27
         height: 28
+        cursorShape: Qt.PointingHandCursor
         onClicked: {
             sun_angle.angle -= 1;
             sun_a.angle = sun_angle.angle * -1;
@@ -210,6 +230,7 @@ Item {
         y: 200
         width: 27
         height: 28
+        cursorShape: Qt.PointingHandCursor
         onClicked: {
             console.log("==", sun.x, sun.y)
             sun.pr = 30 * Math.PI/180

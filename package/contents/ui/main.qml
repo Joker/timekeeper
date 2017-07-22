@@ -46,7 +46,8 @@ Item {
 
         property string mainState: Plasmoid.configuration.mainState
         property string clockState: Plasmoid.configuration.clockState
-        property bool whellState: Plasmoid.configuration.whellState
+        property bool hideCogs: Plasmoid.configuration.hideCogs
+        property string whellState: Plasmoid.configuration.whellState
         property string stainedGlassState: Plasmoid.configuration.stainedGlassState
 
         property string terraState: Plasmoid.configuration.terraState
@@ -56,15 +57,13 @@ Item {
 
         property bool shortYear: Plasmoid.configuration.shortYear
 
-        onShortYearChanged: {
-            console.log("compact.shortYear changed!")
-            timekeeper.shortYear = shortYear
-        }
+        onShortYearChanged: timekeeper.shortYear = shortYear
 
-        onStainedGlassStateChanged: {
-          console.log("compact.stainedglassState changed!")
-          timekeeper.stained_glass = stainedGlassState
-        }
+        onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassState
+
+        onHideCogsChanged: whell.hide = hideCogs
+
+        onWhellStateChanged: whell.state = whellState
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -80,10 +79,14 @@ Item {
             // plasmoid.setAspectRatioMode(ConstrainedSquare);
     // */
             defaultDate()
-    /*
+
+            console.log("Lat=" + lat.toString() + ", Lon=" + lon.toString())
+            console.log("Sun Rise/Set")
             RS.sun_riseset (lat, lon, new Date())
+            console.log("Moon Rise/Set")
             RS.moon_riseset(lat, lon, new Date())
 
+            /*
             var sinkS = {
             dataUpdated: function (name, data) {
                 console.log(data.Sunrise, data.Sunset);
@@ -106,7 +109,8 @@ Item {
 
             clock.state      = compact.clockState
             compact.state    = compact.mainState
-            whell.hide       = compact.whellState
+            whell.hide       = compact.hideCogs
+            whell.state      = compact.whellState
             timekeeper.stained_glass = compact.stainedGlassState
             timekeeper.shortYear = compact.shortYear
 
@@ -149,7 +153,7 @@ Item {
 
             nowTimeAndMoonPhase(today)
             count = 0
-            timekeeper.stained_glass = ""
+            timekeeper.stained_glass = "plain"
 
     //        var aDate = new Date();
     //            aDate.setMonth(aDate.getMonth()+1, 0)
@@ -164,12 +168,20 @@ Item {
             clock.seconds  = date.getSeconds()
             if(!side.flipped){
 
+                // It's now ticking at about 800ms - don't yet know what changed
+                // it - was smooth a week ago. Use the ms value to make a fractional
+                // value to get the angles - otherwise it pauses every 4 updates
+                // when second does not change.
+                var msecs = date.getMilliseconds()/1000.0
+
+                //console.log("tick: " + clock.seconds.toString() + " (" + msecs.toString()+")")
+
                 if(calendar.lock){
                     timekeeper.ang = (clock.seconds|3) * 6 * -1;
-                    calendar.count_angle = clock.seconds * 6;
+                    calendar.count_angle = Math.floor((clock.seconds + msecs) * 6);
                 }
                 if(whell.lock){
-                    whell.ang = clock.seconds * 6;
+                    whell.ang = Math.floor((clock.seconds + msecs) * 6);
                 }
 
                 if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
@@ -296,6 +308,28 @@ Item {
                     Wheels {
                         id: whell
                         x: -26;y: 137;
+                        state: ""
+
+                        states: [
+                            State {
+                                name: ""
+                                PropertyChanges { target: whell; lock: false; ang: 0 }
+                                PropertyChanges { target: timekeeper; ang: 0 }
+                                PropertyChanges { target: calendar; lock: false; count_angle: 0 }
+                            },
+                            State {
+                                name: "wheel"
+                                PropertyChanges { target: whell; lock: true; ang: -10 }
+                                PropertyChanges { target: timekeeper; ang: 0 }
+                                PropertyChanges { target: calendar; lock: false; count_angle: 0 }
+                            },
+                            State {
+                                name: "calendar"
+                                PropertyChanges { target: whell; lock: true; ang: -10 }
+                                PropertyChanges { target: timekeeper; ang: 0 }
+                                PropertyChanges { target: calendar; lock: true; count_angle: 10 }
+                            }
+                        ]
 
                         MouseArea {
                             id: tiktak_ma
@@ -303,22 +337,12 @@ Item {
                             width: 14; height: 14
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                if(!whell.lock){
-                                    whell.ang = -10
-                                    whell.lock = !whell.lock
-                                    return
-                                }
-                                if(!calendar.lock){
-                                    calendar.count_angle = 10
-                                    calendar.lock = !calendar.lock
-                                    return
-                                }
-                                whell.lock = !whell.lock
-                                calendar.lock = !calendar.lock
-
-                                whell.ang = 0
-                                timekeeper.ang = 0
-                                calendar.count_angle = 0
+                                if (whell.state==="")
+                                    whell.state = "wheel"
+                                else if (whell.state==="wheel")
+                                    whell.state = "calendar"
+                                else
+                                    whell.state = ""
                             }
                         }
                     }
@@ -355,7 +379,7 @@ Item {
 
                         onClicked: {
                             whell.hide = !whell.hide
-                            compact.whellState = whell.hide;
+                            compact.hideCogs = whell.hide;
                         }
 
                     }

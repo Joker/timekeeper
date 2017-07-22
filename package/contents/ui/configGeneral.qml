@@ -25,13 +25,14 @@ QtLayouts.ColumnLayout {
 
     property alias cfg_mainState: mainstate.text
     property alias cfg_clockState: clockstate.text
-    property alias cfg_whellState: wheelshidden.checked
+    property alias cfg_hideCogs: wheelshidden.checked
+    property alias cfg_whellState: tickMotion.text
     property alias cfg_stainedGlassState: stainedglassstate.text
     property alias cfg_terraState: terrastate.text
     property alias cfg_terraImage: terraimage.text
     property alias cfg_shortYear: shortYear.checked
-    property double cfg_lat: 56.0
-    property double cfg_lon: 03.0
+    property alias cfg_lat: latitude.text
+    property alias cfg_lon: longitude.text
 
 
     QtLayouts.ColumnLayout {
@@ -63,6 +64,16 @@ QtLayouts.ColumnLayout {
             text: i18n("Hide Wheels")
         }
 
+
+        QtLayouts.RowLayout {
+            spacing: 15
+            QtControls.Label {
+                text: i18n("Tick Motion")
+            }
+            QtControls.TextField {
+                id: tickMotion
+            }
+        }
 
         QtLayouts.RowLayout {
             spacing: 15
@@ -99,5 +110,18 @@ QtLayouts.ColumnLayout {
                 text: i18n("Show short year")
             }
         }
+
+        QtLayouts.RowLayout {
+            QtControls.Label {
+                text: i18n("Latitude + Longitude")
+            }
+            QtControls.TextField {
+                id: latitude
+            }
+            QtControls.TextField {
+                id: longitude
+            }
+        }
+
     }
 }

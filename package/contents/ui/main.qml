@@ -153,7 +153,6 @@ Item {
 
             nowTimeAndMoonPhase(today)
             count = 0
-            timekeeper.stained_glass = "plain"
 
     //        var aDate = new Date();
     //            aDate.setMonth(aDate.getMonth()+1, 0)

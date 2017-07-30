@@ -66,11 +66,13 @@ Item{
 
     states: [
         State {
-            name: "hide"; PropertyChanges { target: wh; x: 10;  y: 25; }
+            name: "hide";
+            PropertyChanges { target: wh; x: 10;  y: 25; }
             when: hide
         },
         State {
-            name: "in";   PropertyChanges { target: wh; x: -26; y: 137; }
+            name: "in";
+            PropertyChanges { target: wh; x: -26; y: 137; }
             when: {clock.state === "in" && !hide}
         },
         State {

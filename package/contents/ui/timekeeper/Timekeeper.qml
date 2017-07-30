@@ -15,11 +15,10 @@ Item {
     property alias stained_glass: stglass.state
 
     property bool lock: false
-    property bool shortYear:   true
+    property int yearFormat: 0
 
-    onShortYearChanged: {
-        console.log("**** Timekeeper shortYear changed");
-        if (shortYear)
+    onYearFormatChanged: {
+        if (yearFormat==0)
             yy.state = ""
         else
             yy.state = "yyyy"
@@ -234,7 +233,7 @@ Item {
     }
 
     MouseArea {
-        id: yearFormat
+        //id: yearFormat
         x: 129; y: 81
         width: 8; height: 8
         cursorShape: Qt.PointingHandCursor

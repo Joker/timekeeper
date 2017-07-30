@@ -10,22 +10,22 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 				<default></default>
 			</entry>
 
-			<entry name="clockState" type="String">
-				<default></default>
+			<entry name="clockState" type="Int">
+				<default>0</default>
 			</entry>
 
 			<entry name="hideCogs" type="Bool">
 				<default>false</default>
 			</entry>
 
-			<entry name="whellState" type="String">
-				<!-- ""=no-ticks, "wheel"=cogs, "calendar"=ring -->
-				<default>calendar</default>
+			<entry name="whellState" type="Int">
+				<!-- "0"=no-ticks, "1"=cogs only, "2"=cogs+ring -->
+				<default>2</default>
 			</entry>
 
-      <entry name="stainedGlassState" type="String">
+      <entry name="stainedGlassState" type="Int">
 				<!-- "green" or "purple" or "plain"-->
-        <default>green</default>
+        <default>1</default>
       </entry>
 
 			<entry name="terraState" type="String">
@@ -35,9 +35,9 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 				<default></default>
 			</entry>
 
-      <entry name="shortYear" type="Bool">
+      <entry name="yearFormat" type="Int">
 				<!-- true="YY", false="yyyy" -->
-        <default>false</default>
+        <default>0</default>
       </entry>
 
 			<entry name="lat" type="Double">

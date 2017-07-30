@@ -37,33 +37,52 @@ Item {
         property alias ly : luna.y
         property int count: 0
 
-        property double lon: Plasmoid.configuration.lon
-        property double lat: Plasmoid.configuration.lat
+        property double lon: parseFloat(Plasmoid.configuration.lon)
+        property double lat: parseFloat(Plasmoid.configuration.lat)
 
         property string fontPath: "clock/Engravers_MT.ttf"
         property int fontWeekSize: 11
         property int fontMonthSize:14
 
         property string mainState: Plasmoid.configuration.mainState
-        property string clockState: Plasmoid.configuration.clockState
+        property int clockState: Plasmoid.configuration.clockState
         property bool hideCogs: Plasmoid.configuration.hideCogs
-        property string whellState: Plasmoid.configuration.whellState
-        property string stainedGlassState: Plasmoid.configuration.stainedGlassState
+        property int whellState: Plasmoid.configuration.whellState
+        property int stainedGlassState: Plasmoid.configuration.stainedGlassState
 
         property string terraState: Plasmoid.configuration.terraState
 
         //property alias luna_terraImage: luna.terraImage
         property alias luna_terraState: luna.terraState
 
-        property bool shortYear: Plasmoid.configuration.shortYear
+        property int yearFormat: Plasmoid.configuration.yearFormat
 
-        onShortYearChanged: timekeeper.shortYear = shortYear
+        ClockStates {
+          id: clockPositionStates
+        }
 
-        onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassState
+        StainedGlassStates {
+          id: stainedGlassStates
+        }
 
-        onHideCogsChanged: whell.hide = hideCogs
+        TickMotionStates {
+          id: tickMotionStates
+        }
 
-        onWhellStateChanged: whell.state = whellState
+        onYearFormatChanged: timekeeper.yearFormat = yearFormat
+
+        onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassStates.getStateName(stainedGlassState)
+
+        onHideCogsChanged: {
+          // This isn't happening when the config changes, is it hooked up properly?
+          console.log("Hide Cogs: " + hideCogs.toString())
+          whell.hide = hideCogs
+          compact.hideCogs = hideCogs
+        }
+
+        onWhellStateChanged: whell.state = tickMotionStates.getStateName(whellState)
+
+        onClockStateChanged: clock.state = clockPositionStates.getStateName(clockState)
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -107,14 +126,15 @@ Item {
             //luna.terraImage = main.terraImage
             luna_terraState = compact.terraState
 
-            clock.state      = compact.clockState
+            clock.state      = clockPositionStates.getStateName(compact.clockState)
             compact.state    = compact.mainState
             whell.hide       = compact.hideCogs
-            whell.state      = compact.whellState
-            timekeeper.stained_glass = compact.stainedGlassState
-            timekeeper.shortYear = compact.shortYear
+            compact.hideCogs = compact.hideCogs
+            whell.state      = tickMotionStates.getStateName(compact.whellState)
+            timekeeper.stained_glass = stainedGlassStates.getStateName(compact.stainedGlassState)
+            timekeeper.yearFormat = compact.yearFormat
 
-            console.log("**** TODO (WJB)- Fix Lat-lon load");
+            console.log("**** TODO: - Fix Lat-lon load");
             //var vlat = plasmoid.readConfig("lat")
             //var vlon = plasmoid.readConfig("lon")
             //if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
@@ -221,7 +241,7 @@ Item {
                         id: timekeeper;
                         x: 285;y: 186;
 
-                        shortYear: compact.shortYear
+                        yearFormat: compact.yearFormat
 
                         Item{
                             id: def
@@ -230,18 +250,10 @@ Item {
                                 x: 131; y: 25
                                 width: 9; height: 11
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: {
+                                onClicked: {  // toggle stained glass colour
                                     // The left upper tick on the date selector window
                                     // Toggle the glass colour
-                                    // TODO Why is this not handled in timekeeper itself??
-                                    if (timekeeper.stained_glass==="green")
-                                        timekeeper.stained_glass = "purple"
-                                    else if (timekeeper.stained_glass==="purple")
-                                        timekeeper.stained_glass = "plain"
-                                    else
-                                        timekeeper.stained_glass = "green"
-
-                                    compact.stainedGlassState = timekeeper.stained_glass;
+                                    compact.stainedGlassState = stainedGlassStates.next(compact.stainedGlassState)
                                 }
                             }
                             MouseArea {
@@ -249,7 +261,7 @@ Item {
                                 x: 154; y: 96
                                 width: 10; height: 24
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: {
+                                onClicked: {  // toggle back/front
                                   // below the date selector
                                   // turns the device over. There is no back?
                                   // and nothing to click to return
@@ -270,7 +282,7 @@ Item {
                             x: 0; y: 49
                             width: 13; height: 14
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: {
+                            onClicked: { // toggle marble state
                                 // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
                                 if(compact.state == "marble") {
                                     compact.state = ""; calendar.state = ""
@@ -307,22 +319,25 @@ Item {
                     Wheels {
                         id: whell
                         x: -26;y: 137;
-                        state: ""
+                        state: "off"
 
                         states: [
                             State {
-                                name: ""
+                                // off
+                                name: "off"
                                 PropertyChanges { target: whell; lock: false; ang: 0 }
                                 PropertyChanges { target: timekeeper; ang: 0 }
                                 PropertyChanges { target: calendar; lock: false; count_angle: 0 }
                             },
                             State {
+                                // wheel
                                 name: "wheel"
                                 PropertyChanges { target: whell; lock: true; ang: -10 }
                                 PropertyChanges { target: timekeeper; ang: 0 }
                                 PropertyChanges { target: calendar; lock: false; count_angle: 0 }
                             },
                             State {
+                                // calendar
                                 name: "calendar"
                                 PropertyChanges { target: whell; lock: true; ang: -10 }
                                 PropertyChanges { target: timekeeper; ang: 0 }
@@ -336,18 +351,13 @@ Item {
                             width: 14; height: 14
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                if (whell.state==="")
-                                    whell.state = "wheel"
-                                else if (whell.state==="wheel")
-                                    whell.state = "calendar"
-                                else
-                                    whell.state = ""
+                              compact.whellState = tickMotionStates.next(compact.whellState)
                             }
                         }
                     }
 
 
-                    MouseArea {
+                    MouseArea { // centre of the clock
                         id: center_ma
                         x: 80; y: 76
                         width: 14; height: 14
@@ -359,26 +369,26 @@ Item {
                             compact.mainState = compact.state;
                         }
                     }
-                    MouseArea {
+                    MouseArea {  // SW from centre of clock
                         id: in_out_ma
                         x: 62; y: 86
                         width: 11; height: 12
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                            compact.clockState = clock.state;
+                            compact.clockState = clockPositionStates.next(compact.clockState);
                         }
                     }
-                    MouseArea {
+                    MouseArea { // SE from centre of clock
                         id: hide_ma
                         x: 101; y: 86
                         width: 11; height: 12
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            whell.hide = !whell.hide
-                            compact.hideCogs = whell.hide;
+                            //whell.hide = !whell.hide
+                            //compact.hideCogs = whell.hide;
+                            compact.hideCogs = !compact.hideCogs
                         }
 
                     }

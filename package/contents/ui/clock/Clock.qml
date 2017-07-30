@@ -91,8 +91,14 @@ Item {
     Image { x: 26; y: 10; z: 5; source: "clockglass.png"}
 
     states: [
-        State { name: "out"; PropertyChanges { target: clock; x: -9; y: 42; } },
-        State { name: "in";  PropertyChanges { target: clock; x: 29; y: 60; } }
+        State {
+          name: "in";
+          PropertyChanges { target: clock; x: 29; y: 60; }
+        },
+        State {
+          name: "out";
+          PropertyChanges { target: clock; x: -9; y: 42; }
+        }
     ]
     transitions: Transition {
         NumberAnimation { properties: "x"; duration: 1000 }

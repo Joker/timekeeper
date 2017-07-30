@@ -16,21 +16,24 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  2.010-1301, USA.
  */
 
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Layouts 1.3 as QtLayouts
+
+import "clock"
+import "timekeeper"
 
 QtLayouts.ColumnLayout {
     id: generalPage
 
     property alias cfg_mainState: mainstate.text
-    property alias cfg_clockState: clockstate.text
+    property alias cfg_clockState: clockposition.currentIndex
     property alias cfg_hideCogs: wheelshidden.checked
-    property alias cfg_whellState: tickMotion.text
-    property alias cfg_stainedGlassState: stainedglassstate.text
+    property alias cfg_whellState: tickMotion.currentIndex
+    property alias cfg_stainedGlassState: stainedglassstate.currentIndex
     property alias cfg_terraState: terrastate.text
     property alias cfg_terraImage: terraimage.text
-    property alias cfg_shortYear: shortYear.checked
+    property alias cfg_yearFormat: yearFormat.currentIndex
     property alias cfg_lat: latitude.text
     property alias cfg_lon: longitude.text
 
@@ -49,19 +52,9 @@ QtLayouts.ColumnLayout {
             }
         }
 
-        QtLayouts.RowLayout {
-            spacing: 15
-            QtControls.Label {
-                text: i18n("Clock State")
-            }
-            QtControls.TextField {
-                id: clockstate
-            }
-        }
-
         QtControls.CheckBox {
             id: wheelshidden
-            text: i18n("Hide Wheels")
+            text: i18n("Hide Clock Cogs")
         }
 
 
@@ -70,8 +63,61 @@ QtLayouts.ColumnLayout {
             QtControls.Label {
                 text: i18n("Tick Motion")
             }
-            QtControls.TextField {
+            QtControls.ComboBox {
                 id: tickMotion
+                property int modelWidth
+                textRole: "key"
+                implicitWidth: modelWidth
+                model: tickMotionStates
+
+                TextMetrics {
+                  id: textMetrics
+                }
+
+                TickMotionStates {
+                  id: tickMotionStates
+
+                  Component.onCompleted: {
+
+                    setProperty(0,"key", i18n("Off"))
+                    setProperty(1,"key", i18n("Clock"))
+                    setProperty(2,"key", i18n("Clock and Calendar"))
+
+                    // Find width of longest string
+                    var widest = 0
+                    for(var i = 0; i < tickMotionStates.count; i++){
+                      // TODO: Figure out how to get the width properly.
+                      //       It is working out the text size, but the width
+                      //       of combo box needs to include the padding round
+                      //       the text and the button. This workaround adds
+                      //       a fiddle factor.
+                      textMetrics.text = tickMotionStates.get(i).key + "WWWW"
+                      widest = Math.max(textMetrics.width, widest)
+                    }
+                    tickMotion.modelWidth = widest
+                  }
+                }
+            }
+        }
+
+        QtLayouts.RowLayout {
+            spacing: 15
+            QtControls.Label {
+                text: i18n("Clock Position")
+            }
+            QtControls.ComboBox {
+                id: clockposition
+                textRole: "key"
+                model: clockPositionStates
+
+                ClockStates {
+                  id: clockPositionStates
+
+                  Component.onCompleted: {
+                    setProperty(0,"key", i18n("In"))
+                    setProperty(1,"key", i18n("Out"))
+                  }
+                }
             }
         }
 
@@ -80,8 +126,20 @@ QtLayouts.ColumnLayout {
             QtControls.Label {
                 text: i18n("Stained Glass")
             }
-            QtControls.TextField {
+            QtControls.ComboBox {
                 id: stainedglassstate
+                textRole: "key"
+                model: stainedGlassStates
+
+                StainedGlassStates {
+                  id: stainedGlassStates
+
+                  Component.onCompleted: {
+                    setProperty(0,"key", i18n("Plain"))
+                    setProperty(1,"key", i18n("Green"))
+                    setProperty(2,"key", i18n("Purple"))
+                  }
+                }
             }
         }
 
@@ -105,9 +163,20 @@ QtLayouts.ColumnLayout {
         }
 
         QtLayouts.RowLayout {
-            QtControls.CheckBox {
-                id: shortYear
-                text: i18n("Show short year")
+            QtControls.Label {
+                text: i18n("Year format")
+            }
+            QtControls.ComboBox {
+                id: yearFormat
+                textRole: "key"
+                model: ListModel {
+                  dynamicRoles: true
+                  Component.onCompleted: {
+                    var now = new Date().getFullYear()
+                    append({key: (now % 100).toString(), value: 0})
+                    append({key: now.toString(), value: 1})
+                  }
+                }
             }
         }
 

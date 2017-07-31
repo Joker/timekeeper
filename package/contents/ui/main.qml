@@ -277,9 +277,12 @@ Item {
                             width: 13; height: 14
                             cursorShape: Qt.PointingHandCursor
                             onClicked: { // toggle marble state
+                                /* Marble commented out for now
+                                   TODO - fix marble
                                 // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
                                 if(compact.state == "marble") {
-                                    compact.state = ""; calendar.state = ""
+                                    compact.state = ""
+                                    calendar.state = ""
                                 } else {
                                     compact.state = "marble";
                                     if(calendar.ch){
@@ -287,7 +290,7 @@ Item {
                                         calendar.mar.citylights_on();
                                     }
                                 }
-                                compact.mainState = compact.state;
+                                */
                             }
                         }
                     }
@@ -360,9 +363,18 @@ Item {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked:{
-                            if(compact.state == "marble") calendar.state = ""
-                            if(compact.state == "small") {compact.state = "big"; luna.state = "home3"} else compact.state = "small";
-                            compact.mainState = compact.state;
+                            if(compact.state == "marble")
+                                calendar.state = ""
+
+                            if(compact.state == "small") {
+                                compact.state = "big"
+                                luna.state = "home3"
+                            }
+                            else
+                                compact.state = "small";
+
+                            console.log("Compact state: " + compact.state)
+                            //compact.mainState = compact.state;
                         }
                     }
                     MouseArea {  // SW from centre of clock
@@ -382,8 +394,6 @@ Item {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            //whell.hide = !whell.hide
-                            //compact.hideCogs = whell.hide;
                             compact.hideCogs = !compact.hideCogs
                         }
 
@@ -432,6 +442,8 @@ Item {
     //        x: 105; y: 231
             width: 200; height: 150
         }
+
+        // These states belong to compact.
         states: [
             State {
                 name: "small"

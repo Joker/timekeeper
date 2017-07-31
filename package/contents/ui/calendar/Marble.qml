@@ -1,9 +1,9 @@
 import QtQuick 2.1
 
-//TODO - Qt5 Marble is currently blocked 
+//TODO - Qt5 Marble
 //import org.kde.edu.marble 0.11
 
-//TODO - this is a dummy
+/* TODO - this is a dummy for non-working marble */
 Item{
     width: 475; height: 475
     Rectangle {
@@ -14,7 +14,7 @@ Item{
     }
 }
 
-/*TODO - re-enable if Qt5 marble is available
+/*TODO - get Marble working
 Item{
     width: 475; height: 475
     Rectangle {

@@ -52,7 +52,6 @@ Item {
 
         property string terraState: Plasmoid.configuration.terraState
 
-        //property alias luna_terraImage: luna.terraImage
         property alias luna_terraState: luna.terraState
 
         property int yearFormat: Plasmoid.configuration.yearFormat
@@ -73,16 +72,11 @@ Item {
 
         onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassStates.getStateName(stainedGlassState)
 
-        onHideCogsChanged: {
-          // This isn't happening when the config changes, is it hooked up properly?
-          console.log("Hide Cogs: " + hideCogs.toString())
-          whell.hide = hideCogs
-          compact.hideCogs = hideCogs
-        }
+        onHideCogsChanged: whell.hide = compact.hideCogs
 
-        onWhellStateChanged: whell.state = tickMotionStates.getStateName(whellState)
+        onWhellStateChanged: wheelTick.state = tickMotionStates.getStateName(compact.whellState)
 
-        onClockStateChanged: clock.state = clockPositionStates.getStateName(clockState)
+        onClockStateChanged: clock.state = clockPositionStates.getStateName(compact.clockState)
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -119,18 +113,16 @@ Item {
             var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
             dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
             dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-    // */
-            //plasmoid.setBackgroundHints(NoBackground);
+            // */
+
             // calendar.ms = "calendar/Marble.qml"
 
-            //luna.terraImage = main.terraImage
             luna_terraState = compact.terraState
 
-            clock.state      = clockPositionStates.getStateName(compact.clockState)
-            compact.state    = compact.mainState
-            whell.hide       = compact.hideCogs
-            compact.hideCogs = compact.hideCogs
-            whell.state      = tickMotionStates.getStateName(compact.whellState)
+            clock.state = clockPositionStates.getStateName(compact.clockState)
+            compact.state = compact.mainState
+            whell.hide = compact.hideCogs
+            wheelTick.state = tickMotionStates.getStateName(compact.whellState)
             timekeeper.stained_glass = stainedGlassStates.getStateName(compact.stainedGlassState)
             timekeeper.yearFormat = compact.yearFormat
 
@@ -142,12 +134,14 @@ Item {
 
 
         function nowTimeAndMoonPhase(today) {
-            if(!today) today = new Date();
+            if (!today) today = new Date();
 
             Moon.touch(today)
             var age = Math.round(Moon.AGE)
-            if( age == 0 || age == 30 ) luna.phase = 29
-                                else luna.phase = age
+            if ( age == 0 || age == 30 )
+                luna.phase = 29
+            else
+                luna.phase = age
 
             if(luna.state != "big_moon" && compact.state != "small"){
                 luna.earth_degree = Eth.angle(today)
@@ -319,31 +313,33 @@ Item {
                     Wheels {
                         id: whell
                         x: -26;y: 137;
-                        state: "off"
 
-                        states: [
-                            State {
-                                // off
-                                name: "off"
-                                PropertyChanges { target: whell; lock: false; ang: 0 }
-                                PropertyChanges { target: timekeeper; ang: 0 }
-                                PropertyChanges { target: calendar; lock: false; count_angle: 0 }
-                            },
-                            State {
-                                // wheel
-                                name: "wheel"
-                                PropertyChanges { target: whell; lock: true; ang: -10 }
-                                PropertyChanges { target: timekeeper; ang: 0 }
-                                PropertyChanges { target: calendar; lock: false; count_angle: 0 }
-                            },
-                            State {
-                                // calendar
-                                name: "calendar"
-                                PropertyChanges { target: whell; lock: true; ang: -10 }
-                                PropertyChanges { target: timekeeper; ang: 0 }
-                                PropertyChanges { target: calendar; lock: true; count_angle: 10 }
-                            }
-                        ]
+                        Item {
+                            id: wheelTick
+
+                            state: "off"
+
+                            states: [
+                                State {
+                                    name: "off"
+                                    PropertyChanges { target: whell; lock: false; ang: 0 }
+                                    PropertyChanges { target: timekeeper; ang: 0 }
+                                    PropertyChanges { target: calendar; lock: false; count_angle: 0 }
+                                },
+                                State {
+                                    name: "wheel"
+                                    PropertyChanges { target: whell; lock: true; ang: -10 }
+                                    PropertyChanges { target: timekeeper; ang: 0 }
+                                    PropertyChanges { target: calendar; lock: false; count_angle: 0 }
+                                },
+                                State {
+                                    name: "calendar"
+                                    PropertyChanges { target: whell; lock: true; ang: -10 }
+                                    PropertyChanges { target: timekeeper; ang: 0 }
+                                    PropertyChanges { target: calendar; lock: true; count_angle: 10 }
+                                }
+                            ]
+                        }
 
                         MouseArea {
                             id: tiktak_ma

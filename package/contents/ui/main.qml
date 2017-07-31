@@ -44,9 +44,9 @@ Item {
         property int fontWeekSize: 11
         property int fontMonthSize:14
 
-        property string mainState: Plasmoid.configuration.mainState
+        property bool showCalendar: Plasmoid.configuration.showCalendar
         property int clockState: Plasmoid.configuration.clockState
-        property bool hideCogs: Plasmoid.configuration.hideCogs
+        property bool hideCogs: !Plasmoid.configuration.showCogs
         property int whellState: Plasmoid.configuration.whellState
         property int stainedGlassState: Plasmoid.configuration.stainedGlassState
 
@@ -77,6 +77,8 @@ Item {
         onWhellStateChanged: wheelTick.state = tickMotionStates.getStateName(compact.whellState)
 
         onClockStateChanged: clock.state = clockPositionStates.getStateName(compact.clockState)
+
+        onShowCalendarChanged: compact.state = compact.showCalendar ? "" : "small"
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -120,7 +122,7 @@ Item {
             luna_terraState = compact.terraState
 
             clock.state = clockPositionStates.getStateName(compact.clockState)
-            compact.state = compact.mainState
+            compact.state = compact.showCalendar ? "" : "small"
             whell.hide = compact.hideCogs
             wheelTick.state = tickMotionStates.getStateName(compact.whellState)
             timekeeper.stained_glass = stainedGlassStates.getStateName(compact.stainedGlassState)
@@ -363,18 +365,13 @@ Item {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked:{
-                            if(compact.state == "marble")
-                                calendar.state = ""
+                            // TODO include marble state
+                            //if(compact.state == "marble")
+                            //    calendar.state = ""
 
-                            if(compact.state == "small") {
-                                compact.state = "big"
-                                luna.state = "home3"
-                            }
-                            else
-                                compact.state = "small";
-
-                            console.log("Compact state: " + compact.state)
-                            //compact.mainState = compact.state;
+                            compact.showCalendar = !compact.showCalendar
+                            //if (compact.showCalendar)
+                            //    luna.state = "home3"
                         }
                     }
                     MouseArea {  // SW from centre of clock
@@ -471,7 +468,7 @@ Item {
         ]
         transitions: [
             Transition {
-                from: "*"; to: "big"
+                from: "*"; to: ""
                 NumberAnimation { properties: "scale"; duration: 2700 } //InOutBack
                 NumberAnimation { properties: "x, y "; duration: 700 }
             },

@@ -26,9 +26,9 @@ import "timekeeper"
 QtLayouts.ColumnLayout {
     id: generalPage
 
-    property alias cfg_mainState: mainstate.text
+    property alias cfg_showCalendar: showcalendar.checked
     property alias cfg_clockState: clockposition.currentIndex
-    property alias cfg_hideCogs: wheelshidden.checked
+    property alias cfg_showCogs: wheelsshow.checked
     property alias cfg_whellState: tickMotion.currentIndex
     property alias cfg_stainedGlassState: stainedglassstate.currentIndex
     property alias cfg_terraState: terrastate.text
@@ -42,19 +42,14 @@ QtLayouts.ColumnLayout {
         QtLayouts.Layout.alignment: Qt.AlignTop
         anchors.fill: parent
 
-        QtLayouts.RowLayout {
-            spacing: 15
-            QtControls.Label {
-                text: i18n("Main State")
-            }
-            QtControls.TextField {
-                id: mainstate
-            }
+        QtControls.CheckBox {
+            id: showcalendar
+            text: i18n("Show Calendar")
         }
 
         QtControls.CheckBox {
-            id: wheelshidden
-            text: i18n("Hide Clock Cogs")
+            id: wheelsshow
+            text: i18n("Show Clock Cogs")
         }
 
 

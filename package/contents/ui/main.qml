@@ -44,17 +44,25 @@ Item {
         property int fontWeekSize: 11
         property int fontMonthSize:14
 
+        // These properties change if the config changes
+        property bool settingsShowCalendar: Plasmoid.configuration.showCalendar
+        property int settingsClockState: Plasmoid.configuration.clockState
+        property bool settingsHideCogs: !Plasmoid.configuration.showCogs
+        property int settingsWhellState: Plasmoid.configuration.whellState
+        property int settingsStainedGlassState: Plasmoid.configuration.stainedGlassState
+        property int settingsYearFormat: Plasmoid.configuration.yearFormat
+
+        // These properties are initially set as the config, but are then
+        // changed by the on-screen switches OR the matching config is changed.
         property bool showCalendar: Plasmoid.configuration.showCalendar
         property int clockState: Plasmoid.configuration.clockState
         property bool hideCogs: !Plasmoid.configuration.showCogs
         property int whellState: Plasmoid.configuration.whellState
         property int stainedGlassState: Plasmoid.configuration.stainedGlassState
+        property int yearFormat: Plasmoid.configuration.yearFormat
 
         property string terraState: Plasmoid.configuration.terraState
-
         property alias luna_terraState: luna.terraState
-
-        property int yearFormat: Plasmoid.configuration.yearFormat
 
         ClockStates {
           id: clockPositionStates
@@ -68,17 +76,23 @@ Item {
           id: tickMotionStates
         }
 
-        onYearFormatChanged: timekeeper.yearFormat = yearFormat
+        // These events occur when the config values are changed. The new
+        // values are copied to ones used for the displayed state.
+        onSettingsShowCalendarChanged: showCalendar = settingsShowCalendar
+        onSettingsClockStateChanged: clockState = settingsClockState
+        onSettingsHideCogsChanged: hideCogs = settingsHideCogs
+        onSettingsWhellStateChanged: whellState = settingsWhellState
+        onSettingsStainedGlassStateChanged: stainedGlassState = settingsStainedGlassState
+        onSettingsYearFormatChanged: yearFormat = settingsYearFormat
 
-        onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassStates.getStateName(stainedGlassState)
-
-        onHideCogsChanged: whell.hide = compact.hideCogs
-
-        onWhellStateChanged: wheelTick.state = tickMotionStates.getStateName(compact.whellState)
-
+        // These react to the GUI state variables changing - affected by
+        // config changes or using the GUI switches.
+        onShowCalendarChanged: compact.state = compact.showCalendar ? "big" : "small"
         onClockStateChanged: clock.state = clockPositionStates.getStateName(compact.clockState)
-
-        onShowCalendarChanged: compact.state = compact.showCalendar ? "" : "small"
+        onHideCogsChanged: whell.hide = compact.hideCogs
+        onWhellStateChanged: wheelTick.state = tickMotionStates.getStateName(compact.whellState)
+        onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassStates.getStateName(stainedGlassState)
+        onYearFormatChanged: timekeeper.yearFormat = yearFormat
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -122,7 +136,7 @@ Item {
             luna_terraState = compact.terraState
 
             clock.state = clockPositionStates.getStateName(compact.clockState)
-            compact.state = compact.showCalendar ? "" : "small"
+            compact.state = compact.showCalendar ? "big" : "small"
             whell.hide = compact.hideCogs
             wheelTick.state = tickMotionStates.getStateName(compact.whellState)
             timekeeper.stained_glass = stainedGlassStates.getStateName(compact.stainedGlassState)
@@ -468,7 +482,7 @@ Item {
         ]
         transitions: [
             Transition {
-                from: "*"; to: ""
+                from: "*"; to: "big"
                 NumberAnimation { properties: "scale"; duration: 2700 } //InOutBack
                 NumberAnimation { properties: "x, y "; duration: 700 }
             },

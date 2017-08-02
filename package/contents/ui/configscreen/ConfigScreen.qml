@@ -1,6 +1,10 @@
 import QtQuick 2.1
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
+// This is the config screen that hangs off the button at NE
+// TODO - It's pretty but what use is it if only the official config
+//        can save the values?
+
 Item {
     id: cf
     width: 200; height: 150
@@ -75,12 +79,12 @@ Item {
 
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    main.fontWeekSize  = week_size.text
-                    main.fontMonthSize = month_size.text
+                    compact.fontWeekSize  = week_size.text
+                    compact.fontMonthSize = month_size.text
                     if (font_path.text.length > 0)
-                        main.fontPath = font_path.text
+                        compact.fontPath = font_path.text
                     else
-                        main.fontPath = "clock/Engravers_MT.ttf"
+                        compact.fontPath = "clock/Engravers_MT.ttf"
                     cf.state = "up"
                 }
             }

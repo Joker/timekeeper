@@ -37,8 +37,8 @@ Item{
                     activeFloatItems: [ ]
 
                     Component.onCompleted: {
-                            map.center.longitude = main.lon //settings.quitLongitude
-                            map.center.latitude  = main.lat //settings.quitLatitude
+                            map.center.longitude = compact.lon //settings.quitLongitude
+                            map.center.latitude  = compact.lat //settings.quitLatitude
                             map.radius = 100 // 150
 
 
@@ -69,13 +69,13 @@ Item{
     function clouds_data_off(){ map.setGeoSceneProperty( "clouds_data", false) }
     function clouds_data_on() { map.setGeoSceneProperty( "clouds_data", true ) }
     function defaultPt()      {
-        map.center.longitude = main.lon
-        map.center.latitude  = main.lat
+        map.center.longitude = compact.lon
+        map.center.latitude  = compact.lat
         map.radius = 100
     }
     function saveLatLon(){
-        main.lon = map.center.longitude
-        main.lat = map.center.latitude
+        compact.lon = map.center.longitude
+        compact.lat = map.center.latitude
         plasmoid.writeConfig("lat", map.center.latitude)
         plasmoid.writeConfig("lon", map.center.longitude)
     }

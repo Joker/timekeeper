@@ -20,13 +20,7 @@ Item {
     id: main
     width: 478; height: 478
 
-    property string terraImage: Plasmoid.configuration.terraImage
-
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
-
-    function onTerraImageChanged() {
-        console.log("IT CHANGED!");
-    }
 
     Plasmoid.compactRepresentation: Item {
         id: compact
@@ -61,6 +55,7 @@ Item {
         property int stainedGlassState: Plasmoid.configuration.stainedGlassState
         property int yearFormat: Plasmoid.configuration.yearFormat
 
+        property string terraImage: Plasmoid.configuration.terraImage
         property string terraState: Plasmoid.configuration.terraState
         property alias luna_terraState: luna.terraState
 

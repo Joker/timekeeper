@@ -15,9 +15,9 @@ Item {
 
 
     Component.onCompleted: {
-        var terraImage = main.terraImage;
+        var terraImage = compact.terraImage;
         var terraState = home.terraState;
-        if (terraImage.length > 0) { e_f.source = main.terraImage }
+        if (terraImage.length > 0) { e_f.source = compact.terraImage }
         if (terraState.length > 0) { home.state = terraState }
         console.log("**** Terra Completed");
     }
@@ -79,7 +79,7 @@ Item {
                      earth.n++
                      if(earth.n == 7) earth.n = 1
 
-                     main.terraImage = img;
+                     compact.terraImage = img;
                  }
              }
         }

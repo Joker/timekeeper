@@ -1,5 +1,5 @@
 /**
-    Copyright 2016 Bill Binder <dxtwjb@gmail.com>
+    Copyright 2017 Bill Binder <dxtwjb@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,23 +18,24 @@
 import QtQuick 2.1 as QtQuick
 
 /*
-Defines the list of tick motion states.
-  key - shown in the ComboBox
-  value - unique reference number for this entry
-  state - the state name
+Defines the list of images for terra.
+  filename - relative to the ui/terra directory
 */
 QtQuick.ListModel {
-  id: tickMotionStates
+  id: terraImageChoices
+  QtQuick.ListElement { value: 1; filename: "e1.png" }
+  QtQuick.ListElement { value: 2; filename: "e2.png" }
+  QtQuick.ListElement { value: 3; filename: "e3.png" }
+  QtQuick.ListElement { value: 4; filename: "e4.png" }
+  QtQuick.ListElement { value: 5; filename: "e5.png" }
+  QtQuick.ListElement { value: 6; filename: "e6.png" }
 
-  QtQuick.ListElement {key:"I"; stateName:"off"}
-  QtQuick.ListElement {key:"J"; stateName:"wheel"}
-  QtQuick.ListElement {key:"K"; stateName:"calendar"}
-
-  function getStateName(reqdValue) {
-    return tickMotionStates.count>0 ? tickMotionStates.get(reqdValue).stateName : ""
+  function getFilename(reqdValue) {
+    return terraImageChoices.count>0 ? terraImageChoices.get(reqdValue).filename : ""
   }
 
   function next(value) {
-    return (value < tickMotionStates.count-1) ? value+1 : 0
+    return (value < clockPositionStates.count-1) ? value+1 : 0
   }
+
 }

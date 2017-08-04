@@ -19,6 +19,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Layouts 1.3 as QtLayouts
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.plasmoid 2.0
 
 import "clock"
 import "timekeeper"
@@ -32,10 +34,14 @@ QtLayouts.ColumnLayout {
     property alias cfg_whellState: tickMotion.currentIndex
     property alias cfg_stainedGlassState: stainedglassstate.currentIndex
     property alias cfg_terraState: terrastate.text
-    property alias cfg_terraImage: terraimage.text
+    property int cfg_terraImageIndex: 1
     property alias cfg_yearFormat: yearFormat.currentIndex
     property alias cfg_lat: latitude.text
     property alias cfg_lon: longitude.text
+
+    TerraImageChoices {
+        id: terraImageChoices
+    }
 
 
     QtLayouts.ColumnLayout {
@@ -51,7 +57,6 @@ QtLayouts.ColumnLayout {
             id: wheelsshow
             text: i18n("Show Clock Cogs")
         }
-
 
         QtLayouts.RowLayout {
             spacing: 15
@@ -152,9 +157,43 @@ QtLayouts.ColumnLayout {
             QtControls.Label {
                 text: i18n("Terra Image")
             }
+            /*
             QtControls.TextField {
                 id: terraimage
             }
+            */
+            PlasmaComponents.ToolButton {
+                id: previousButton
+                iconSource: "go-previous"
+                enabled: cfg_terraImageIndex > 0
+                onClicked: cfg_terraImageIndex -= 1
+            }
+
+            Image {
+                id: terraPreview
+                width: 100
+                height: 100
+                maxHeight: 100
+                fillMode: Image.Stretch
+                source: 'terra/' + terraImageChoices.getFilename(cfg_terraImageIndex) //plasmoid.file("terra", terraImageChoices.getFilename(cfg_terraImageIndex))
+
+                onSourceChanged: {
+                    console.log("Source: " + terraPreview.source)
+                }
+                Component.onCompleted: {
+                    console.log("Fred: " + terraPreview.source)
+                    var wot = terraImageChoices.getFilename(cfg_terraImageIndex)
+                    console.log("Jim: " + wot)
+                }
+            }
+
+            PlasmaComponents.ToolButton {
+                id: nextButton
+                iconSource: "go-next"
+                enabled: cfg_terraImageIndex < terraImageChoices.count - 1
+                onClicked: cfg_terraImageIndex += 1
+            }
+
         }
 
         QtLayouts.RowLayout {

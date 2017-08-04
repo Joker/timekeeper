@@ -45,6 +45,7 @@ Item {
         property int settingsWhellState: Plasmoid.configuration.whellState
         property int settingsStainedGlassState: Plasmoid.configuration.stainedGlassState
         property int settingsYearFormat: Plasmoid.configuration.yearFormat
+        property int settingsTerraImageIndex: Plasmoid.configuration.terraImageIndex
 
         // These properties are initially set as the config, but are then
         // changed by the on-screen switches OR the matching config is changed.
@@ -54,8 +55,9 @@ Item {
         property int whellState: Plasmoid.configuration.whellState
         property int stainedGlassState: Plasmoid.configuration.stainedGlassState
         property int yearFormat: Plasmoid.configuration.yearFormat
+        property string terraImage: ""
 
-        property string terraImage: Plasmoid.configuration.terraImage
+        // These are still to-do
         property string terraState: Plasmoid.configuration.terraState
         property alias luna_terraState: luna.terraState
 
@@ -71,6 +73,10 @@ Item {
           id: tickMotionStates
         }
 
+        TerraImageChoices {
+            id: terraImageChoices
+        }
+
         // These events occur when the config values are changed. The new
         // values are copied to ones used for the displayed state.
         onSettingsShowCalendarChanged: showCalendar = settingsShowCalendar
@@ -79,6 +85,9 @@ Item {
         onSettingsWhellStateChanged: whellState = settingsWhellState
         onSettingsStainedGlassStateChanged: stainedGlassState = settingsStainedGlassState
         onSettingsYearFormatChanged: yearFormat = settingsYearFormat
+        onSettingsTerraImageIndexChanged: {
+            terraImage = terraImageChoices.getFilename(settingsTerraImageIndex)
+        }
 
         // These react to the GUI state variables changing - affected by
         // config changes or using the GUI switches.
@@ -88,6 +97,7 @@ Item {
         onWhellStateChanged: wheelTick.state = tickMotionStates.getStateName(compact.whellState)
         onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassStates.getStateName(stainedGlassState)
         onYearFormatChanged: timekeeper.yearFormat = yearFormat
+        onTerraImageChanged: luna.terraImage = compact.terraImage
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -136,6 +146,7 @@ Item {
             wheelTick.state = tickMotionStates.getStateName(compact.whellState)
             timekeeper.stained_glass = stainedGlassStates.getStateName(compact.stainedGlassState)
             timekeeper.yearFormat = compact.yearFormat
+            luna.terraImage = compact.terraImage
 
             console.log("**** TODO: - Fix Lat-lon load");
             //var vlat = plasmoid.readConfig("lat")

@@ -31,8 +31,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 			<entry name="terraState" type="String">
 				<default></default>
 			</entry>
-			<entry name="terraImage" type="String">
-				<default></default>
+			<entry name="terraImageIndex" type="Int">
+				<default>0</default>
 			</entry>
 
       <entry name="yearFormat" type="Int">

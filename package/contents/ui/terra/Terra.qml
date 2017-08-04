@@ -10,14 +10,27 @@ Item {
     property int    earth_degree: 0
     property alias  moon_z: moon.z
 
-    //property string terraImage: ""
+    property string terraImage: ""
     property string terraState: ""
 
+    onTerraStateChanged: {
+        var terraState = home.terraState;
+        if (terraState.length > 0) {
+            home.state = terraState
+        }
+    }
+
+    onTerraImageChanged: {
+        var terraImage = home.terraImage;
+        if (terraImage.length > 0) {
+            e_f.source = terraImage
+        }
+    }
 
     Component.onCompleted: {
-        var terraImage = compact.terraImage;
+        var terraImage = home.terraImage;
         var terraState = home.terraState;
-        if (terraImage.length > 0) { e_f.source = compact.terraImage }
+        if (terraImage.length > 0) { e_f.source = terraImage }
         if (terraState.length > 0) { home.state = terraState }
         console.log("**** Terra Completed");
     }

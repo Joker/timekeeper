@@ -154,14 +154,11 @@ QtLayouts.ColumnLayout {
         }
 
         QtLayouts.RowLayout {
+
             QtControls.Label {
                 text: i18n("Terra Image")
             }
-            /*
-            QtControls.TextField {
-                id: terraimage
-            }
-            */
+
             PlasmaComponents.ToolButton {
                 id: previousButton
                 iconSource: "go-previous"
@@ -171,19 +168,11 @@ QtLayouts.ColumnLayout {
 
             Image {
                 id: terraPreview
-                width: 100
-                height: 100
-                fillMode: Image.Stretch
-                source: 'terra/' + terraImageChoices.getFilename(cfg_terraImageIndex) //plasmoid.file("terra", terraImageChoices.getFilename(cfg_terraImageIndex))
-
-                onSourceChanged: {
-                    console.log("Source: " + terraPreview.source)
-                }
-                Component.onCompleted: {
-                    console.log("Fred: " + terraPreview.source)
-                    var wot = terraImageChoices.getFilename(cfg_terraImageIndex)
-                    console.log("Jim: " + wot)
-                }
+                width: 50
+                height: 50
+                source: 'terra/' + terraImageChoices.getFilename(cfg_terraImageIndex)
+                sourceSize.width: width
+                sourceSize.height: height
             }
 
             PlasmaComponents.ToolButton {

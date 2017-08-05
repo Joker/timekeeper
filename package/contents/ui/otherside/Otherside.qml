@@ -27,6 +27,9 @@ Item {
  }
 
     Back {
+        // This is the back of the clock.
+        // One switch flips it to the front. The other two do nothing.
+        
         // x: -15; y: 9; z: -1
         x: 10; y: -2; z: -1
         MouseArea {

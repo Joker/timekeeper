@@ -13,12 +13,7 @@ Item {
     property string terraImage: ""
     property string terraState: ""
 
-    onTerraStateChanged: {
-        var terraState = home.terraState;
-        if (terraState.length > 0) {
-            home.state = terraState
-        }
-    }
+    onTerraStateChanged: home.state = terraState
 
     onTerraImageChanged: {
         var terraImage = home.terraImage;
@@ -30,9 +25,12 @@ Item {
     Component.onCompleted: {
         var terraImage = home.terraImage;
         var terraState = home.terraState;
-        if (terraImage.length > 0) { e_f.source = terraImage }
-        if (terraState.length > 0) { home.state = terraState }
-        console.log("**** Terra Completed");
+        if (terraImage.length > 0) {
+            e_f.source = terraImage
+        }
+        if (terraState.length > 0) {
+            home.state = terraState
+        }
     }
 
     // state: "big_earth2"

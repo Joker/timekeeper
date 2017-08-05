@@ -35,7 +35,7 @@ QtQuick.ListModel {
   }
 
   function next(value) {
-    return (value < clockPositionStates.count-1) ? value+1 : 0
+    return (value < terraImageChoices.count-1) ? value+1 : 0
   }
 
 }

@@ -28,8 +28,8 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
         <default>1</default>
       </entry>
 
-			<entry name="terraState" type="String">
-				<default></default>
+			<entry name="terraState" type="Int">
+				<default>0</default>
 			</entry>
 			<entry name="terraImageIndex" type="Int">
 				<default>0</default>

@@ -46,6 +46,7 @@ Item {
         property int settingsStainedGlassState: Plasmoid.configuration.stainedGlassState
         property int settingsYearFormat: Plasmoid.configuration.yearFormat
         property int settingsTerraImageIndex: Plasmoid.configuration.terraImageIndex
+        property int settingsTerraState: Plasmoid.configuration.terraState
 
         // These properties are initially set as the config, but are then
         // changed by the on-screen switches OR the matching config is changed.
@@ -56,10 +57,7 @@ Item {
         property int stainedGlassState: Plasmoid.configuration.stainedGlassState
         property int yearFormat: Plasmoid.configuration.yearFormat
         property string terraImage: ""
-
-        // These are still to-do
-        property string terraState: Plasmoid.configuration.terraState
-        property alias luna_terraState: luna.terraState
+        property int terraState: Plasmoid.configuration.terraState
 
         ClockStates {
           id: clockPositionStates
@@ -77,6 +75,10 @@ Item {
             id: terraImageChoices
         }
 
+        TerraStates {
+            id: terraStates
+        }
+
         // These events occur when the config values are changed. The new
         // values are copied to ones used for the displayed state.
         onSettingsShowCalendarChanged: showCalendar = settingsShowCalendar
@@ -88,6 +90,7 @@ Item {
         onSettingsTerraImageIndexChanged: {
             terraImage = terraImageChoices.getFilename(settingsTerraImageIndex)
         }
+        onSettingsTerraStateChanged: terraState = settingsTerraState
 
         // These react to the GUI state variables changing - affected by
         // config changes or using the GUI switches.
@@ -98,6 +101,7 @@ Item {
         onStainedGlassStateChanged: timekeeper.stained_glass = stainedGlassStates.getStateName(stainedGlassState)
         onYearFormatChanged: timekeeper.yearFormat = yearFormat
         onTerraImageChanged: luna.terraImage = compact.terraImage
+        onTerraStateChanged: luna.terraState = terraStates.getStateName(compact.terraState)
 
         FontLoader {
             id: fixedFont; source: fontPath;
@@ -138,8 +142,6 @@ Item {
 
             // calendar.ms = "calendar/Marble.qml"
 
-            luna_terraState = compact.terraState
-
             clock.state = clockPositionStates.getStateName(compact.clockState)
             compact.state = compact.showCalendar ? "big" : "small"
             whell.hide = compact.hideCogs
@@ -147,6 +149,7 @@ Item {
             timekeeper.stained_glass = stainedGlassStates.getStateName(compact.stainedGlassState)
             timekeeper.yearFormat = compact.yearFormat
             luna.terraImage = compact.terraImage
+            luna.terraState = terraStates.getStateName(compact.terraState)
 
             console.log("**** TODO: - Fix Lat-lon load");
             //var vlat = plasmoid.readConfig("lat")

@@ -33,7 +33,7 @@ QtLayouts.ColumnLayout {
     property alias cfg_showCogs: wheelsshow.checked
     property alias cfg_whellState: tickMotion.currentIndex
     property alias cfg_stainedGlassState: stainedglassstate.currentIndex
-    property alias cfg_terraState: terrastate.text
+    property alias cfg_terraState: terrastate.currentIndex
     property int cfg_terraImageIndex: 1
     property alias cfg_yearFormat: yearFormat.currentIndex
     property alias cfg_lat: latitude.text
@@ -42,7 +42,6 @@ QtLayouts.ColumnLayout {
     TerraImageChoices {
         id: terraImageChoices
     }
-
 
     QtLayouts.ColumnLayout {
         QtLayouts.Layout.alignment: Qt.AlignTop
@@ -148,8 +147,19 @@ QtLayouts.ColumnLayout {
             QtControls.Label {
                 text: i18n("Terra State")
             }
-            QtControls.TextField {
+            QtControls.ComboBox {
                 id: terrastate
+                textRole: "key"
+                model: terraStates
+
+                TerraStates {
+                    id: terraStates
+                    Component.onCompleted: {
+                        setProperty(0, "key", i18n("Earth & Moon"))
+                        setProperty(1, "key", i18n("Big Moon"))
+                        setProperty(2, "key", i18n("Big Earth"))
+                    }
+                }
             }
         }
 

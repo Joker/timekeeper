@@ -26,7 +26,7 @@ QtQuick.ListModel {
 
   QtQuick.ListElement { key: "X"; stateName: "" }
   QtQuick.ListElement { key: "Y"; stateName: "big_moon" }
-  QtQuick.ListElement { key: "Z"; stateName: "big_earth" }
+  //QtQuick.ListElement { key: "Z"; stateName: "big_earth" }  TODO fix Marble
 
   function getStateName(reqdValue) {
     return terraStates.count>0 ? terraStates.get(reqdValue).stateName : ""

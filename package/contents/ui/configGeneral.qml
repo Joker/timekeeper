@@ -39,6 +39,26 @@ QtLayouts.ColumnLayout {
     property alias cfg_lat: latitude.text
     property alias cfg_lon: longitude.text
 
+    TextMetrics {
+      id: textMetrics
+    }
+
+    function requiredWidth(states) {
+        // Find width of longest string
+        var widest = 0
+        for(var i = 0; i < states.count; i++){
+          // TODO: Figure out how to get the width properly.
+          //       It is working out the text size, but the width
+          //       of combo box needs to include the padding round
+          //       the text and the button. This workaround adds
+          //       a fiddle factor.
+          textMetrics.text = states.get(i).key + "WWW"
+          widest = Math.max(textMetrics.width, widest)
+        }
+        return widest
+    }
+
+
     TerraImageChoices {
         id: terraImageChoices
     }
@@ -64,14 +84,8 @@ QtLayouts.ColumnLayout {
             }
             QtControls.ComboBox {
                 id: tickMotion
-                property int modelWidth
                 textRole: "key"
-                implicitWidth: modelWidth
                 model: tickMotionStates
-
-                TextMetrics {
-                  id: textMetrics
-                }
 
                 TickMotionStates {
                   id: tickMotionStates
@@ -83,17 +97,7 @@ QtLayouts.ColumnLayout {
                     setProperty(2,"key", i18n("Clock and Calendar"))
 
                     // Find width of longest string
-                    var widest = 0
-                    for(var i = 0; i < tickMotionStates.count; i++){
-                      // TODO: Figure out how to get the width properly.
-                      //       It is working out the text size, but the width
-                      //       of combo box needs to include the padding round
-                      //       the text and the button. This workaround adds
-                      //       a fiddle factor.
-                      textMetrics.text = tickMotionStates.get(i).key + "WWWW"
-                      widest = Math.max(textMetrics.width, widest)
-                    }
-                    tickMotion.modelWidth = widest
+                    tickMotion.implicitWidth = requiredWidth(tickMotionStates)
                   }
                 }
             }
@@ -115,7 +119,9 @@ QtLayouts.ColumnLayout {
                   Component.onCompleted: {
                     setProperty(0,"key", i18n("In"))
                     setProperty(1,"key", i18n("Out"))
-                  }
+
+                    // Find width of longest string
+                    clockposition.implicitWidth = requiredWidth(clockPositionStates)                  }
                 }
             }
         }
@@ -137,6 +143,9 @@ QtLayouts.ColumnLayout {
                     setProperty(0,"key", i18n("Plain"))
                     setProperty(1,"key", i18n("Green"))
                     setProperty(2,"key", i18n("Purple"))
+
+                    // Find width of longest string
+                    stainedglassstate.implicitWidth = requiredWidth(stainedGlassStates)
                   }
                 }
             }
@@ -157,7 +166,10 @@ QtLayouts.ColumnLayout {
                     Component.onCompleted: {
                         setProperty(0, "key", i18n("Earth & Moon"))
                         setProperty(1, "key", i18n("Big Moon"))
-                        setProperty(2, "key", i18n("Big Earth"))
+                        //setProperty(2, "key", i18n("Big Earth")) TODO fix Marble
+
+                        // Find width of longest string
+                        terrastate.implicitWidth = requiredWidth(terraStates)
                     }
                 }
             }
@@ -202,12 +214,16 @@ QtLayouts.ColumnLayout {
                 id: yearFormat
                 textRole: "key"
                 model: ListModel {
-                  dynamicRoles: true
-                  Component.onCompleted: {
-                    var now = new Date().getFullYear()
-                    append({key: (now % 100).toString(), value: 0})
-                    append({key: now.toString(), value: 1})
-                  }
+                    id: yyyy
+                    dynamicRoles: true
+                    Component.onCompleted: {
+                        var now = new Date().getFullYear()
+                        append({key: (now % 100).toString(), value: 0})
+                        append({key: now.toString(), value: 1})
+
+                        // Find width of longest string
+                        yearFormat.implicitWidth = requiredWidth(yyyy)
+                    }
                 }
             }
         }

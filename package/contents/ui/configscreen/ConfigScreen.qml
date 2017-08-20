@@ -2,8 +2,8 @@ import QtQuick 2.1
 import org.kde.plasma.components 2.0 as PlasmaComponents
 
 // This is the config screen that hangs off the button at NE
-// TODO - It's pretty but what use is it if only the official config
-//        can save the values?
+// It currently appears and disappears. None of the settings
+// are wired up.
 
 Item {
     id: cf
@@ -16,19 +16,25 @@ Item {
 
         PlasmaComponents.TextField {
             id: font_path
-            x: 36; y: 30
-            width: 136; height: 21
+            x: 36
+            y: 30
+            width: 136
+            height: 21
             font.pixelSize: 12
         }
+
         Text {
             id: font_path_text
-            x: 39; y: 32
-            width: 130; height: 19
+            x: 39
+            y: 32
+            width: 130
+            height: 19
             color: "#805d5d"
             text: qsTr("/absolut/font/path")
             verticalAlignment:   Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 12
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -47,21 +53,37 @@ Item {
             }
         }
 
-        Text { text: qsTr("week"); x: 39; y: 66; font.pixelSize: 12 }
+        Text {
+            text: qsTr("week")
+            x: 39
+            y: 66
+            font.pixelSize: 12 }
+
         PlasmaComponents.TextField {
             id: week_size
-            x: 73; y: 62
-            width: 27; height: 20
+            x: 73
+            y: 62
+            width: 27
+            height: 20
             text: qsTr("11")
 
             font.pixelSize: 12
             maximumLength: 2
         }
-        Text { text: qsTr("month"); x: 103; y: 66; font.pixelSize: 12 }
+
+        Text {
+            text: qsTr("month")
+            x: 103
+            y: 66
+            font.pixelSize: 12
+        }
+
         PlasmaComponents.TextField {
             id: month_size
-            x: 145; y: 62
-            width: 27; height: 20
+            x: 145
+            y: 62
+            width: 27
+            height: 20
             text: qsTr("14")
 
             font.pixelSize: 12
@@ -71,11 +93,15 @@ Item {
 
         Image {
             id: ok
-            x: 33; y: 92
+            x: 33
+            y: 92
             source: "okb.png"
 
             MouseArea {
-                x: 4; y: 3; width: 56; height: 25
+                x: 4
+                y: 3
+                width: 56
+                height: 25
 
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
@@ -91,11 +117,15 @@ Item {
         }
         Image {
             id: def
-            x: 162; y: 105
+            x: 162
+            y: 105
             source: "cancel.png"
 
             MouseArea {
-                x: 0; y: 0; width: 22; height: 21
+                x: 0
+                y: 0
+                width: 22
+                height: 21
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     def.forceActiveFocus()
@@ -107,7 +137,6 @@ Item {
             }
         }
     }
-
 
     states: [
         State {
@@ -125,7 +154,9 @@ Item {
         id: rotation
         origin.x: cf.width/2
         origin.y: 0
-        axis.x: 1; axis.y: 0; axis.z: 0
+        axis.x: 1
+        axis.y: 0
+        axis.z: 0
         angle: 90
     }
     transitions: [

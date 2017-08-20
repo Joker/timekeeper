@@ -19,8 +19,8 @@ import QtQuick 2.7 as QtQuick
 
 /*
 Defines the list of stained glass states.
-  key - shown in the ComboBox
-  value - unique reference number for this entry
+  key   - shown in the ComboBox, placeholder text is set up when the ComboBox
+          is populated.
   state - the state name
 */
 QtQuick.ListModel {

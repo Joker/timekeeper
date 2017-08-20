@@ -19,6 +19,7 @@ import QtQuick 2.1 as QtQuick
 
 /*
 Defines the list of images for terra.
+  value    - index number of selection
   filename - relative to the ui/terra directory
 */
 QtQuick.ListModel {

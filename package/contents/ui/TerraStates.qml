@@ -18,8 +18,11 @@
 import QtQuick 2.1 as QtQuick
 
 /*
-Defines the list of images for terra.
-  filename - relative to the ui/terra directory
+Defines the list of images for 'terra', i.e. earth+moon, big moon in centre,
+or marble earth in centre.
+key       - shown in the ComboBox - the actual text is added later, when the
+            the ComboBox is being populated.
+stateName - component state name
 */
 QtQuick.ListModel {
   id: terraStates

@@ -19,7 +19,8 @@ import QtQuick 2.1 as QtQuick
 
 /*
 Defines the list of tick motion states.
-  key - shown in the ComboBox
+  key   - shown in the ComboBox - the actual text is added later, when the
+          the ComboBox is being populated.
   value - unique reference number for this entry
   state - the state name
 */

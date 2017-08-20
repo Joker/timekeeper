@@ -37,8 +37,8 @@ Item{
                     activeFloatItems: [ ]
 
                     Component.onCompleted: {
-                            map.center.longitude = compact.lon //settings.quitLongitude
-                            map.center.latitude  = compact.lat //settings.quitLatitude
+                            map.center.longitude = compact.lon
+                            map.center.latitude  = compact.lat
                             map.radius = 100 // 150
 
 

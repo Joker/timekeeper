@@ -3,7 +3,8 @@ import "../luna"
 
 Item {
     id: home;
-    width: 152; height: 152
+    width: 152
+    height: 152
 
     property alias  moon_degree: moon_angle.angle
     property alias  phase: svg.phase
@@ -33,82 +34,128 @@ Item {
         }
     }
 
-    // state: "big_earth2"
-
     Item {
         id:terra
         x: 34; y: 34
         width: 84; height: 84
 
         Flipable {
-             id: earth
-             x: 8; y: 8
-             width: 68; height: 68
+            id: earth
+            x: 8
+            y: 8
+            width: 68
+            height: 68
 
-             property bool flipped: false
-             property int  n: 2
+            property bool flipped: false
+            property int  n: 2
 
-             Image { id: earth_sh; x: -7; y: -7; z:-1; smooth: true; source: "earthUnderShadow.png" }
+            Image {
+                id: earth_sh
+                x: -7
+                y: -7
+                z:-1
+                smooth: true
+                source: "earthUnderShadow.png"
+            }
 
-             front: Image { id: e_f; source: "e1.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
-             back:  Image { id: e_b; source: "e2.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+            front: Image {
+                id: e_f
+                source: "e1.png"
+                smooth: true
+                anchors.centerIn: parent
+                anchors.fill: parent
+            }
 
-             transform: Rotation {
-                 id: rotation
-                 origin.x: earth.width/2
-                 origin.y: earth.height/2
-                 axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
-                 angle: 0    // the default angle
-             }
+            back:  Image {
+                id: e_b
+                source: "e2.png"
+                smooth: true
+                anchors.centerIn: parent; anchors.fill: parent
+            }
 
-             states: [
-                 State {
-                     name: "back"
-                     PropertyChanges { target: rotation; angle: 180 }
-                     when: earth.flipped
-                 },
-                 State {
-                     name: "front"
-                     PropertyChanges { target: rotation; angle: 0 }
-                     when: !earth.flipped
-                 }
-             ]
+            transform: Rotation {
+                id: rotation
+                origin.x: earth.width/2
+                origin.y: earth.height/2
+                axis.x: 1
+                axis.y: 0
+                axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                angle: 0    // the default angle
+            }
 
-             transitions: Transition {
+            states: [
+                State {
+                    name: "back"
+                    PropertyChanges { target: rotation; angle: 180 }
+                    when: earth.flipped
+                },
+                State {
+                    name: "front"
+                    PropertyChanges { target: rotation; angle: 0 }
+                    when: !earth.flipped
+                }
+            ]
+
+            transitions: Transition {
                  // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
-                 SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
-             }
+                SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
+            }
 
-             MouseArea {
-                 anchors.fill: parent
-                 cursorShape: Qt.PointingHandCursor
-                 onClicked: {
-                     var img = "e"+earth.n+".png"
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    var img = "e"+earth.n+".png"
 
-                     earth.flipped = !earth.flipped
-                     if(earth.flipped) e_b.source = img; else e_f.source = img
-                     earth.n++
-                     if(earth.n == 7) earth.n = 1
+                    earth.flipped = !earth.flipped
+                    if (earth.flipped)
+                        e_b.source = img;
+                    else
+                        e_f.source = img;
 
-                     compact.terraImage = img;
-                 }
-             }
+                    earth.n++;
+                    if (earth.n == 7)
+                        earth.n = 1
+
+                    compact.terraImage = img;
+                }
+            }
         }
 
     }
 
     Item {
         id: moon
-        x: 60; y: 0
-        width: 33; height: 33
+        x: 60
+        y: 0
+        width: 33
+        height: 33
 
-        Image { id: moon_big_sh; x: -9; y: -8; smooth: true; source: "moonBigShadow.png";  opacity: 0; }
-        Image { id: moon_sh;     x: -6; y: -6; smooth: true; source: "moonUnderShadow.png" }
-        Luna  { id: svg }
+        Image {
+            id: moon_big_sh
+            x: -9
+            y: -8
+            smooth: true
+            source: "moonBigShadow.png"
+            opacity: 0
+        }
+
+        Image {
+            id: moon_sh
+            x: -6
+            y: -6
+            smooth: true
+            source: "moonUnderShadow.png"
+        }
+
+        Luna {
+            id: svg
+        }
 
         transform: Rotation {
             id:moon_angle
-            origin.x: 17.5; origin.y: 76;
+            origin.x: 17.5
+            origin.y: 76
             // angle: 185 + 12.41 * phase // degree //
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
@@ -116,7 +163,8 @@ Item {
         }
 
         MouseArea {
-            x: 60; y: 0
+            x: 60
+            y: 0
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
 
@@ -228,7 +276,8 @@ Item {
 
     transform: Rotation {
         id: luna_angle
-        origin.x: 76.5; origin.y: 152;
+        origin.x: 76.5
+        origin.y: 152
         angle:earth_degree
         Behavior on angle {
             SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }

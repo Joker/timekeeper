@@ -6,12 +6,15 @@ Item{
     property bool hide: false
     property bool lock: false
 
-    width: 132; height: 93
+    width: 132
+    height: 93
+    
     Image {
         id: cogShadow
-        x: 43; y: -5;
+        x: 43
+        y: -5
         source: "cogShadow.png"
-        smooth: true;
+        smooth: true
         transform: Rotation {
             angle: ang * -1
             origin.x: cogShadow.width/2; origin.y: cogShadow.height/2;
@@ -20,12 +23,15 @@ Item{
             }
         }
     }
+
     Image {
         id: cog
-        x: 50; y: -17;
-        width: 82; height: 84;
+        x: 50
+        y: -17
+        width: 82
+        height: 84
         source: "cog.png"
-        smooth: true;
+        smooth: true
         transform: Rotation {
             angle: ang * -1
             origin.x: cog.width/2; origin.y: cog.height/2;
@@ -34,11 +40,13 @@ Item{
             }
         }
     }
+
     Image {
         id: wheelShadow
-        x: 3; y: 2;
+        x: 3
+        y: 2
         source: "wheelShadow.png"
-        smooth: true;
+        smooth: true
         transform: Rotation {
             angle: ang
             origin.x: wheelShadow.width/2; origin.y: wheelShadow.height/2;
@@ -47,10 +55,11 @@ Item{
             }
         }
     }
+
     Image {
         id: wheel
         source: "wheel.png"
-        smooth: true;
+        smooth: true
         transform: Rotation {
             angle: ang
             origin.x: wheel.width/2; origin.y: wheel.height/2;
@@ -59,8 +68,12 @@ Item{
             }
         }
     }
-    Image { x: 26; y: 2; source: "driveBand.png" }
 
+    Image {
+        x: 26
+        y: 2
+        source: "driveBand.png"
+    }
 
     state: "in"
 

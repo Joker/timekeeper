@@ -13,9 +13,6 @@ import "luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
 import "otherside/riseset.js" as RS
 
-// import QtMultimediaKit 1.1 as QtMultimediaKit
-// import org.kde.plasma.core 0.1 as PlasmaCore
-
 Item {
     id: main
     width: 478; height: 478
@@ -37,6 +34,10 @@ Item {
         property string fontPath: "clock/Engravers_MT.ttf"
         property int fontWeekSize: 11
         property int fontMonthSize:14
+
+        // There are two sets of property values because I want config
+        // dialog changes to be applied and remembered, but I only want
+        // UI changes to apply for the session.
 
         // These properties change if the config changes
         property bool settingsShowCalendar: Plasmoid.configuration.showCalendar
@@ -109,37 +110,13 @@ Item {
         }
 
         Component.onCompleted: {
-    /*
-            // refresh moon image
-            plasmoid.addEventListener("dataUpdated", dataUpdated);
-            dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
 
-            // plasmoid.setAspectRatioMode(ConstrainedSquare);
-    // */
             defaultDate()
 
-            console.log("Lat=" + lat.toString() + ", Lon=" + lon.toString())
-            console.log("Sun Rise/Set")
             RS.sun_riseset (lat, lon, new Date())
-            console.log("Moon Rise/Set")
             RS.moon_riseset(lat, lon, new Date())
 
-            /*
-            var sinkS = {
-            dataUpdated: function (name, data) {
-                console.log(data.Sunrise, data.Sunset);
-            }
-            };
-            var sinkM = {
-            dataUpdated: function (name, data) {
-                console.log(data.Moonrise, data.Moonset);
-            }
-            };
-            var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
-            dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
-            dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-            // */
-
+            //TODO - fix Marble
             // calendar.ms = "calendar/Marble.qml"
 
             clock.state = clockPositionStates.getStateName(compact.clockState)
@@ -150,11 +127,6 @@ Item {
             timekeeper.yearFormat = compact.yearFormat
             luna.terraImage = compact.terraImage
             luna.terraState = terraStates.getStateName(compact.terraState)
-
-            console.log("**** TODO: - Fix Lat-lon load");
-            //var vlat = plasmoid.readConfig("lat")
-            //var vlon = plasmoid.readConfig("lon")
-            //if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
         }
 
 
@@ -192,10 +164,6 @@ Item {
 
             nowTimeAndMoonPhase(today)
             count = 0
-
-    //        var aDate = new Date();
-    //            aDate.setMonth(aDate.getMonth()+1, 0)
-    //        var num = aDate.getDate();
         }
 
         function forTimer() {
@@ -206,13 +174,10 @@ Item {
             clock.seconds  = date.getSeconds()
             if(!side.flipped){
 
-                // It's now ticking at about 800ms - don't yet know what changed
-                // it - was smooth a week ago. Use the ms value to make a fractional
-                // value to get the angles - otherwise it pauses every 4 updates
-                // when second does not change.
+                // Timer freqency is nominally 1000ms but need to allow for the
+                // elapsed time delta to be over/under this value. Use millisecs
+                // value where this matters.
                 var msecs = date.getMilliseconds()/1000.0
-
-                //console.log("tick: " + clock.seconds.toString() + " (" + msecs.toString()+")")
 
                 if(calendar.lock){
                     timekeeper.ang = (clock.seconds|3) * 6 * -1;
@@ -225,13 +190,12 @@ Item {
                 if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
 
                 if(compact.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
-                    //console.log(clock.seconds)
                     calendar.mar.citylights_off();
                     calendar.mar.citylights_on();
                 }
 
-            }else{
-
+            } else {
+                // TODO Animate the rear view
             }
         }
 
@@ -246,8 +210,6 @@ Item {
         Flipable {
             id: side
             property bool flipped: false
-            //anchors.left: parent.left
-            //anchors.leftMargin: 30
 
             front: Item {
                 width: 478; height: 478
@@ -271,7 +233,6 @@ Item {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: {  // toggle stained glass colour
                                     // The left upper tick on the date selector window
-                                    // Toggle the glass colour
                                     compact.stainedGlassState = stainedGlassStates.next(compact.stainedGlassState)
                                 }
                             }
@@ -283,7 +244,6 @@ Item {
                                 onClicked: {  // toggle back/front
                                   // below the date selector
                                   // turns the device over. There is no back?
-                                  // and nothing to click to return
                                   side.flipped = !side.flipped
                                 }
                             }
@@ -326,21 +286,21 @@ Item {
                         width: 10; height: 10
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            if(conf.state == "up") conf.state = "down"
-                                            else conf.state = "up"
+                            cond.state = (conf.state == "up") ? "down" : "up"
                         }
                     }
                 }
                 Clock {
                     id: clock;
-                    x: 29; y: 60; z: 5
-            //        shift: 4
+                    x: 29
+                    y: 60
+                    z: 5
                     state: "in"
-
 
                     Wheels {
                         id: whell
-                        x: -26;y: 137;
+                        x: -26
+                        y: 137
 
                         Item {
                             id: wheelTick
@@ -371,8 +331,10 @@ Item {
 
                         MouseArea {
                             id: tiktak_ma
-                            x: 41; y: 38
-                            width: 14; height: 14
+                            x: 41
+                            y: 38
+                            width: 14
+                            height: 14
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
                               compact.whellState = tickMotionStates.next(compact.whellState)
@@ -383,8 +345,10 @@ Item {
 
                     MouseArea { // centre of the clock
                         id: center_ma
-                        x: 80; y: 76
-                        width: 14; height: 14
+                        x: 80
+                        y: 76
+                        width: 14
+                        height: 14
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked:{
@@ -399,8 +363,10 @@ Item {
                     }
                     MouseArea {  // SW from centre of clock
                         id: in_out_ma
-                        x: 62; y: 86
-                        width: 11; height: 12
+                        x: 62
+                        y: 86
+                        width: 11
+                        height: 12
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
@@ -409,8 +375,10 @@ Item {
                     }
                     MouseArea { // SE from centre of clock
                         id: hide_ma
-                        x: 101; y: 86
-                        width: 11; height: 12
+                        x: 101
+                        y: 86
+                        width: 11
+                        height: 12
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
@@ -421,13 +389,16 @@ Item {
                 }
                 Terra {
                     id:luna;
-                    x: 162; y: 90
+                    x: 162
+                    y: 90
                     z: 7
                 }
 
             }
+
             back: Item {
-                width: 478; height: 478
+                width: 478
+                height: 478
                 Otherside {
                     z: 1
                 }
@@ -447,8 +418,11 @@ Item {
             ]
             transform: Rotation {
                 id: rotation
-                origin.x: 239; origin.y: 239
-                axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                origin.x: 239
+                origin.y: 239
+                axis.x: 1
+                axis.y: 0
+                axis.z: 0     // set axis.y to 1 to rotate around y-axis
                 angle: 0    // the default angle
             }
             transitions: Transition {
@@ -458,9 +432,10 @@ Item {
         }
         ConfigScreen {
             id:conf
-            x: 375; y: 74
-    //        x: 105; y: 231
-            width: 200; height: 150
+            x: 375
+            y: 74
+            width: 200
+            height: 150
         }
 
         // These states belong to compact.
@@ -471,7 +446,8 @@ Item {
                     target: calendar
                     scale: 0.3
                     rotation: 360
-                    x: -119; y: -88
+                    x: -119
+                    y: -88
                 }
                 PropertyChanges { target: whell; hide:   true  }
                 PropertyChanges { target: luna;  state: "home" }

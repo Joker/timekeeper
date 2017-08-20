@@ -21,7 +21,7 @@ import org.kde.plasma.configuration 2.0
 
 ConfigModel {
     ConfigCategory {
-         name: i18n("General")
+         name: i18n("Start State")
          icon: "preferences-desktop-user"
          source: "configGeneral.qml"
     }

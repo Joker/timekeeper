@@ -19,8 +19,7 @@ import QtQuick 2.7 as QtQuick
 
 /*
 Defines the list of clock position states.
-  key - shown in the ComboBox
-  value - unique reference number for this entry
+  key - shown in the ComboBox, text is updated when ComboBox is populated
   state - the state name
 */
 QtQuick.ListModel {

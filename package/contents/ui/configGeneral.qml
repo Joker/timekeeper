@@ -92,9 +92,9 @@ QtLayouts.ColumnLayout {
 
                   Component.onCompleted: {
 
-                    setProperty(0,"key", i18n("Off"))
-                    setProperty(1,"key", i18n("Clock"))
-                    setProperty(2,"key", i18n("Clock and Calendar"))
+                    setProperty(0, "key", i18n("Off"))
+                    setProperty(1, "key", i18n("Clock"))
+                    setProperty(2, "key", i18n("Clock and Calendar"))
 
                     // Find width of longest string
                     tickMotion.implicitWidth = requiredWidth(tickMotionStates)
@@ -117,8 +117,8 @@ QtLayouts.ColumnLayout {
                   id: clockPositionStates
 
                   Component.onCompleted: {
-                    setProperty(0,"key", i18n("In"))
-                    setProperty(1,"key", i18n("Out"))
+                    setProperty(0, "key", i18n("In"))
+                    setProperty(1, "key", i18n("Out"))
 
                     // Find width of longest string
                     clockposition.implicitWidth = requiredWidth(clockPositionStates)                  }
@@ -140,9 +140,9 @@ QtLayouts.ColumnLayout {
                   id: stainedGlassStates
 
                   Component.onCompleted: {
-                    setProperty(0,"key", i18n("Plain"))
-                    setProperty(1,"key", i18n("Green"))
-                    setProperty(2,"key", i18n("Purple"))
+                    setProperty(0, "key", i18n("Plain"))
+                    setProperty(1, "key", i18n("Green"))
+                    setProperty(2, "key", i18n("Purple"))
 
                     // Find width of longest string
                     stainedglassstate.implicitWidth = requiredWidth(stainedGlassStates)

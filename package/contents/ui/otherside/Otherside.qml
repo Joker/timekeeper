@@ -4,7 +4,7 @@ import "../clock/back"
 
 /*
  * Otherside
- * This looks like the back of the device. The bg2 file is missing, but the
+ * This shows the back of the device. The bg2 file is missing, but the
  * woodsurround is the circle round the outside of the large device.
  *
  * Within this, the Back of the clock is shown - seems to have a set of
@@ -19,19 +19,30 @@ import "../clock/back"
 
 Item {
     id: other
-    width: 478; height: 478
+    width: 478
+    height: 478
 
-    Image { id: bg;       source: "bg2.png";          x: 2; y: 0; }
-    Image { id: surround; source: "../calendar/woodSurround.png";
+    Image {
+        id: bg
+        source: "bg2.png"
+        x: 2
+        y: 0
+    }
 
- }
+    Image {
+        id: surround
+        source: "../calendar/woodSurround.png"
+    }
 
     Back {
         // This is the back of the clock.
         // One switch flips it to the front. The other two do nothing.
-        
+
         // x: -15; y: 9; z: -1
-        x: 10; y: -2; z: -1
+        x: 10
+        y: -2
+        z: -1
+
         MouseArea {
             x: 67
             y: 32
@@ -42,6 +53,7 @@ Item {
                  side.flipped = !side.flipped
             }
         }
+
         MouseArea {
             x: 92
             y: 25
@@ -49,6 +61,7 @@ Item {
             height: 11
             cursorShape: Qt.PointingHandCursor
         }
+
         MouseArea {
             x: 42
             y: 17
@@ -83,6 +96,7 @@ Item {
                 smooth: true
             }
         }
+
         Item {
             id: s_dn
             width: 76
@@ -96,7 +110,7 @@ Item {
                 smooth: true
             }
         }
-/*
+/* TODO fix this
         transform:[
             Rotation {
                 id: sun_a
@@ -154,8 +168,6 @@ Item {
         }
     }
 
-
-
     Image {
         id: stick_l
         x: 41
@@ -172,6 +184,7 @@ Item {
             source: "stick_end.png"
         }
     }
+
     Image {
         id: stick_r
         x: 281
@@ -188,6 +201,7 @@ Item {
             source: "stick_end.png"
         }
     }
+
     Image {
         id: earth
         x: 197
@@ -196,7 +210,6 @@ Item {
         height: 83
         source: "dusk.png"
     }
-
 
     MouseArea {
         id: mousearea1
@@ -207,6 +220,7 @@ Item {
         cursorShape: Qt.PointingHandCursor
         onClicked: { }
     }
+
     MouseArea {
         id: mousearea2
         x: 257
@@ -224,9 +238,10 @@ Item {
             if(sun_angle.angle > 255 && sun_angle.angle < 282){
 
             }
-            console.log(sun_angle.angle)
+            //console.log(sun_angle.angle)
         }
     }
+
     MouseArea {
         id: mousearea3
         x: 307
@@ -235,13 +250,13 @@ Item {
         height: 28
         cursorShape: Qt.PointingHandCursor
         onClicked: {
-            console.log("==", sun.x, sun.y)
+            //console.log("==", sun.x, sun.y)
             sun.pr = 30 * Math.PI/180
             sun.an += sun.pr
             var radius = 160
             sun.x = other.height/2 + Math.cos(sun.an)*radius - 38
             sun.y = other.width/2  + Math.sin(sun.an)*radius - 38
-            console.log(sun.x, sun.y)
+            //console.log(sun.x, sun.y)
 
         }
     }

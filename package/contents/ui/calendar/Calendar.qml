@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.1
 
 Item {
     id: glass
@@ -14,17 +14,31 @@ Item {
     property alias  moon_l  : moon1
     property alias  moon_r  : moon2
 
-    Image  { x: 2; y: 0; source: "innerFramesAndGlass.png" }
+    Image  {
+        x: 2
+        y: 0
+        source: "innerFramesAndGlass.png"
+    }
 
-    Marble { id: marble; x: 2; y: 0; visible: false; }
+    Marble {
+        id: marble
+        x: 2
+        y: 0
+        visible: false
+    }
+
+    // TODO fix Marble
     // property alias ms: marble.source
     // Loader { id: marble; x: 2; y: 0 ; visible: false; }
 
-    Image { source: "woodSurround.png" }
+    Image {
+        source: "woodSurround.png"
+    }
 
     Image {
         id:month_ring
-        x: 16; y: 18
+        x: 16
+        y: 18
         source: "rotatingring.png"
         smooth: true
         rotation: 122
@@ -35,10 +49,11 @@ Item {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
             }
         }
-
     }
+
     Image {
-        x: 69; y: 71
+        x: 69
+        y: 71
         source: "counterWheel.png"
         smooth: true
         transform: Rotation {
@@ -58,7 +73,6 @@ Item {
         property int ostanov
         property int a_pred
 
-
         function inner(x, y){
             var dx = x - 223;
             var dy = y - 223;
@@ -67,13 +81,15 @@ Item {
             var out = (223 * 223) >   xy;
             var inn = (150 * 150) <=  xy;
 
-            if(out && inn) return true; else return false;
+            return (out && inn) ? true : false;
         }
+
         function ringUpdated(count) {
             var today = new Date();
             today.setDate(today.getDate()+count)
             nowTimeAndMoonPhase(today)
         }
+
         function tri_angle(x,y){
             x = x - 223;
             y = y - 223;
@@ -85,7 +101,7 @@ Item {
         }
 
         onPressed: {
-            if(inner(mouse.x, mouse.y)){
+            if (inner(mouse.x, mouse.y)) {
                 glass.lock  = false;
 
                 start_angle = tri_angle(mouse.x, mouse.y)
@@ -93,12 +109,14 @@ Item {
                 a_pred      = start_angle
             }
         }
+
         onReleased: {
             glass.lock = whell.lock
         }
+
         onPositionChanged: {
             var a, b, c
-            if(inner(mouse.x, mouse.y)){
+            if (inner(mouse.x, mouse.y)) {
                 a = tri_angle(mouse.x, mouse.y)
 
                 b = ostanov + (a - start_angle)
@@ -110,45 +128,94 @@ Item {
                 a_pred = a
 
                 ringUpdated(count)
-            }else{
+            } else {
                 start_angle = tri_angle(mouse.x, mouse.y)
                 ostanov     = glass.ring_degree
                 a_pred      = start_angle
             }
-            if(ostanov >  360)ostanov -= 360
-            if(ostanov < -360)ostanov += 360
-            // console.log(b, ostanov, a, start_angle)
+
+            if (ostanov >  360)
+                ostanov -= 360
+            else if (ostanov < -360)
+                ostanov += 360
         }
     }
+
     MouseArea {
-        id: moon1; x: 137; y: 386; width: 11; height: 11; visible: false
+        id: moon1
+        x: 137
+        y: 386
+        width: 11
+        height: 11
+        visible: false
+        cursorShape: Qt.PointingHandCursor
+        onClicked: { }
+    }
+
+    MouseArea {
+        id: moon2
+        x: 331
+        y: 386
+        width: 11
+        height: 11
+        visible: false
+        cursorShape: Qt.PointingHandCursor
+        onClicked: { }
+    }
+
+    MouseArea {
+        id: on_off_citylights
+        x: 137
+        y: 386
+        width: 11
+        height: 11
+        visible: false
+        cursorShape: Qt.PointingHandCursor
         onClicked: {
-
+            if (!glass.ch)
+                marble.citylights_on();
+            else
+                marble.citylights_off();
+            glass.ch = !glass.ch
         }
     }
     MouseArea {
-        id: moon2; x: 331; y: 386; width: 11; height: 11; visible: false
-        onClicked: {
-
-        }
-    }
-
-
-    MouseArea {
-        id: on_off_citylights; x: 137; y: 386; width: 11; height: 11; visible: false
-        onClicked: { if(!glass.ch) marble.citylights_on(); else marble.citylights_off(); glass.ch = !glass.ch }
-    }
-    MouseArea {
-        id: on_off_clouds; x: 331; y: 386; width: 11; height: 11; visible: false
+        id: on_off_clouds
+        x: 331
+        y: 386
+        width: 11
+        height: 11
+        visible: false
         property bool ch: true
-        onClicked: { if(!ch) marble.clouds_data_on(); else marble.clouds_data_off(); ch = !ch }
+        cursorShape: Qt.PointingHandCursor
+        onClicked: {
+            if (!ch)
+                marble.clouds_data_on();
+            else
+                marble.clouds_data_off();
+            ch = !ch
+        }
     }
+
     MouseArea {
-        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: false
+        id: marble_latlon
+        x: 332
+        y: 84
+        width: 11
+        height: 11
+        visible: false
+        cursorShape: Qt.PointingHandCursor
         onClicked: { marble.defaultPt() }
     }
+
     MouseArea {
-        id: save_latlon;   x: 388; y: 401; width: 11; height: 11; visible: false
+        id: save_latlon
+        x: 388
+        y: 401
+        width: 11
+        height: 11
+        visible: false
+        cursorShape: Qt.PointingHandCursor
         onClicked: { marble.saveLatLon() }
     }
 

@@ -1,4 +1,5 @@
-import QtQuick 1.1
+import QtQuick 2.1
+import org.kde.plasma.plasmoid 2.0
 
 Item {
     id: timekeeper
@@ -12,24 +13,32 @@ Item {
     property int ang: 0
 
     property alias stained_glass: stglass.state
-    property alias color:         color.extend
 
     property bool lock: false
-    property bool sw:   true
+    property int yearFormat: 0
+
+    onYearFormatChanged: {
+        if (yearFormat==0)
+            yy.state = ""
+        else
+            yy.state = "yyyy"
+    }
 
     Component.onCompleted: {
-        var year = plasmoid.readConfig("yearState").toString();
-        yy.state = year
+        //console.log("**** Timekeeper completed");
     }
 
     Item {
         id:cog_with_shadow
-        x: 29;     y: 13
-        width: 84; height: 84
+        x: 29
+        y: 13
+        width: 84
+        height: 84
 
         Image {
             id: cog
-            x: -6; y: -5;
+            x: -6
+            y: -5;
             source: "monthCogShadow.png"
             smooth: true;
             transform: Rotation {
@@ -42,8 +51,10 @@ Item {
         }
         Image {
             id: cog_sh
-            x: 1; y: 0;
-            width: 82; height: 84;
+            x: 1
+            y: 0;
+            width: 82
+            height: 84;
             source: "monthCog.png"
             smooth: true;
             transform: Rotation {
@@ -68,8 +79,10 @@ Item {
 
         Rectangle {
             id: yearBackground
-            x: 95;y: 70
-            width: 36;height: 36
+            x: 95
+            y: 70
+            width: 36
+            height: 36
             radius: width*0.5
             gradient: Gradient {
                 GradientStop {
@@ -86,8 +99,10 @@ Item {
         }
         Rectangle {
             id: dayBackground
-            x: 95;y: 5
-            width: 36;height: 36
+            x: 95
+            y: 5
+            width: 36
+            height: 36
             radius: width*0.5
             gradient: Gradient {
                 GradientStop {
@@ -104,8 +119,10 @@ Item {
         }
         Rectangle {
             id: monthBackground
-            x: 50;y: 17
-            width: 21;height: 76
+            x: 50
+            y: 17
+            width: 21
+            height: 76
             gradient: Gradient {
                 GradientStop {
                     id: gradientstop1
@@ -132,10 +149,12 @@ Item {
         }
         Rectangle {
             id: rectangle_glass
-            x: 139; y: 36
+            x: 139
+            y: 36
             opacity: 0.53
             visible: false
-            width: 40;height: 40
+            width: 40
+            height: 40
             radius: width*0.5
         }
 
@@ -179,18 +198,25 @@ Item {
                 PropertyChanges { target: yearBackground;  opacity: 0.65 }
             },
             State {
-                id: color
-                name: "color"
-                extend: "green"
-                when: count != 0
+              name: "plain"
+
+              PropertyChanges { target: clock.week_glass; visible: false }
+              PropertyChanges { target: clock.week_bgd;   visible: true }
             }
         ]
     }
 
-    Image { id:tk_img; x: 0; y: 0; source: "timekeeper.png"
+    Image {
+        id:tk_img
+        x: 0
+        y: 0
+        source: "timekeeper.png"
+
         Text {
-            x: 102; y: 14
-            width: 28; height: 22
+            x: 102
+            y: 14
+            width: 28
+            height: 22
             text: day
             font.pointSize: 15
             font.family: fixedFont.name
@@ -198,20 +224,24 @@ Item {
 
         }
         Text {
-            x: 25; y: 45
-            width: 69; height: 19
+            x: 25
+            y: 45
+            width: 69
+            height: 19
             text: month
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pointSize: main.fontMonthSize
+            font.pointSize: compact.fontMonthSize
             font.family: fixedFont.name
             color: "#333333"
 
         }
         Text {
             id: yy
-            x: 100; y: 78
-            width: 28; height: 22
+            x: 100
+            y: 78
+            width: 28
+            height: 22
             text: year
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 15
@@ -227,24 +257,24 @@ Item {
     }
 
     MouseArea {
-        id: yearFormat
-        x: 129; y: 81
-        width: 8; height: 8
+        //id: yearFormat
+        x: 129
+        y: 81
+        width: 8
+        height: 8
+        cursorShape: Qt.PointingHandCursor
         onClicked: change_yearFormat();
     }
-    function change_yearFormat() {
-        if(sw) yy.state = "yyyy"
-        else   yy.state = ""
 
-        sw = !sw
-        plasmoid.writeConfig("yearState", yy.state);
+    function change_yearFormat() {
+        shortYear = !shortYear
     }
 
     states: State {
-                name: "out"
-                PropertyChanges { target: timekeeper; x: 354;}
-                PropertyChanges { target: calendar;   lock: false;}
-            }
+        name: "out"
+        PropertyChanges { target: timekeeper; x: 354;}
+        PropertyChanges { target: calendar;   lock: false;}
+    }
 
     transitions: [
         Transition {

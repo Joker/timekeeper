@@ -1,8 +1,0 @@
-#!/bin/bash
-
-METADATA="package/metadata.desktop"
-VERSION=$(grep "X-KDE-PluginInfo-Version" $METADATA | sed 's/.*=//')
-
-cd package
-zip -r ../timekeeper-${VERSION}.plasmoid *
-cd ..

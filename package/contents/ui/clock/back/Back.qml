@@ -1,8 +1,7 @@
 import QtQuick 2.1
 
 Rectangle {
-    width: 177
-    height: 177
+    width: 177; height: 177
     color: "transparent"
 
     Image {

@@ -15,11 +15,8 @@ Item {
 
     Rectangle {
         id: glass
-        x: 77
-        y: 89
-        z: 5
-        width: 20
-        height: 46
+        x: 77; y: 89; z: 5
+        width: 20; height: 46
         opacity: 0.65
         visible: false
         gradient: Gradient {
@@ -30,53 +27,30 @@ Item {
         }
         rotation: 270
     }
-
-    Image {
-        id: background
-        source: "clock_old.png"
-        z: 5
-    }
-
-    Image {
-        id: week_bg
-        x: 64
-        y: 102
-        z: 5
-        source: "week_bg.png"
-    }
-
+    Image { id: background; source: "clock_old.png" ; z: 5}
+    Image { id: week_bg; x: 64; y: 102; z: 5;    source: "week_bg.png" }
     Text {
-        x: 66
-        y: 104
-        z: 5
-        width: 42
-        height: 17
+        x: 66; y: 104; z: 5
+        width: 42; height: 17
         text: clock.week_day
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pointSize: compact.fontWeekSize
+        font.pointSize: main.fontWeekSize
         font.family: fixedFont.name
         color: "#333333"
+
     }
 
-    Image {
-        x: 77
-        y: 74
-        z: 5
-        source: "center.png"
-    }
+    Image { x: 77; y: 74; z: 5;  source: "center.png" }
 
     Image {
-        x: 75
-        y: 29
-        z: 5
+        x: 75; y: 29; z: 5
         source: "hour.png"
         smooth: true
 
         transform: Rotation {
             id: hourRotation
-            origin.x: 12
-            origin.y: 53;
+            origin.x: 12; origin.y: 53;
             angle: (clock.hours * 30) + (clock.minutes * 0.5)
             Behavior on angle {
                 SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
@@ -85,9 +59,7 @@ Item {
     }
 
     Image {
-        x: 79
-        y: 13
-        z: 5
+        x: 79; y: 13; z: 5
         source: "minute.png"
         smooth: true
 
@@ -102,9 +74,7 @@ Item {
     }
 
     Image {
-        x: 85
-        y: 32
-        z: 5
+        x: 85; y: 32; z: 5
         source: "second.png"
         smooth: true
 
@@ -118,22 +88,11 @@ Item {
         }
     }
 
-    Image {
-        x: 26
-        y: 10
-        z: 5
-        source: "clockglass.png"
-    }
+    Image { x: 26; y: 10; z: 5; source: "clockglass.png"}
 
     states: [
-        State {
-          name: "in";
-          PropertyChanges { target: clock; x: 29; y: 60; }
-        },
-        State {
-          name: "out";
-          PropertyChanges { target: clock; x: -9; y: 42; }
-        }
+        State { name: "out"; PropertyChanges { target: clock; x: -9; y: 42; } },
+        State { name: "in";  PropertyChanges { target: clock; x: 29; y: 60; } }
     ]
     transitions: Transition {
         NumberAnimation { properties: "x"; duration: 1000 }

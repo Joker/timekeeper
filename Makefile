@@ -1,10 +1,15 @@
 VERSION = 0.6
 
-view: upgrade
-			@echo
-			@echo '------------------------------------------------'
-			@echo
-			plasmoidviewer -a org.kde.userbase.plasma.timekeeper
+view:
+			plasmoidviewer --applet package
+qml:
+			qmlscene package/contents/ui/main.qml
+install: version
+			kpackagetool5 -t Plasma/Applet --install package
+upgrade: version
+			kpackagetool5 -t Plasma/Applet --upgrade package
+remove:
+			kpackagetool5 -t Plasma/Applet --remove org.kde.plasma.timekeeper
 
 
 
@@ -19,12 +24,6 @@ plasmoid: version
 
 
 
-install:
-			plasmapkg2 --install package
-upgrade:
-			plasmapkg2 --upgrade package
-
-
 clear:
 			find . -type f -name '*.qmlc' -delete
-			find . -type f -name '*.jsc' -delete
+			find . -type f -name '*.jsc'  -delete

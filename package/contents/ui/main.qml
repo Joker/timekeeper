@@ -1,4 +1,5 @@
 import QtQuick 2.1
+import org.kde.plasma.plasmoid 2.0
 
 import "clock"
 import "clock/wheels"
@@ -18,7 +19,9 @@ import "otherside/riseset.js" as RS
 Rectangle {
     id: main
     width: 478; height: 478
+
     color: "transparent"
+    Plasmoid.backgroundHints: "NoBackground"
 
     property alias lx : luna.x
     property alias ly : luna.y
@@ -36,6 +39,7 @@ Rectangle {
     }
 
     Component.onCompleted: {
+// TODO otherside
 /*
         // refresh moon image
         plasmoid.addEventListener("dataUpdated", dataUpdated);
@@ -44,6 +48,7 @@ Rectangle {
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
 // */
         defaultDate()
+// TODO otherside
 /*
         RS.sun_riseset (lat, lon, new Date())
         RS.moon_riseset(lat, lon, new Date())
@@ -354,6 +359,7 @@ Rectangle {
             SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :4;}// velocity: 490}
         }
     }
+    // TODO ConfBoard
     /*
     ConfigBoard {
         id:conf

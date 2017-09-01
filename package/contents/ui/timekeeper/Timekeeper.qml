@@ -17,10 +17,10 @@ Item {
     property bool lock: false
     property bool sw:   true
 
+    property string yearState: plasmoid.configuration.yearState
+
     Component.onCompleted: {
-        // TODO
-        // var year = plasmoid.readConfig("yearState").toString();
-        // yy.state = year
+        yy.state = yearState
     }
 
     Item {
@@ -239,8 +239,8 @@ Item {
         else   yy.state = ""
 
         sw = !sw
-        // TODO
-        // plasmoid.writeConfig("yearState", yy.state);
+        
+        plasmoid.configuration.yearState = yy.state
     }
 
     states: State {

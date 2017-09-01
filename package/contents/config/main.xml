@@ -3,46 +3,46 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 	http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
-		<kcfgfile name=""/>
+	<kcfgfile name=""/>
 
-		<group name="General">
-			<entry name="mainState" type="String">
-				<label>mainState</label>
-				<default></default>
-			</entry>
-			<entry name="clockState" type="String">
-				<label>clockState</label>
-				<default></default>
-			</entry>
-			<entry name="whellState" type="String">
-				<label>whellState</label>
-				<default></default>
-			</entry>
+	<group name="General">
+		<entry name="mainState" type="String">
+			<label>mainState</label>
+			<default></default>
+		</entry>
+		<entry name="clockState" type="String">
+			<label>clockState</label>
+			<default></default>
+		</entry>
+		<entry name="whellState" type="String">
+			<label>whellState</label>
+			<default></default>
+		</entry>
 
-                        <entry name="stainedglassState" type="String">
-                                <label>stainedglassState</label>
-                                <default></default>
-                        </entry>
+		<entry name="stainedglassState" type="String">
+			<label>stainedglassState</label>
+			<default></default>
+		</entry>
 
-			<entry name="terraState" type="String">
-				<label>terraState</label>
-				<default></default>
-			</entry>
-			<entry name="terraImage" type="String">
-				<label>terraImage</label>
-				<default></default>
-			</entry>
+		<entry name="terraState" type="String">
+			<label>terraState</label>
+			<default></default>
+		</entry>
+		<entry name="terraImage" type="String">
+			<label>terraImage</label>
+			<default>e1.png</default>
+		</entry>
 
-                        <entry name="yearState" type="String">
-                                <label>yearState</label>
-                                <default></default>
-                        </entry>
+		<entry name="yearState" type="String">
+			<label>yearState</label>
+			<default></default>
+		</entry>
 
-			<entry name="lat" type="Double">
-				<default>0</default>
-			</entry>
-			<entry name="lon" type="Double">
-				<default>0</default>
-			</entry>
-		</group>
+		<entry name="lat" type="Double">
+			<default>0</default>
+		</entry>
+		<entry name="lon" type="Double">
+			<default>0</default>
+		</entry>
+	</group>
 </kcfg>

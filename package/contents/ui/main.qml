@@ -27,29 +27,36 @@ Rectangle {
     property alias ly : luna.y
     property int count: 0
 
-    property double lon: 37.620789
-    property double lat: 55.750513
+    // TODO marble
+    // property double lon: 37.620789
+    // property double lat: 55.750513
 
     property string fontPath: "clock/Engravers_MT.ttf"
     property int fontWeekSize: 11
     property int fontMonthSize:14
+
     FontLoader {
         id: fixedFont; source: fontPath;
         onStatusChanged: if (fixedFont.status == FontLoader.Error) console.log("Cannot load font")
     }
 
+    property string mainState:         plasmoid.configuration.mainState
+    property string clockState:        plasmoid.configuration.clockState
+    property string whellState:        plasmoid.configuration.whellState
+    property string stainedglassState: plasmoid.configuration.stainedglassState
+
     Component.onCompleted: {
-// TODO otherside
-/*
+        // TODO otherside
+        /*
         // refresh moon image
         plasmoid.addEventListener("dataUpdated", dataUpdated);
         dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
 
         // plasmoid.setAspectRatioMode(ConstrainedSquare);
-// */
+        // */
         defaultDate()
-// TODO otherside
-/*
+        // TODO otherside
+        /*
         RS.sun_riseset (lat, lon, new Date())
         RS.moon_riseset(lat, lon, new Date())
 
@@ -66,26 +73,21 @@ Rectangle {
         var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
         dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
         dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-// */
-        // TODO
-        /*
-        plasmoid.setBackgroundHints(NoBackground);
+        // */
+        // TODO marble
+        //*
+        // plasmoid.setBackgroundHints(NoBackground);
         // calendar.ms = "calendar/Marble.qml"
 
-
-        var mainState         = plasmoid.readConfig("mainState").toString();
-        var clockState        = plasmoid.readConfig("clockState").toString();
-        var whellState        = plasmoid.readConfig("whellState")
-        var stainedglassState = plasmoid.readConfig("stainedglassState").toString();
-
-        clock.state      = clockState
-        main.state       = mainState
-        whell.hide       = whellState
-        timekeeper.stained_glass = stainedglassState
-        var vlat = plasmoid.readConfig("lat")
-        var vlon = plasmoid.readConfig("lon")
-        if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
+        // var vlat = plasmoid.readConfig("lat")
+        // var vlon = plasmoid.readConfig("lon")
+        // if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
         // */
+
+        clock.state              = clockState
+        main.state               = mainState
+        whell.hide               = whellState
+        timekeeper.stained_glass = stainedglassState
     }
 
 
@@ -193,8 +195,7 @@ Rectangle {
                                 if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
                                                                     else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
 
-                                // TODO
-                                // plasmoid.writeConfig("stainedglassState", timekeeper.stained_glass);
+                                plasmoid.configuration.stainedglassState = timekeeper.stained_glass
                             }
                         }
                         MouseArea {
@@ -231,8 +232,7 @@ Rectangle {
                                 // */
                             }
 
-                            // TODO
-                            // plasmoid.writeConfig("mainState", main.state);
+                            plasmoid.configuration.mainState = main.state
                         }
                     }
                 }
@@ -294,8 +294,8 @@ Rectangle {
                     onClicked:{
                         if(main.state == "marble") calendar.state = ""
                         if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
-                        // TODO
-                        // plasmoid.writeConfig("mainState", main.state);
+
+                        plasmoid.configuration.mainState = main.state
                     }
                 }
                 MouseArea {
@@ -305,8 +305,8 @@ Rectangle {
 
                     onClicked: {
                         clock.state == "out" ? clock.state = "in" : clock.state = "out";
-                        // TODO
-                        // plasmoid.writeConfig("clockState", clock.state);
+
+                        plasmoid.configuration.clockState = clock.state
                     }
                 }
                 MouseArea {
@@ -316,8 +316,8 @@ Rectangle {
 
                     onClicked: {
                         whell.hide = !whell.hide
-                        // TODO
-                        // plasmoid.writeConfig("whellState", whell.hide);
+
+                        plasmoid.configuration.whellState = whell.hide
                     }
 
                 }

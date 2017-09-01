@@ -10,12 +10,13 @@ Item {
     property int    earth_degree: 0
     property alias  moon_z: moon.z
 
+    property string terraImage: plasmoid.configuration.terraImage
+    property string terraState: plasmoid.configuration.terraState
+
+
     Component.onCompleted: {
-        // TODO
-        // var terraImage = plasmoid.readConfig("terraImage").toString();
-        // var terraState = plasmoid.readConfig("terraState").toString();
-        // if (terraImage.length > 0) { e_f.source = terraImage }
-        // if (terraState.length > 0) { home.state = terraState }
+        e_f.source = terraImage
+        home.state = terraState
     }
 
     // state: "big_earth2"
@@ -26,64 +27,62 @@ Item {
         width: 84; height: 84
 
         Flipable {
-             id: earth
-             x: 8; y: 8
-             width: 68; height: 68
+            id: earth
+            x: 8; y: 8
+            width: 68; height: 68
 
-             property bool flipped: false
-             property int  n: 2
+            property bool flipped: false
+            property int  n: 2
 
-             Image { id: earth_sh; x: -7; y: -7; z:-1; smooth: true; source: "earthUnderShadow.png" }
+            Image { id: earth_sh; x: -7; y: -7; z:-1; smooth: true; source: "earthUnderShadow.png" }
 
-             front: Image { id: e_f; source: "e1.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
-             back:  Image { id: e_b; source: "e2.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+            front: Image { id: e_f; source: "e1.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+            back:  Image { id: e_b; source: "e2.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
 
-             transform: Rotation {
-                 id: rotation
-                 origin.x: earth.width/2
-                 origin.y: earth.height/2
-                 axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
-                 angle: 0    // the default angle
-             }
+            transform: Rotation {
+                id: rotation
+                origin.x: earth.width/2
+                origin.y: earth.height/2
+                axis.x: 1; axis.y: 0; axis.z: 0     // set axis.y to 1 to rotate around y-axis
+                angle: 0    // the default angle
+            }
 
-             states: [
-                 State {
-                     name: "back"
-                     PropertyChanges { target: rotation; angle: 180 }
-                     when: earth.flipped
-                 },
-                 State {
-                     name: "front"
-                     PropertyChanges { target: rotation; angle: 0 }
-                     when: !earth.flipped
-                 }
-             ]
+            states: [
+                State {
+                    name: "back"
+                    PropertyChanges { target: rotation; angle: 180 }
+                    when: earth.flipped
+                },
+                State {
+                    name: "front"
+                    PropertyChanges { target: rotation; angle: 0 }
+                    when: !earth.flipped
+                }
+            ]
 
-             transitions: Transition {
-                 // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
-                 SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
-             }
+            transitions: Transition {
+                // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
+                SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
+            }
 
-             MouseArea {
-                 anchors.fill: parent
-                 cursorShape: Qt.PointingHandCursor
-                 onClicked: {
-                     var img = "e"+earth.n+".png"
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    var img = "e"+earth.n+".png"
 
-                     earth.flipped = !earth.flipped
-                     if (earth.flipped)
+                    earth.flipped = !earth.flipped
+                    if (earth.flipped)
                         e_b.source = img;
                     else
                         e_f.source = img;
 
                     earth.n++;
-                     if(earth.n == 7) earth.n = 1;
+                        if(earth.n == 7) earth.n = 1;
                     
-                    // TODO
-                    //  plasmoid.writeConfig("terraImage", img);
-                    //  compact.terraImage = img;
-                 }
-             }
+                    plasmoid.configuration.terraImage = img
+                }
+            }
         }
 
     }
@@ -114,9 +113,7 @@ Item {
             onClicked: {
                 home.state == "big_moon" ? home.state = "" : home.state = "big_moon";
                 
-                // TODO
-                // plasmoid.writeConfig("terraState", home.state);
-                // compact.terraState = home.state;
+                plasmoid.configuration.terraState = home.state
             }
         }
     }

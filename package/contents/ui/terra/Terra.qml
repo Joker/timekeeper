@@ -179,7 +179,8 @@ Item {
         State {
             name: "big_earth2"
             extend: "big_earth"
-            PropertyChanges { target: earth;    opacity: 0 }
+            // TODO marble
+            // PropertyChanges { target: earth;    opacity: 0 }
             PropertyChanges { target: earth_sh; visible: false }
             PropertyChanges { target: moon;     visible: false }
         }

@@ -1,4 +1,5 @@
-VERSION = 0.6
+VER = 0.6
+ID = org.kde.plasma.timekeeper
 
 view:
 			plasmoidviewer --applet package
@@ -9,18 +10,19 @@ install: version
 upgrade: version
 			kpackagetool5 -t Plasma/Applet --upgrade package
 remove:
-			kpackagetool5 -t Plasma/Applet --remove org.kde.plasma.timekeeper
+			kpackagetool5 -t Plasma/Applet --remove $(ID)
 
 
 
 version:
-			sed -i 's/^X-KDE-PluginInfo-Version=.*$$/X-KDE-PluginInfo-Version=$(VERSION)/' package/metadata.desktop
+			sed -i 's/^X-KDE-PluginInfo-Version=.*$$/X-KDE-PluginInfo-Version=$(VER)/' package/metadata.desktop
+			sed -i 's/^X-KDE-PluginInfo-Name=.*$$/X-KDE-PluginInfo-Name=$(ID)/' package/metadata.desktop
 
 
 plasmoid: version
-			cd package; zip -r ../timekeeper-$(VERSION).plasmoid *
+			cd package; zip -r ../timekeeper-$(VER).plasmoid *
 7z: version
-			cd package; 7z a -tzip ../timekeeper-$(VERSION).plasmoid *
+			cd package; 7z a -tzip ../timekeeper-$(VER).plasmoid *
 
 
 

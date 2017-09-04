@@ -27,23 +27,29 @@ Rectangle {
     property alias ly : luna.y
     property int count: 0
 
+
+    readonly property string fontName:   plasmoid.configuration.fontName
+    readonly property int fontWeekSize:  plasmoid.configuration.fontWeekSize
+    readonly property int fontMonthSize: plasmoid.configuration.fontMonthSize
+
     // TODO marble
-    // property double lon: 37.620789
-    // property double lat: 55.750513
-
-    property string fontPath: "clock/Engravers_MT.ttf"
-    property int fontWeekSize: 11
-    property int fontMonthSize:14
-
-    FontLoader {
-        id: fixedFont; source: fontPath;
-        onStatusChanged: if (fixedFont.status == FontLoader.Error) console.log("Cannot load font")
-    }
+    // readonly property double lon:        plasmoid.configuration.lon
+    // readonly property double lat:        plasmoid.configuration.lat
 
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
     property string whellState:        plasmoid.configuration.whellState
     property string stainedglassState: plasmoid.configuration.stainedglassState
+
+    FontLoader {
+        id:   fixedFont;
+        name: fontName;
+        source: "clock/Engravers_MT.ttf";
+        onStatusChanged: {
+            if (fixedFont.status == FontLoader.Error) console.log("Cannot load font");
+            // console.log(fixedFont.name, fixedFont.source)
+        }
+    }
 
     Component.onCompleted: {
         // TODO otherside
@@ -191,6 +197,8 @@ Rectangle {
                             id: color_ma
                             x: 131; y: 25
                             width: 9; height: 11
+                            cursorShape: Qt.PointingHandCursor
+
                             onClicked: {
                                 if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
                                                                     else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
@@ -202,12 +210,15 @@ Rectangle {
                             id: flip_ma
                             x: 154; y: 96
                             width: 10; height: 24
+                            cursorShape: Qt.PointingHandCursor
                             // onClicked: { side.flipped = !side.flipped }
                         }
                         MouseArea {
                             id: default_ma
                             x: 178; y: 32
                             width: 12; height: 14
+                            cursorShape: Qt.PointingHandCursor
+
                             onClicked: defaultDate()
                         }
                     }
@@ -216,6 +227,8 @@ Rectangle {
                         id: marble_ma
                         x: 0; y: 49
                         width: 13; height: 14
+                        cursorShape: Qt.PointingHandCursor
+
                         onClicked: {
                             // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
 
@@ -264,6 +277,8 @@ Rectangle {
                         id: tiktak_ma
                         x: 41; y: 38
                         width: 14; height: 14
+                        cursorShape: Qt.PointingHandCursor
+
                         onClicked: {
                             if(!whell.lock){
                                 whell.ang = -10
@@ -290,11 +305,11 @@ Rectangle {
                     id: center_ma
                     x: 80; y: 76
                     width: 14; height: 14
+                    cursorShape: Qt.PointingHandCursor
 
                     onClicked:{
                         if(main.state == "marble") calendar.state = ""
                         if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
-
                         plasmoid.configuration.mainState = main.state
                     }
                 }
@@ -302,10 +317,10 @@ Rectangle {
                     id: in_out_ma
                     x: 62; y: 86
                     width: 11; height: 12
+                    cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
                         clock.state == "out" ? clock.state = "in" : clock.state = "out";
-
                         plasmoid.configuration.clockState = clock.state
                     }
                 }
@@ -313,10 +328,10 @@ Rectangle {
                     id: hide_ma
                     x: 101; y: 86
                     width: 11; height: 12
+                    cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
                         whell.hide = !whell.hide
-
                         plasmoid.configuration.whellState = whell.hide
                     }
 

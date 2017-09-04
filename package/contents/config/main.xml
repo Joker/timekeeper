@@ -39,10 +39,20 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 		</entry>
 
 		<entry name="lat" type="Double">
-			<default>0</default>
+			<default>55.750513</default>
 		</entry>
 		<entry name="lon" type="Double">
-			<default>0</default>
+			<default>37.620789</default>
+		</entry>
+
+		<entry name="fontName" type="String">
+			<default>Engravers MT</default>
+		</entry>
+		<entry name="fontWeekSize" type="Int">
+			<default>11</default>
+		</entry>
+		<entry name="fontMonthSize" type="Int">
+			<default>14</default>
 		</entry>
 	</group>
 </kcfg>

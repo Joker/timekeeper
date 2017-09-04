@@ -11,7 +11,8 @@ upgrade: version
 			kpackagetool5 -t Plasma/Applet --upgrade package
 remove:
 			kpackagetool5 -t Plasma/Applet --remove $(ID)
-
+ls:
+			kpackagetool5 --list --type Plasma/Applet
 
 
 version:

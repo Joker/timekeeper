@@ -1,5 +1,5 @@
 VER = 0.7
-ID = org.kde.plasma.timekeeper
+ID = kde.plasma.timekeeper
 
 view:
 			plasmoidviewer --applet package

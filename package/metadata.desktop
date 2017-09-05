@@ -14,7 +14,7 @@ X-KDE-PluginInfo-Website=https://github.com/Joker/timekeeper
 X-KDE-PluginInfo-Version=0.7
 X-KDE-PluginInfo-Category=Date and Time
 X-KDE-PluginInfo-License=GPLv3
-X-KDE-PluginInfo-Name=org.kde.plasma.timekeeper
+X-KDE-PluginInfo-Name=kde.plasma.timekeeper
 
 X-KDE-ServiceTypes=Plasma/Applet
 

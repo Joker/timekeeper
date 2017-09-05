@@ -3,7 +3,7 @@ Encoding=UTF-8
 Name=Time Keeper
 Comment=It provides a clock and calendar functions via a steampunk interface.
 
-Icon=applications-system
+Icon=desktop
 Type=Service
 ServiceTypes=Plasma/Applet
 
@@ -11,7 +11,7 @@ X-KDE-ParentApp=
 X-KDE-PluginInfo-Author=Joker
 X-KDE-PluginInfo-Email=nice.way@live.com
 X-KDE-PluginInfo-Website=https://github.com/Joker/timekeeper
-X-KDE-PluginInfo-Version=0.6
+X-KDE-PluginInfo-Version=0.7
 X-KDE-PluginInfo-Category=Date and Time
 X-KDE-PluginInfo-License=GPLv3
 X-KDE-PluginInfo-Name=org.kde.plasma.timekeeper

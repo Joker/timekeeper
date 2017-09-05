@@ -1,4 +1,4 @@
-VER = 0.6
+VER = 0.7
 ID = org.kde.plasma.timekeeper
 
 view:

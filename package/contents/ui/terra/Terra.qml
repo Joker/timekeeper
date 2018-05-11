@@ -4,7 +4,7 @@ import "../luna"
 Item {
     id: home;
     width: 152; height: 152
-
+    
     property alias  moon_degree: moon_angle.angle
     property alias  phase: svg.phase
     property int    earth_degree: 0
@@ -27,6 +27,9 @@ Item {
             id: earth
             x: 8; y: 8
             property int  rot: 0
+            property int  earthNumFrames: 96
+            property int  framesPerHour: earthNumFrames / 24
+            property int  framesPerMin: 60 / framesPerHour
             
             source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent
             
@@ -56,7 +59,7 @@ Item {
                     var hours    = date.getHours();
                     var minutes  = date.getMinutes();
                     
-                    earth.rot = (hours * 4 + Math.floor((minutes + offest) / 15)) % 96;
+                    earth.rot = (hours * earth.framesPerHour + Math.floor((minutes + offest) / earth.framesPerMin)) % earth.earthNumFrames;
                     
                     var img = "animation/earth"+earth.rot+".png";
 

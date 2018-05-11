@@ -59,7 +59,7 @@ Item {
                     var hours    = date.getHours();
                     var minutes  = date.getMinutes();
                     
-                    earth.rot = (hours * earth.framesPerHour + Math.floor((minutes + offest) / earth.framesPerMin)) % earth.earthNumFrames;
+                    earth.rot = (hours * earth.framesPerHour + Math.round((minutes + offest) / earth.framesPerMin)) % earth.earthNumFrames;
                     
                     var img = "animation/earth"+earth.rot+".png";
 

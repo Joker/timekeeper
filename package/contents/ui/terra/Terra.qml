@@ -15,7 +15,6 @@ Item {
 
 
     Component.onCompleted: {
-        e_f.source = terraImage
         home.state = terraState
     }
 
@@ -26,18 +25,14 @@ Item {
         x: 34; y: 34
         width: 84; height: 84
 
-        Flipable {
+        Image {
             id: earth
             x: 8; y: 8
-            width: 68; height: 68
 
-            property bool flipped: false
             property int  n: 2
-
-            Image { id: earth_sh; x: -7; y: -7; z:-1; smooth: true; source: "earthUnderShadow.png" }
-
-            front: Image { id: e_f; source: "e1.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
-            back:  Image { id: e_b; source: "e2.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+            property int  rot: 0
+            
+            source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent
 
             transform: Rotation {
                 id: rotation
@@ -47,40 +42,35 @@ Item {
                 angle: 0    // the default angle
             }
 
-            states: [
-                State {
-                    name: "back"
-                    PropertyChanges { target: rotation; angle: 180 }
-                    when: earth.flipped
-                },
-                State {
-                    name: "front"
-                    PropertyChanges { target: rotation; angle: 0 }
-                    when: !earth.flipped
-                }
-            ]
-
             transitions: Transition {
                 // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
                 SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
             }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    var img = "e"+earth.n+".png"
-
-                    earth.flipped = !earth.flipped
-                    if (earth.flipped)
-                        e_b.source = img;
-                    else
-                        e_f.source = img;
-
-                    earth.n++;
-                        if(earth.n == 7) earth.n = 1;
+            
+            Timer {
+                id: spin_ani
+                interval: 60000; 
+                repeat: true;
+                running: true
+                triggeredOnStart: true
+                property int hours
+                property int minutes
+                onTriggered: { 
+                    var date = new Date;
+                    hours    = date.getHours();
+                    minutes  = date.getMinutes();
                     
-                    plasmoid.configuration.terraImage = img
+                    earth.rot = hours * 4 + Math.round(minutes / 15);
+                    console.log(hours);
+        
+                    if(earth.rot >= 96){ 
+                        earth.rot = 0; 
+                    } else {
+                        earth.rot += 1; 
+                    }
+                    var img = "animation/earth"+earth.rot+".png";
+
+                    earth.source = img;
                 }
             }
         }

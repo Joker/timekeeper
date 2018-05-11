@@ -186,75 +186,74 @@ Rectangle {
                 id:calendar;
                 z: 1
                 property bool ch: true
-
-                Timekeeper{
-                    id: timekeeper;
-                    x: 285;y: 186;
-
-                    Item{
-                        id: def
-                        MouseArea {
-                            id: color_ma
-                            x: 131; y: 25
-                            width: 9; height: 11
-                            cursorShape: Qt.PointingHandCursor
-
-                            onClicked: {
-                                if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
-                                                                    else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
-
-                                plasmoid.configuration.stainedglassState = timekeeper.stained_glass
-                            }
-                        }
-                        MouseArea {
-                            id: flip_ma
-                            x: 154; y: 96
-                            width: 10; height: 24
-                            cursorShape: Qt.PointingHandCursor
-                            // onClicked: { side.flipped = !side.flipped }
-                        }
-                        MouseArea {
-                            id: default_ma
-                            x: 178; y: 32
-                            width: 12; height: 14
-                            cursorShape: Qt.PointingHandCursor
-
-                            onClicked: defaultDate()
-                        }
-                    }
-
+            }
+            
+            Timekeeper{
+                id: timekeeper;
+                x: 285;y: 186;
+                z: 9
+                Item{
+                    id: def
                     MouseArea {
-                        id: marble_ma
-                        x: 0; y: 49
-                        width: 13; height: 14
+                        id: color_ma
+                        x: 131; y: 25
+                        width: 9; height: 11
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
+                            if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
+                                                                else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
 
-                            if(main.state == "marble") {
-                                main.state = ""; calendar.state = ""
-                            } else {
-                                main.state = "marble";
-                                // TODO marble
-                                /*
-                                if(calendar.ch){
-                                    calendar.mar.citylights_off();
-                                    calendar.mar.citylights_on();
-                                }
-                                // */
-                            }
-
-                            plasmoid.configuration.mainState = main.state
+                            plasmoid.configuration.stainedglassState = timekeeper.stained_glass
                         }
+                    }
+                    MouseArea {
+                        id: flip_ma
+                        x: 154; y: 96
+                        width: 10; height: 24
+                        cursorShape: Qt.PointingHandCursor
+                        // onClicked: { side.flipped = !side.flipped }
+                    }
+                    MouseArea {
+                        id: default_ma
+                        x: 178; y: 32
+                        width: 12; height: 14
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: defaultDate()
                     }
                 }
 
+                MouseArea {
+                    id: marble_ma
+                    x: 0; y: 49
+                    width: 13; height: 14
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: {
+                        // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
+
+                        if(main.state == "marble") {
+                            main.state = ""; calendar.state = ""
+                        } else {
+                            main.state = "marble";
+                            // TODO marble
+                            /*
+                            if(calendar.ch){
+                                calendar.mar.citylights_off();
+                                calendar.mar.citylights_on();
+                            }
+                            // */
+                        }
+
+                        plasmoid.configuration.mainState = main.state
+                    }
+                }
             }
             Clock {
                 id: clock;
-                x: 29; y: 60; z: 5
-        //        shift: 4
+                x: 29; y: 60; 
+                z: 7
                 state: "in"
 
 
@@ -329,7 +328,7 @@ Rectangle {
             Terra {
                 id:luna;
                 x: 162; y: 90
-                z: 7
+                z: 2
             }
 
         }
@@ -372,6 +371,13 @@ Rectangle {
                 scale: 0.3
                 rotation: 360
                 x: -119; y: -88
+            }
+            PropertyChanges { 
+                target: timekeeper
+                scale: 0.3
+                rotation: 360
+                x: 10; y: 20
+                z: 1
             }
             PropertyChanges { target: whell; hide:   true  }
             PropertyChanges { target: luna;  state: "home" }

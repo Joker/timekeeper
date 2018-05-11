@@ -59,7 +59,7 @@ Item {
         Timer {
             id: cog_ani
             property int a: 12
-            interval: 100; repeat: true;
+            interval: 1000; repeat: true;
             onTriggered: { if(ang >= 360 || ang <= -360){ ang = 0; }; ang += a; }
         }
     }

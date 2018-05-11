@@ -18,8 +18,6 @@ Item {
         home.state = terraState
     }
 
-    // state: "big_earth2"
-
     Item {
         id:terra
         x: 34; y: 34
@@ -28,11 +26,11 @@ Item {
         Image {
             id: earth
             x: 8; y: 8
-
-            property int  n: 2
             property int  rot: 0
             
             source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent
+            
+            Image { id: earth_sh; width: 84; height: 84; x: earth.x + 9; y: earth.y + 9; z: -1; smooth: true; source: "earthUnderShadow.png" }
 
             transform: Rotation {
                 id: rotation
@@ -43,7 +41,6 @@ Item {
             }
 
             transitions: Transition {
-                // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
                 SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
             }
             
@@ -130,11 +127,6 @@ Item {
                 x: 30; y: 30
                 width: 25;height: 25
             }
-            PropertyChanges {
-                target: earth_sh
-                x: -3; y: -3
-                width: 31;height: 32
-            }
             PropertyChanges { target:main; lx: 162 ;  ly: 165         }
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0 }
 
@@ -163,15 +155,12 @@ Item {
             PropertyChanges { target: main;     lx: 162 ; ly: 167 }
             PropertyChanges { target: home;     moon_degree: 0; earth_degree: 0; }
             PropertyChanges { target: earth;    x:-58; y: -57;  width: 200; height: 200 }
-            PropertyChanges { target: earth_sh; x: 59; y: 59; }
             onCompleted: {calendar.state = "earth"; home.state = "big_earth2"}
         },
         State {
             name: "big_earth2"
             extend: "big_earth"
             // TODO marble
-            // PropertyChanges { target: earth;    opacity: 0 }
-            PropertyChanges { target: earth_sh; visible: false }
             PropertyChanges { target: moon;     visible: false }
         }
     ]

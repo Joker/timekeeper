@@ -52,11 +52,11 @@ Item {
                 triggeredOnStart: true
                 onTriggered: { 
                     var date = new Date;
-                    var offest = (date.getTimezoneOffset() / 60);
+                    var offest   = date.getTimezoneOffset();
                     var hours    = date.getHours();
                     var minutes  = date.getMinutes();
                     
-                    earth.rot = ((hours + offest) * 4 + Math.floor(minutes / 15)) % 96;
+                    earth.rot = (hours * 4 + Math.floor((minutes + offest) / 15)) % 96;
                     
                     var img = "animation/earth"+earth.rot+".png";
 

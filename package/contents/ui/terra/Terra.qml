@@ -46,25 +46,18 @@ Item {
             
             Timer {
                 id: spin_ani
-                interval: 60000; 
+                interval: 60000;
                 repeat: true;
                 running: true
                 triggeredOnStart: true
-                property int hours
-                property int minutes
                 onTriggered: { 
                     var date = new Date;
-                    hours    = date.getHours();
-                    minutes  = date.getMinutes();
+                    var offest = (date.getTimezoneOffset() / 60);
+                    var hours    = date.getHours();
+                    var minutes  = date.getMinutes();
                     
-                    earth.rot = hours * 4 + Math.round(minutes / 15);
-                    console.log(hours);
-        
-                    if(earth.rot >= 96){ 
-                        earth.rot = 0; 
-                    } else {
-                        earth.rot += 1; 
-                    }
+                    earth.rot = ((hours + offest) * 4 + Math.floor(minutes / 15)) % 96;
+                    
                     var img = "animation/earth"+earth.rot+".png";
 
                     earth.source = img;

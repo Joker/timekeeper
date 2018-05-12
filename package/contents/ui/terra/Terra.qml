@@ -20,20 +20,21 @@ Item {
 
     Item {
         id:terra
-        x: 34; y: 34
+        x: 34; y: 34; z: 10
         width: 84; height: 84
 
         Image {
             id: earth
             x: 8; y: 8
+            width: 68; height: 68
             property int  rot: 0
             property int  earthNumFrames: 96
             property int  framesPerHour: earthNumFrames / 24
             property int  framesPerMin: 60 / framesPerHour
             
-            source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent
+            source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent;
             
-            Image { id: earth_sh; width: 84; height: 84; x: earth.x + 9; y: earth.y + 9; z: -1; smooth: true; source: "earthUnderShadow.png" }
+            Image { id: earth_sh; width: 68; height: 68; x: -9; y: -9; z: -1; smooth: true; source: "earthUnderShadow.png" }
 
             transform: Rotation {
                 id: rotation
@@ -72,7 +73,7 @@ Item {
 
     Item {
         id: moon
-        x: 60; y: 0
+        x: 60; y: 0; z: 10
         width: 33; height: 33
 
         Image { id: moon_big_sh; x: -9; y: -8; smooth: true; source: "moonBigShadow.png";  opacity: 0; }

@@ -129,10 +129,6 @@ Rectangle {
         nowTimeAndMoonPhase(today)
         count = 0
         timekeeper.stained_glass = ""
-
-//        var aDate = new Date();
-//            aDate.setMonth(aDate.getMonth()+1, 0)
-//        var num = aDate.getDate();
     }
     function forTimer() {
         var date = new Date;
@@ -375,7 +371,6 @@ Rectangle {
             PropertyChanges { 
                 target: timekeeper
                 scale: 0.3
-                rotation: 360
                 x: 10; y: 20
                 z: 1
             }

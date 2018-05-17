@@ -1,12 +1,12 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.2
+import QtQuick.Dialogs 1.0
 
 
 ColumnLayout {
 
-    property alias cfg_lat:  lat.text
-    property alias cfg_lon:  lon.text
+    property alias cfg_backgroundImage:  backImg.text
 
     property alias cfg_fontName:      selectfont.editText
     property alias cfg_fontWeekSize:  week.value
@@ -14,35 +14,35 @@ ColumnLayout {
 
     GroupBox {
 
-        title: i18n("Your location")
+        title: i18n("Background image")
         Layout.fillHeight: true
         Layout.fillWidth:  true
 
         GridLayout {
             anchors.verticalCenter:   parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            columns: 2
+            columns: 3
 
             Label {
-                text: i18n("Latitude:")
+                text: i18n("Background image:")
                 Layout.alignment: Qt.AlignRight
-                anchors.verticalCenter: lat.verticalCenter
+                anchors.verticalCenter: backImg.verticalCenter
             }
 
             TextField {
-                id: lat
-                placeholderText: qsTr("Latitude")
+                id: backImg
+                Layout.minimumWidth: 300
+                placeholderText: qsTr("Path")
             }
+            
+            Button {
+                id: btnSignals
+                anchors.verticalCenter: backImg.verticalCenter
+                text: i18n("Browse")
 
-            Label {
-                text: i18n("Longitude:")
-                Layout.alignment: Qt.AlignRight
-                anchors.verticalCenter: lon.verticalCenter
-            }
-
-            TextField {
-                id: lon
-                placeholderText: qsTr("Longitude")
+                onClicked: {
+                    fileDialog.visible = true
+                }
             }
         }
     }
@@ -91,6 +91,20 @@ ColumnLayout {
                 maximumValue: 17
             }
 
+        }
+    }
+    
+    FileDialog {
+        id: fileDialog
+        title: i18n("Please choose a file")
+        nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+        selectMultiple: false
+        onAccepted: {
+            backImg.text = fileDialog.fileUrls[0]
+            Qt.quit()
+        }
+        onRejected: {
+            Qt.quit()
         }
     }
 }

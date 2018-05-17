@@ -10,7 +10,6 @@ Item {
     property int    earth_degree: 0
     property alias  moon_z: moon.z
 
-    property string terraImage: plasmoid.configuration.terraImage
     property string terraState: plasmoid.configuration.terraState
 
 

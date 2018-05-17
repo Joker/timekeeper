@@ -6,15 +6,10 @@ import "clock/wheels"
 import "terra"
 import "calendar"
 import "timekeeper"
-import "otherside"
 
 
 import "luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
-import "otherside/riseset.js" as RS
-
-// import QtMultimediaKit 1.1 as QtMultimediaKit
-// import org.kde.plasma.core 0.1 as PlasmaCore
 
 Rectangle {
     id: main
@@ -52,34 +47,7 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        // TODO otherside
-        /*
-        // refresh moon image
-        plasmoid.addEventListener("dataUpdated", dataUpdated);
-        dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
-
-        // plasmoid.setAspectRatioMode(ConstrainedSquare);
-        // */
         defaultDate()
-        // TODO otherside
-        /*
-        RS.sun_riseset (lat, lon, new Date())
-        RS.moon_riseset(lat, lon, new Date())
-
-        var sinkS = {
-          dataUpdated: function (name, data) {
-            console.log(data.Sunrise, data.Sunset);
-          }
-        };
-        var sinkM = {
-          dataUpdated: function (name, data) {
-            console.log(data.Moonrise, data.Moonset);
-          }
-        };
-        var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
-        dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
-        dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-        // */
         // TODO marble
         //*
         // plasmoid.setBackgroundHints(NoBackground);
@@ -319,19 +287,8 @@ Rectangle {
             }
 
         }
-        back: Item {
-            width: 478; height: 478
-            Otherside {
-                z: 1
-            }
-        }
 
         states: [
-            State {
-                name: "otherside"
-                PropertyChanges { target: rotation; angle: 180 }
-                when: side.flipped
-            },
             State {
                 name: "calendar"
                 PropertyChanges { target: rotation; angle: 0 }
@@ -381,11 +338,6 @@ Rectangle {
             PropertyChanges { target: timekeeper; state: "out"; }
             PropertyChanges { target: clock;      state: "out"; }
             PropertyChanges { target: luna;       state: "home"; moon_z: -1 }
-        },
-        State {
-            name: "otherside"
-            PropertyChanges { target: timekeeper; state: "otherside"; }
-            PropertyChanges { target: luna;       state: "otherside"; }
         }
     ]
     transitions: [

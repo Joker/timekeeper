@@ -28,23 +28,16 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 			<label>terraState</label>
 			<default></default>
 		</entry>
-		<entry name="terraImage" type="String">
-			<label>terraImage</label>
-			<default>e1.png</default>
-		</entry>
 
 		<entry name="yearState" type="String">
 			<label>yearState</label>
 			<default></default>
 		</entry>
 
-		<entry name="lat" type="Double">
-			<default>55.750513</default>
+		<entry name="backgroundImage" type="String">
+			<default>backgrounds/glassImmage.png</default>
 		</entry>
-		<entry name="lon" type="Double">
-			<default>37.620789</default>
-		</entry>
-
+		
 		<entry name="fontName" type="String">
 			<default>Engravers MT</default>
 		</entry>

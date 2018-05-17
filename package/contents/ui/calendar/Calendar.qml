@@ -3,6 +3,8 @@ import QtQuick 2.1
 Item {
     id: glass
     width: 478; height: 478
+    
+    readonly property string backgroundImage: plasmoid.configuration.backgroundImage
 
     property double ring_degree
     property int    count_angle
@@ -20,7 +22,7 @@ Item {
         y: 0
         width: 294
         height: 294
-        source: "LmcRotation_Gaia_960.jpg"
+        source: glass.backgroundImage
         smooth: true
         anchors.centerIn: parent
     }

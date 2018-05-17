@@ -67,6 +67,20 @@ Item {
                     earth.source = img;
                 }
             }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    if(main.state == "marble") {
+                        main.state = ""; calendar.state = ""
+                    } else {
+                        main.state = "marble";
+                    }
+
+                    plasmoid.configuration.mainState = main.state
+                }
+            }
         }
 
     }

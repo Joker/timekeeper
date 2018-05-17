@@ -14,20 +14,42 @@ Item {
 
     property alias  moon_l  : moon1
     property alias  moon_r  : moon2
+    
+    Image  {
+        x: 0
+        y: 0
+        width: 294
+        height: 294
+        source: "LmcRotation_Gaia_960.jpg"
+        smooth: true
+        anchors.centerIn: parent
+    }
+    
+    Image  {
+        x: 0
+        y: 0
+        source: "innerMetalFrame.png"
+        smooth: true
+        anchors.centerIn: parent
+    }
+    
+    Image  {
+        x: 0
+        y: 0
+        source: "innerFrame.png"
+        smooth: true
+        anchors.centerIn: parent
+    }
 
-    Image  { x: 2; y: 0; source: "innerFramesAndGlass.png" }
-
-    // TODO marble
-    // Marble { id: marble; x: 2; y: 0; visible: false; }
-
-    // property alias ms: marble.source
-    // Loader { id: marble; x: 2; y: 0 ; visible: false; }
-
-    Image { source: "woodSurround.png" }
+    Image {
+        source: "woodSurround.png"
+        smooth: true
+    }
 
     Image {
         id:month_ring
-        x: 16; y: 18
+        x: 16
+        y: 18
         source: "rotatingring.png"
         smooth: true
         rotation: 122
@@ -35,20 +57,29 @@ Item {
             origin.x: 223; origin.y: 223;
             angle: glass.ring_degree
             Behavior on angle {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                SpringAnimation { 
+                    spring: 2
+                    damping: 0.2
+                    modulus: 360
+                }
             }
         }
 
     }
     Image {
-        x: 69; y: 71
+        x: 69
+        y: 71
         source: "counterWheel.png"
         smooth: true
         transform: Rotation {
             origin.x: 170.5; origin.y: 170.5;
             angle: glass.count_angle * -1
             Behavior on angle {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                SpringAnimation {
+                    spring: 2
+                    damping: 0.2
+                    modulus: 360
+                }
             }
         }
     }

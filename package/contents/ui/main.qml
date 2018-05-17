@@ -221,25 +221,16 @@ Rectangle {
                 }
 
                 MouseArea {
-                    id: marble_ma
+                    id: solarSystem_ma
                     x: 0; y: 49
                     width: 13; height: 14
                     cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
-                        // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
-
-                        if(main.state == "marble") {
-                            main.state = ""; calendar.state = ""
+                        if(main.state != "solarSystem") {
+                            main.state = "solarSystem";
                         } else {
-                            main.state = "marble";
-                            // TODO marble
-                            /*
-                            if(calendar.ch){
-                                calendar.mar.citylights_off();
-                                calendar.mar.citylights_on();
-                            }
-                            // */
+                            main.state = ""; calendar.state = ""
                         }
 
                         plasmoid.configuration.mainState = main.state
@@ -383,6 +374,13 @@ Rectangle {
             PropertyChanges { target: timekeeper; state: "out"; }
             PropertyChanges { target: clock;      state: "out"; }
             PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
+        },
+        State {
+            name: "solarSystem"
+            PropertyChanges { target: def;      visible: false; }
+            PropertyChanges { target: timekeeper; state: "out"; }
+            PropertyChanges { target: clock;      state: "out"; }
+            PropertyChanges { target: luna;       state: "home"; moon_z: -1 }
         },
         State {
             name: "otherside"

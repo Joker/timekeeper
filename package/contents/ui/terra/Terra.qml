@@ -21,6 +21,8 @@ Item {
         id:terra
         x: 34; y: 34; z: 10
         width: 84; height: 84
+        
+        Image { id: earth_sh; x: -2; y: -2; z: -1; smooth: true; source: "earthUnderShadow.png" }
 
         Image {
             id: earth
@@ -33,7 +35,7 @@ Item {
             
             source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent;
             
-            Image { id: earth_sh; width: 68; height: 68; x: -9; y: -9; z: -1; smooth: true; source: "earthUnderShadow.png" }
+            
 
             transform: Rotation {
                 id: rotation

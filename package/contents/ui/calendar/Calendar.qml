@@ -25,6 +25,8 @@ Item {
         source: glass.backgroundImage
         smooth: true
         anchors.centerIn: parent
+        sourceSize.width: 294
+        sourceSize.height: 294
     }
     
     Image  {

@@ -246,7 +246,7 @@ Item {
     states: State {
                 name: "out"
                 PropertyChanges { target: timekeeper; x: 354;}
-                PropertyChanges { target: calendar;   lock: false;}
+                PropertyChanges { target: calendar;}
             }
 
     transitions: [

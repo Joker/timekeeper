@@ -33,7 +33,9 @@ Rectangle {
 
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
+    property bool calendarLock:      plasmoid.configuration.calendarLock
     property string whellState:        plasmoid.configuration.whellState
+    property bool whellLock:         plasmoid.configuration.whellLock
     property string stainedglassState: plasmoid.configuration.stainedglassState
 
     FontLoader {
@@ -61,7 +63,9 @@ Rectangle {
         clock.state              = clockState
         main.state               = mainState
         whell.hide               = whellState
+        whell.lock               = whellLock
         timekeeper.stained_glass = stainedglassState
+        calendar.lock            = calendarLock
     }
 
 
@@ -226,19 +230,19 @@ Rectangle {
                             if(!whell.lock){
                                 whell.ang = -10
                                 whell.lock = !whell.lock
-                                return
-                            }
-                            if(!calendar.lock){
+                            } else if(!calendar.lock){
                                 calendar.count_angle = 10
                                 calendar.lock = !calendar.lock
-                                return
-                            }
-                            whell.lock = !whell.lock
-                            calendar.lock = !calendar.lock
+                            } else {
+                                whell.lock = !whell.lock
+                                calendar.lock = !calendar.lock
 
-                            whell.ang = 0
-                            timekeeper.ang = 0
-                            calendar.count_angle = 0
+                                whell.ang = 0
+                                timekeeper.ang = 0
+                                calendar.count_angle = 0
+                            }
+                            plasmoid.configuration.calendarLock = calendar.lock
+                            plasmoid.configuration.whellLock = whell.lock
                         }
                     }
                 }

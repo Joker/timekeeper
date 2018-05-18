@@ -169,8 +169,16 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
-                                                                else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
+                            if(timekeeper.stained_glass == "purple" ) {
+                                timekeeper.color = "purple"; 
+                                timekeeper.stained_glass = "green" 
+                            } else if (timekeeper.stained_glass == "green") {
+                                timekeeper.color = "";
+                                timekeeper.stained_glass = ""
+                            } else if (timekeeper.stained_glass == "") {
+                                timekeeper.color = "green";
+                                timekeeper.stained_glass = "purple"
+                            }
 
                             plasmoid.configuration.stainedglassState = timekeeper.stained_glass
                         }

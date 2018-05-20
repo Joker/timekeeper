@@ -18,10 +18,6 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 			<label>calendarLock</label>
 			<default>false</default>
 		</entry>
-		<entry name="whellState" type="String">
-			<label>whellState</label>
-			<default></default>
-		</entry>
         <entry name="whellLock" type="Bool">
 			<label>whellLock</label>
 			<default>false</default>

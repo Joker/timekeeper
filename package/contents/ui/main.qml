@@ -34,7 +34,6 @@ Rectangle {
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
     property bool calendarLock:      plasmoid.configuration.calendarLock
-    property string whellState:        plasmoid.configuration.whellState
     property bool whellLock:         plasmoid.configuration.whellLock
     property string stainedglassState: plasmoid.configuration.stainedglassState
 
@@ -61,11 +60,10 @@ Rectangle {
         // */
 
         clock.state              = clockState
-        main.state               = mainState
-        whell.hide               = whellState
         whell.lock               = whellLock
         timekeeper.stained_glass = stainedglassState
         calendar.lock            = calendarLock
+        main.state               = mainState
     }
 
 
@@ -104,7 +102,7 @@ Rectangle {
     }
     function forTimer() {
         var date = new Date;
-
+        
         clock.hours    = date.getHours()
         clock.minutes  = date.getMinutes()
         clock.seconds  = date.getSeconds()
@@ -288,6 +286,7 @@ Rectangle {
                     onClicked: {
                         whell.hide = !whell.hide
                         plasmoid.configuration.whellState = whell.hide
+                        console.log("test: " + plasmoid.configuration.whellState);
                     }
 
                 }
@@ -334,7 +333,7 @@ Rectangle {
                 x: 10; y: 20
                 z: 1
             }
-            PropertyChanges { target: whell; hide:   true  }
+            PropertyChanges { target: whell}
             PropertyChanges { target: luna;  state: "home" }
         },
         State {

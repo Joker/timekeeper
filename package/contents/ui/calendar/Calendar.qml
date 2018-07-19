@@ -24,19 +24,23 @@ Item {
         id: backgroundImg
         x: 0
         y: 0
-        width: 294
-        height: 294
+        width: 298
+        height: 298
         source: plasmoid.configuration.backgroundImage
         smooth: true
         anchors.centerIn: parent
-        sourceSize.width: 294
-        sourceSize.height: 294
+        sourceSize.width: 298
+        sourceSize.height: 298
         property string selected: plasmoid.configuration.backgroundImage
     }
     
     Image  {
         x: 0
         y: 0
+        width: 298
+        height: 298
+        sourceSize.width: 298
+        sourceSize.height: 298
         source: "innerMetalFrame.png"
         smooth: true
         anchors.centerIn: parent

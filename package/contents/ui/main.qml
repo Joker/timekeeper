@@ -286,7 +286,6 @@ Rectangle {
                     onClicked: {
                         whell.hide = !whell.hide
                         plasmoid.configuration.whellState = whell.hide
-                        console.log("test: " + plasmoid.configuration.whellState);
                     }
 
                 }

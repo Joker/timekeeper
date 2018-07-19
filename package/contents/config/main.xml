@@ -41,6 +41,10 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 		<entry name="backgroundImage" type="String">
 			<default>backgrounds/glassImmage.png</default>
 		</entry>
+        
+        <entry name="userBackgroundImage" type="String">
+			<default></default>
+		</entry>
 		
 		<entry name="fontName" type="String">
 			<default>Engravers MT</default>

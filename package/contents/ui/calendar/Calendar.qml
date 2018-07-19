@@ -4,7 +4,10 @@ Item {
     id: glass
     width: 478; height: 478
     
-    readonly property string backgroundImage: plasmoid.configuration.backgroundImage
+    property string userBackgroundImage: plasmoid.configuration.userBackgroundImage
+    property string transparentBackgroundImage: "backgrounds/glassTransparent.png"
+    property string originalBackgroundImage: "backgrounds/glassImmage.png"
+    property string universBackgroundImage: "backgrounds/wikipediaPabloImmage.png"
 
     property double ring_degree
     property int    count_angle
@@ -18,15 +21,17 @@ Item {
     property alias  moon_r  : moon2
     
     Image  {
+        id: backgroundImg
         x: 0
         y: 0
         width: 294
         height: 294
-        source: glass.backgroundImage
+        source: plasmoid.configuration.backgroundImage
         smooth: true
         anchors.centerIn: parent
         sourceSize.width: 294
         sourceSize.height: 294
+        property string selected: plasmoid.configuration.backgroundImage
     }
     
     Image  {
@@ -193,11 +198,31 @@ Item {
             ch = !ch
         }
     }
+    
     MouseArea {
-        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: false
+        /*
+         * Background switch button
+         */
+        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: { marble.defaultPt() }
+        onClicked: { 
+            if (backgroundImg.selected == userBackgroundImage) {
+                backgroundImg.selected = transparentBackgroundImage;
+            } else if (backgroundImg.selected == transparentBackgroundImage) {
+                backgroundImg.selected = originalBackgroundImage;
+            } else if (backgroundImg.selected == originalBackgroundImage) {
+                backgroundImg.selected = universBackgroundImage;
+            } else if (userBackgroundImage != "" && backgroundImg.selected == universBackgroundImage) {
+                backgroundImg.selected = userBackgroundImage;
+            } else {
+                backgroundImg.selected = transparentBackgroundImage;
+            }
+            
+            backgroundImg.source = backgroundImg.selected;
+            plasmoid.configuration.backgroundImage = backgroundImg.selected;
+        }
     }
+    
     MouseArea {
         id: save_latlon;   x: 388; y: 401; width: 11; height: 11; visible: false
         cursorShape: Qt.PointingHandCursor

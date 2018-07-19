@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.0
 
 ColumnLayout {
 
-    property alias cfg_backgroundImage:  backImg.text
+    property alias cfg_userBackgroundImage:  backImg.text
 
     property alias cfg_fontName:      selectfont.editText
     property alias cfg_fontWeekSize:  week.value

@@ -29,6 +29,7 @@ Item {
         source: plasmoid.configuration.backgroundImage
         smooth: true
         anchors.centerIn: parent
+        fillMode: Image.PreserveAspectFit
         sourceSize.width: 298
         sourceSize.height: 298
         property string selected: plasmoid.configuration.backgroundImage

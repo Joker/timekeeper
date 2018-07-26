@@ -3,6 +3,11 @@ import QtQuick 2.1
 Item {
     id: glass
     width: 478; height: 478
+    
+    property string userBackgroundImage: plasmoid.configuration.userBackgroundImage
+    property string transparentBackgroundImage: "backgrounds/glassTransparent.png"
+    property string originalBackgroundImage: "backgrounds/glassImmage.png"
+    property string universBackgroundImage: "backgrounds/wikipediaPabloImmage.png"
 
     property double ring_degree
     property int    count_angle
@@ -14,20 +19,101 @@ Item {
 
     property alias  moon_l  : moon1
     property alias  moon_r  : moon2
+    
+    Image  {
+        id: backgroundImg
+        x: 0
+        y: 0
+        width: 298
+        height: 298
+        source: plasmoid.configuration.backgroundImage
+        smooth: true
+        anchors.centerIn: parent
+        fillMode: Image.PreserveAspectFit
+        sourceSize.width: 298
+        sourceSize.height: 298
+        property string selected: plasmoid.configuration.backgroundImage
+    }
+    
+    Rectangle {
+        id: fadeImg
+        x: 0
+        y: 0
+        opacity: 0
+        width: 298
+        height: 298
+        anchors.centerIn: parent
+        //color: "steelblue"
+        color: "black"
+    
+        states: [
+            State {
+                name: "onChangeIn";
+                PropertyChanges { target: fadeImg; opacity: 1}
+            },
+            State {
+                name: "onChangeOut";
+                PropertyChanges { target: fadeImg; opacity: 0}
+            }
+        ]
+        
+        transitions: Transition {
+            id: imageFlipAnnimation
+            NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 1000  }
+            onRunningChanged: {
+                if (!imageFlipAnnimation.running) {
+                    if (fadeImg.state != "onChangeIn") return;
+                    
+                    if (backgroundImg.selected == userBackgroundImage) {
+                        backgroundImg.selected = transparentBackgroundImage;
+                    } else if (backgroundImg.selected == transparentBackgroundImage) {
+                        backgroundImg.selected = originalBackgroundImage;
+                    } else if (backgroundImg.selected == originalBackgroundImage) {
+                        backgroundImg.selected = universBackgroundImage;
+                    } else if (userBackgroundImage != "" && backgroundImg.selected == universBackgroundImage) {
+                        backgroundImg.selected = userBackgroundImage;
+                    } else {
+                        backgroundImg.selected = transparentBackgroundImage;
+                    }
+                    
+                    backgroundImg.source = backgroundImg.selected;
+                    plasmoid.configuration.backgroundImage = backgroundImg.selected;
+                    
+                    fadeImg.state = "onChangeOut";
+                }
+            }
+        }
+    }
+    
+    Image  {
+        x: 0
+        y: 0
+        width: 298
+        height: 298
+        sourceSize.width: 298
+        sourceSize.height: 298
+        source: "innerMetalFrame.png"
+        smooth: true
+        anchors.centerIn: parent
+    }
+    
+    Image  {
+        x: 0
+        y: 0
+        source: "innerFrame.png"
+        smooth: true
+        anchors.centerIn: parent
+    }
 
-    Image  { x: 2; y: 0; source: "innerFramesAndGlass.png" }
-
-    // TODO marble
-    // Marble { id: marble; x: 2; y: 0; visible: false; }
-
-    // property alias ms: marble.source
-    // Loader { id: marble; x: 2; y: 0 ; visible: false; }
-
-    Image { source: "woodSurround.png" }
+    Image {
+        source: "woodSurround.png"
+        smooth: true
+    }
 
     Image {
         id:month_ring
-        x: 16; y: 18
+        x: 16
+        y: 18
         source: "rotatingring.png"
         smooth: true
         rotation: 122
@@ -35,20 +121,29 @@ Item {
             origin.x: 223; origin.y: 223;
             angle: glass.ring_degree
             Behavior on angle {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                SpringAnimation { 
+                    spring: 2
+                    damping: 0.2
+                    modulus: 360
+                }
             }
         }
 
     }
     Image {
-        x: 69; y: 71
+        x: 69
+        y: 71
         source: "counterWheel.png"
         smooth: true
         transform: Rotation {
             origin.x: 170.5; origin.y: 170.5;
             angle: glass.count_angle * -1
             Behavior on angle {
-                SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                SpringAnimation {
+                    spring: 2
+                    damping: 0.2
+                    modulus: 360
+                }
             }
         }
     }
@@ -158,11 +253,18 @@ Item {
             ch = !ch
         }
     }
+    
     MouseArea {
-        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: false
+        /*
+         * Background switch button
+         */
+        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: { marble.defaultPt() }
+        onClicked: { 
+            fadeImg.state = "onChangeIn";
+        }
     }
+    
     MouseArea {
         id: save_latlon;   x: 388; y: 401; width: 11; height: 11; visible: false
         cursorShape: Qt.PointingHandCursor

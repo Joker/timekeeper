@@ -14,9 +14,13 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 			<label>clockState</label>
 			<default></default>
 		</entry>
-		<entry name="whellState" type="String">
-			<label>whellState</label>
-			<default></default>
+        <entry name="calendarLock" type="Bool">
+			<label>calendarLock</label>
+			<default>false</default>
+		</entry>
+        <entry name="whellLock" type="Bool">
+			<label>whellLock</label>
+			<default>false</default>
 		</entry>
 
 		<entry name="stainedglassState" type="String">
@@ -28,23 +32,20 @@ xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
 			<label>terraState</label>
 			<default></default>
 		</entry>
-		<entry name="terraImage" type="String">
-			<label>terraImage</label>
-			<default>e1.png</default>
-		</entry>
 
 		<entry name="yearState" type="String">
 			<label>yearState</label>
 			<default></default>
 		</entry>
 
-		<entry name="lat" type="Double">
-			<default>55.750513</default>
+		<entry name="backgroundImage" type="String">
+			<default>backgrounds/glassImmage.png</default>
 		</entry>
-		<entry name="lon" type="Double">
-			<default>37.620789</default>
+        
+        <entry name="userBackgroundImage" type="String">
+			<default></default>
 		</entry>
-
+		
 		<entry name="fontName" type="String">
 			<default>Engravers MT</default>
 		</entry>

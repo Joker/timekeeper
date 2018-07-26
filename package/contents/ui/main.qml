@@ -6,15 +6,10 @@ import "clock/wheels"
 import "terra"
 import "calendar"
 import "timekeeper"
-import "otherside"
 
 
 import "luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
-import "otherside/riseset.js" as RS
-
-// import QtMultimediaKit 1.1 as QtMultimediaKit
-// import org.kde.plasma.core 0.1 as PlasmaCore
 
 Rectangle {
     id: main
@@ -38,7 +33,8 @@ Rectangle {
 
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
-    property string whellState:        plasmoid.configuration.whellState
+    property bool calendarLock:      plasmoid.configuration.calendarLock
+    property bool whellLock:         plasmoid.configuration.whellLock
     property string stainedglassState: plasmoid.configuration.stainedglassState
 
     FontLoader {
@@ -52,34 +48,7 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        // TODO otherside
-        /*
-        // refresh moon image
-        plasmoid.addEventListener("dataUpdated", dataUpdated);
-        dataEngine("time").connectSource("Local", luna, 360000, PlasmaCore.AlignToHour);
-
-        // plasmoid.setAspectRatioMode(ConstrainedSquare);
-        // */
         defaultDate()
-        // TODO otherside
-        /*
-        RS.sun_riseset (lat, lon, new Date())
-        RS.moon_riseset(lat, lon, new Date())
-
-        var sinkS = {
-          dataUpdated: function (name, data) {
-            console.log(data.Sunrise, data.Sunset);
-          }
-        };
-        var sinkM = {
-          dataUpdated: function (name, data) {
-            console.log(data.Moonrise, data.Moonset);
-          }
-        };
-        var intervalInMilliSeconds = 3600000 // evrey hour ; 86400000 - one day
-        dataEngine("time").connectSource("Local|Solar|Latitude="+lat+"|Longitude="+lon, sinkS, intervalInMilliSeconds)
-        dataEngine("time").connectSource( "Local|Moon|Latitude="+lat+"|Longitude="+lon, sinkM, intervalInMilliSeconds)
-        // */
         // TODO marble
         //*
         // plasmoid.setBackgroundHints(NoBackground);
@@ -91,9 +60,10 @@ Rectangle {
         // */
 
         clock.state              = clockState
-        main.state               = mainState
-        whell.hide               = whellState
+        whell.lock               = whellLock
         timekeeper.stained_glass = stainedglassState
+        calendar.lock            = calendarLock
+        main.state               = mainState
     }
 
 
@@ -129,14 +99,10 @@ Rectangle {
         nowTimeAndMoonPhase(today)
         count = 0
         timekeeper.stained_glass = ""
-
-//        var aDate = new Date();
-//            aDate.setMonth(aDate.getMonth()+1, 0)
-//        var num = aDate.getDate();
     }
     function forTimer() {
         var date = new Date;
-
+        
         clock.hours    = date.getHours()
         clock.minutes  = date.getMinutes()
         clock.seconds  = date.getSeconds()
@@ -186,75 +152,73 @@ Rectangle {
                 id:calendar;
                 z: 1
                 property bool ch: true
-
-                Timekeeper{
-                    id: timekeeper;
-                    x: 285;y: 186;
-
-                    Item{
-                        id: def
-                        MouseArea {
-                            id: color_ma
-                            x: 131; y: 25
-                            width: 9; height: 11
-                            cursorShape: Qt.PointingHandCursor
-
-                            onClicked: {
-                                if(timekeeper.stained_glass != "green" ) {timekeeper.color = "purple"; timekeeper.stained_glass = "green" }
-                                                                    else {timekeeper.color = "green" ; timekeeper.stained_glass = "purple"}
-
-                                plasmoid.configuration.stainedglassState = timekeeper.stained_glass
-                            }
-                        }
-                        MouseArea {
-                            id: flip_ma
-                            x: 154; y: 96
-                            width: 10; height: 24
-                            cursorShape: Qt.PointingHandCursor
-                            // onClicked: { side.flipped = !side.flipped }
-                        }
-                        MouseArea {
-                            id: default_ma
-                            x: 178; y: 32
-                            width: 12; height: 14
-                            cursorShape: Qt.PointingHandCursor
-
-                            onClicked: defaultDate()
-                        }
-                    }
-
+            }
+            
+            Timekeeper{
+                id: timekeeper;
+                x: 285;y: 186;
+                z: 9
+                Item{
+                    id: def
                     MouseArea {
-                        id: marble_ma
-                        x: 0; y: 49
-                        width: 13; height: 14
+                        id: color_ma
+                        x: 131; y: 25
+                        width: 9; height: 11
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            // if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier))
-
-                            if(main.state == "marble") {
-                                main.state = ""; calendar.state = ""
-                            } else {
-                                main.state = "marble";
-                                // TODO marble
-                                /*
-                                if(calendar.ch){
-                                    calendar.mar.citylights_off();
-                                    calendar.mar.citylights_on();
-                                }
-                                // */
+                            if(timekeeper.stained_glass == "purple" ) {
+                                timekeeper.color = "purple"; 
+                                timekeeper.stained_glass = "green" 
+                            } else if (timekeeper.stained_glass == "green") {
+                                timekeeper.color = "";
+                                timekeeper.stained_glass = ""
+                            } else if (timekeeper.stained_glass == "") {
+                                timekeeper.color = "green";
+                                timekeeper.stained_glass = "purple"
                             }
 
-                            plasmoid.configuration.mainState = main.state
+                            plasmoid.configuration.stainedglassState = timekeeper.stained_glass
                         }
+                    }
+                    MouseArea {
+                        id: flip_ma
+                        x: 154; y: 96
+                        width: 10; height: 24
+                        cursorShape: Qt.PointingHandCursor
+                        // onClicked: { side.flipped = !side.flipped }
+                    }
+                    MouseArea {
+                        id: default_ma
+                        x: 178; y: 32
+                        width: 12; height: 14
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: defaultDate()
                     }
                 }
 
+                MouseArea {
+                    id: solarSystem_ma
+                    x: 0; y: 49
+                    width: 13; height: 14
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: {
+                        if(main.state != "solarSystem") {
+                            main.state = "solarSystem";
+                        } else {
+                            main.state = ""; calendar.state = ""
+                        }
+
+                        plasmoid.configuration.mainState = main.state
+                    }
+                }
             }
             Clock {
                 id: clock;
-                x: 29; y: 60; z: 5
-        //        shift: 4
+                x: 29; y: 60; 
+                z: 7
                 state: "in"
 
 
@@ -272,19 +236,19 @@ Rectangle {
                             if(!whell.lock){
                                 whell.ang = -10
                                 whell.lock = !whell.lock
-                                return
-                            }
-                            if(!calendar.lock){
+                            } else if(!calendar.lock){
                                 calendar.count_angle = 10
                                 calendar.lock = !calendar.lock
-                                return
-                            }
-                            whell.lock = !whell.lock
-                            calendar.lock = !calendar.lock
+                            } else {
+                                whell.lock = !whell.lock
+                                calendar.lock = !calendar.lock
 
-                            whell.ang = 0
-                            timekeeper.ang = 0
-                            calendar.count_angle = 0
+                                whell.ang = 0
+                                timekeeper.ang = 0
+                                calendar.count_angle = 0
+                            }
+                            plasmoid.configuration.calendarLock = calendar.lock
+                            plasmoid.configuration.whellLock = whell.lock
                         }
                     }
                 }
@@ -329,23 +293,12 @@ Rectangle {
             Terra {
                 id:luna;
                 x: 162; y: 90
-                z: 7
+                z: 2
             }
 
-        }
-        back: Item {
-            width: 478; height: 478
-            Otherside {
-                z: 1
-            }
         }
 
         states: [
-            State {
-                name: "otherside"
-                PropertyChanges { target: rotation; angle: 180 }
-                when: side.flipped
-            },
             State {
                 name: "calendar"
                 PropertyChanges { target: rotation; angle: 0 }
@@ -373,7 +326,13 @@ Rectangle {
                 rotation: 360
                 x: -119; y: -88
             }
-            PropertyChanges { target: whell; hide:   true  }
+            PropertyChanges { 
+                target: timekeeper
+                scale: 0.3
+                x: 10; y: 20
+                z: 1
+            }
+            PropertyChanges { target: whell}
             PropertyChanges { target: luna;  state: "home" }
         },
         State {
@@ -384,9 +343,11 @@ Rectangle {
             PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
         },
         State {
-            name: "otherside"
-            PropertyChanges { target: timekeeper; state: "otherside"; }
-            PropertyChanges { target: luna;       state: "otherside"; }
+            name: "solarSystem"
+            PropertyChanges { target: def;      visible: false; }
+            PropertyChanges { target: timekeeper; state: "out"; }
+            PropertyChanges { target: clock;      state: "out"; }
+            PropertyChanges { target: luna;       state: "home"; moon_z: -1 }
         }
     ]
     transitions: [

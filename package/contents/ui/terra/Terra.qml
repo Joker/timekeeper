@@ -4,40 +4,38 @@ import "../luna"
 Item {
     id: home;
     width: 152; height: 152
-
+    
     property alias  moon_degree: moon_angle.angle
     property alias  phase: svg.phase
     property int    earth_degree: 0
     property alias  moon_z: moon.z
 
-    property string terraImage: plasmoid.configuration.terraImage
     property string terraState: plasmoid.configuration.terraState
 
 
     Component.onCompleted: {
-        e_f.source = terraImage
         home.state = terraState
     }
 
-    // state: "big_earth2"
-
     Item {
         id:terra
-        x: 34; y: 34
+        x: 34; y: 34; z: 10
         width: 84; height: 84
+        
+        Image { id: earth_sh; x: -2; y: -2; z: -1; smooth: true; source: "earthUnderShadow.png" }
 
-        Flipable {
+        Image {
             id: earth
             x: 8; y: 8
             width: 68; height: 68
-
-            property bool flipped: false
-            property int  n: 2
-
-            Image { id: earth_sh; x: -7; y: -7; z:-1; smooth: true; source: "earthUnderShadow.png" }
-
-            front: Image { id: e_f; source: "e1.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
-            back:  Image { id: e_b; source: "e2.png"; smooth: true; anchors.centerIn: parent; anchors.fill: parent }
+            property int  rot: 0
+            property int  earthNumFrames: 96
+            property int  framesPerHour: earthNumFrames / 24
+            property int  framesPerMin: 60 / framesPerHour
+            
+            source: "animation/earth0.png"; smooth: true; anchors.centerIn: parent;
+            
+            
 
             transform: Rotation {
                 id: rotation
@@ -47,40 +45,41 @@ Item {
                 angle: 0    // the default angle
             }
 
-            states: [
-                State {
-                    name: "back"
-                    PropertyChanges { target: rotation; angle: 180 }
-                    when: earth.flipped
-                },
-                State {
-                    name: "front"
-                    PropertyChanges { target: rotation; angle: 0 }
-                    when: !earth.flipped
-                }
-            ]
-
             transitions: Transition {
-                // NumberAnimation { target: rotation; property: "angle";  duration: 400 }
                 SpringAnimation { target: rotation; property: "angle";  spring: 4; damping: 0.3; modulus: 360 ;mass :3}
             }
+            
+            Timer {
+                id: spin_ani
+                interval: 60000;
+                repeat: true;
+                running: true
+                triggeredOnStart: true
+                onTriggered: { 
+                    var date = new Date;
+                    var offest   = date.getTimezoneOffset();
+                    var hours    = date.getHours();
+                    var minutes  = date.getMinutes();
+                    
+                    earth.rot = (hours * earth.framesPerHour + Math.round((minutes + offest) / earth.framesPerMin)) % earth.earthNumFrames;
+                    
+                    var img = "animation/earth"+earth.rot+".png";
 
+                    earth.source = img;
+                }
+            }
+            
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    var img = "e"+earth.n+".png"
+                    if(main.state == "marble") {
+                        main.state = ""; calendar.state = ""
+                    } else {
+                        main.state = "marble";
+                    }
 
-                    earth.flipped = !earth.flipped
-                    if (earth.flipped)
-                        e_b.source = img;
-                    else
-                        e_f.source = img;
-
-                    earth.n++;
-                        if(earth.n == 7) earth.n = 1;
-                    
-                    plasmoid.configuration.terraImage = img
+                    plasmoid.configuration.mainState = main.state
                 }
             }
         }
@@ -89,7 +88,7 @@ Item {
 
     Item {
         id: moon
-        x: 60; y: 0
+        x: 60; y: 0; z: 10
         width: 33; height: 33
 
         Image { id: moon_big_sh; x: -9; y: -8; smooth: true; source: "moonBigShadow.png";  opacity: 0; }
@@ -140,11 +139,6 @@ Item {
                 x: 30; y: 30
                 width: 25;height: 25
             }
-            PropertyChanges {
-                target: earth_sh
-                x: -3; y: -3
-                width: 31;height: 32
-            }
             PropertyChanges { target:main; lx: 162 ;  ly: 165         }
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0 }
 
@@ -173,15 +167,12 @@ Item {
             PropertyChanges { target: main;     lx: 162 ; ly: 167 }
             PropertyChanges { target: home;     moon_degree: 0; earth_degree: 0; }
             PropertyChanges { target: earth;    x:-58; y: -57;  width: 200; height: 200 }
-            PropertyChanges { target: earth_sh; x: 59; y: 59; }
             onCompleted: {calendar.state = "earth"; home.state = "big_earth2"}
         },
         State {
             name: "big_earth2"
             extend: "big_earth"
             // TODO marble
-            // PropertyChanges { target: earth;    opacity: 0 }
-            PropertyChanges { target: earth_sh; visible: false }
             PropertyChanges { target: moon;     visible: false }
         }
     ]

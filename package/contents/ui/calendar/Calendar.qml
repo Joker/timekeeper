@@ -35,6 +35,56 @@ Item {
         property string selected: plasmoid.configuration.backgroundImage
     }
     
+    Rectangle {
+        id: fadeImg
+        x: 0
+        y: 0
+        opacity: 0
+        width: 298
+        height: 298
+        anchors.centerIn: parent
+        //color: "steelblue"
+        color: "black"
+    
+        states: [
+            State {
+                name: "onChangeIn";
+                PropertyChanges { target: fadeImg; opacity: 1}
+            },
+            State {
+                name: "onChangeOut";
+                PropertyChanges { target: fadeImg; opacity: 0}
+            }
+        ]
+        
+        transitions: Transition {
+            id: imageFlipAnnimation
+            NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 1000  }
+            onRunningChanged: {
+                if (!imageFlipAnnimation.running) {
+                    if (fadeImg.state != "onChangeIn") return;
+                    
+                    if (backgroundImg.selected == userBackgroundImage) {
+                        backgroundImg.selected = transparentBackgroundImage;
+                    } else if (backgroundImg.selected == transparentBackgroundImage) {
+                        backgroundImg.selected = originalBackgroundImage;
+                    } else if (backgroundImg.selected == originalBackgroundImage) {
+                        backgroundImg.selected = universBackgroundImage;
+                    } else if (userBackgroundImage != "" && backgroundImg.selected == universBackgroundImage) {
+                        backgroundImg.selected = userBackgroundImage;
+                    } else {
+                        backgroundImg.selected = transparentBackgroundImage;
+                    }
+                    
+                    backgroundImg.source = backgroundImg.selected;
+                    plasmoid.configuration.backgroundImage = backgroundImg.selected;
+                    
+                    fadeImg.state = "onChangeOut";
+                }
+            }
+        }
+    }
+    
     Image  {
         x: 0
         y: 0
@@ -211,20 +261,7 @@ Item {
         id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: true
         cursorShape: Qt.PointingHandCursor
         onClicked: { 
-            if (backgroundImg.selected == userBackgroundImage) {
-                backgroundImg.selected = transparentBackgroundImage;
-            } else if (backgroundImg.selected == transparentBackgroundImage) {
-                backgroundImg.selected = originalBackgroundImage;
-            } else if (backgroundImg.selected == originalBackgroundImage) {
-                backgroundImg.selected = universBackgroundImage;
-            } else if (userBackgroundImage != "" && backgroundImg.selected == universBackgroundImage) {
-                backgroundImg.selected = userBackgroundImage;
-            } else {
-                backgroundImg.selected = transparentBackgroundImage;
-            }
-            
-            backgroundImg.source = backgroundImg.selected;
-            plasmoid.configuration.backgroundImage = backgroundImg.selected;
+            fadeImg.state = "onChangeIn";
         }
     }
     

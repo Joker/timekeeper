@@ -74,7 +74,7 @@ Item {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     if(main.state == "marble") {
-                        main.state = ""; calendar.state = ""
+                        main.state = ""; timekeeper.state = ""
                     } else {
                         main.state = "marble";
                     }
@@ -142,8 +142,8 @@ Item {
             PropertyChanges { target:main; lx: 162 ;  ly: 165         }
             PropertyChanges { target:home; moon_degree: 0; earth_degree: 0 }
 
-            PropertyChanges { target: calendar.moon_l; visible: true }
-            PropertyChanges { target: calendar.moon_r; visible: true }
+            PropertyChanges { target: timekeeper.moon_l; visible: true }
+            PropertyChanges { target: timekeeper.moon_r; visible: true }
         },
         State {
             name: "home"
@@ -167,7 +167,7 @@ Item {
             PropertyChanges { target: main;     lx: 162 ; ly: 167 }
             PropertyChanges { target: home;     moon_degree: 0; earth_degree: 0; }
             PropertyChanges { target: earth;    x:-58; y: -57;  width: 200; height: 200 }
-            onCompleted: {calendar.state = "earth"; home.state = "big_earth2"}
+            onCompleted: {timekeeper.state = "earth"; home.state = "big_earth2"}
         },
         State {
             name: "big_earth2"

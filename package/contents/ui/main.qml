@@ -1,31 +1,46 @@
 import QtQuick 2.1
+import QtQuick.Layouts 1.1
+import org.kde.plasma.components 3.0
 import org.kde.plasma.plasmoid 2.0
 
+//time keeping
 import "clock"
 import "clock/wheels"
-import "terra"
 import "calendar"
 import "timekeeper"
 
+//solar system
+import "orrery"
+import "terra"
 
 import "luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
 
-Rectangle {
+Item {
     id: main
-    width: 478; height: 478
+    readonly property int main_width: 478 * units.devicePixelRatio //540
+    readonly property int main_height: 478 * units.devicePixelRatio
 
-    color: "transparent"
+    width: main_width
+    height: main_height
+
+    Layout.minimumWidth: main_width
+    Layout.minimumHeight: main_height
+    Layout.preferredWidth: main_width
+    Layout.preferredHeight: main_height
+    Layout.maximumWidth: main_width
+    Layout.maximumHeight: main_height
+
     Plasmoid.backgroundHints: "NoBackground"
-
     property alias lx : luna.x
     property alias ly : luna.y
+
     property int count: 0
 
 
     readonly property string fontName:   plasmoid.configuration.fontName
-    readonly property int fontWeekSize:  plasmoid.configuration.fontWeekSize
-    readonly property int fontMonthSize: plasmoid.configuration.fontMonthSize
+    readonly property int fontWeekSize:  11 //plasmoid.configuration.fontWeekSize
+    readonly property int fontMonthSize: 11 //plasmoid.configuration.fontMonthSize
 
     // TODO marble
     // readonly property double lon:        plasmoid.configuration.lon
@@ -61,8 +76,8 @@ Rectangle {
 
         clock.state              = clockState
         whell.lock               = whellLock
-        timekeeper.stained_glass = stainedglassState
-        calendar.lock            = calendarLock
+        calendar.stained_glass = stainedglassState
+        timekeeper.lock            = calendarLock
         main.state               = mainState
     }
 
@@ -72,7 +87,7 @@ Rectangle {
 
         Moon.touch(today)
         var age = Math.round(Moon.AGE)
-        if( age == 0 || age == 30 ) luna.phase = 29
+        if( age === 0 || age === 30 ) luna.phase = 29
                                else luna.phase = age
 
         if(luna.state != "big_moon" && main.state != "small"){
@@ -83,10 +98,10 @@ Rectangle {
         var dtime = Qt.formatDateTime(today, "ddd,dd,MMM,yy,yyyy")
         var now = dtime.toString().split(",")
         clock.week_day   = now[0]
-        timekeeper.day   = now[1]
-        timekeeper.month = now[2]
-        timekeeper.year  = now[3]
-        timekeeper.yyyy  = now[4]
+        calendar.day   = now[1]
+        calendar.month = now[2]
+        calendar.year  = now[3]
+        calendar.yyyy  = now[4]
     }
     function defaultDate(today) {
         if(!today) today = new Date();
@@ -94,23 +109,23 @@ Rectangle {
         var MM = [0, -31, -62, -93, -123, -153, -182.5, -212, -241.5, -270.5, -299.5, -329.2]
         var month = today.getMonth()
         var date  = today.getDate()-1
-        calendar.ring_degree = MM[month] - date;
+        timekeeper.ring_degree = MM[month] - date;
 
         nowTimeAndMoonPhase(today)
         count = 0
-        timekeeper.stained_glass = ""
+        calendar.stained_glass = ""
     }
     function forTimer() {
         var date = new Date;
-        
+
         clock.hours    = date.getHours()
         clock.minutes  = date.getMinutes()
         clock.seconds  = date.getSeconds()
         if(!side.flipped){
 
-            if(calendar.lock){
-                timekeeper.ang = (clock.seconds|3) * 6 * -1;
-                calendar.count_angle = clock.seconds * 6;
+            if(timekeeper.lock){
+                calendar.ang = (clock.seconds|3) * 6 * -1;
+                timekeeper.count_angle = clock.seconds * 6;
             }
             if(whell.lock){
                 whell.ang = clock.seconds * 6;
@@ -148,16 +163,16 @@ Rectangle {
 
         front: Item {
             width: 478; height: 478
-            Calendar {
-                id:calendar;
+            Timekeeper{
+                id:timekeeper;
                 z: 1
                 property bool ch: true
             }
-            
-            Timekeeper{
-                id: timekeeper;
+
+            Calendar{
+                id: calendar;
                 x: 285;y: 186;
-                z: 9
+                z: 10
                 Item{
                     id: def
                     MouseArea {
@@ -167,18 +182,18 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            if(timekeeper.stained_glass == "purple" ) {
-                                timekeeper.color = "purple"; 
-                                timekeeper.stained_glass = "green" 
-                            } else if (timekeeper.stained_glass == "green") {
-                                timekeeper.color = "";
-                                timekeeper.stained_glass = ""
-                            } else if (timekeeper.stained_glass == "") {
-                                timekeeper.color = "green";
-                                timekeeper.stained_glass = "purple"
+                            if(calendar.stained_glass == "purple" ) {
+                                calendar.color = "purple";
+                                calendar.stained_glass = "green"
+                            } else if (calendar.stained_glass == "green") {
+                                calendar.color = "";
+                                calendar.stained_glass = ""
+                            } else if (calendar.stained_glass == "") {
+                                calendar.color = "green";
+                                calendar.stained_glass = "purple"
                             }
 
-                            plasmoid.configuration.stainedglassState = timekeeper.stained_glass
+                            plasmoid.configuration.stainedglassState = calendar.stained_glass
                         }
                     }
                     MouseArea {
@@ -208,7 +223,7 @@ Rectangle {
                         if(main.state != "solarSystem") {
                             main.state = "solarSystem";
                         } else {
-                            main.state = ""; calendar.state = ""
+                            main.state = ""; timekeeper.state = ""
                         }
 
                         plasmoid.configuration.mainState = main.state
@@ -217,10 +232,9 @@ Rectangle {
             }
             Clock {
                 id: clock;
-                x: 29; y: 60; 
-                z: 7
+                x: 29; y: 60;
+                z: 10
                 state: "in"
-
 
                 Wheels {
                     id: whell
@@ -236,18 +250,18 @@ Rectangle {
                             if(!whell.lock){
                                 whell.ang = -10
                                 whell.lock = !whell.lock
-                            } else if(!calendar.lock){
-                                calendar.count_angle = 10
-                                calendar.lock = !calendar.lock
+                            } else if(!timekeeper.lock){
+                                timekeeper.count_angle = 10
+                                timekeeper.lock = !timekeeper.lock
                             } else {
                                 whell.lock = !whell.lock
-                                calendar.lock = !calendar.lock
+                                timekeeper.lock = !timekeeper.lock
 
                                 whell.ang = 0
-                                timekeeper.ang = 0
-                                calendar.count_angle = 0
+                                calendar.ang = 0
+                                timekeeper.count_angle = 0
                             }
-                            plasmoid.configuration.calendarLock = calendar.lock
+                            plasmoid.configuration.calendarLock = timekeeper.lock
                             plasmoid.configuration.whellLock = whell.lock
                         }
                     }
@@ -261,7 +275,7 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
 
                     onClicked:{
-                        if(main.state == "marble") calendar.state = ""
+                        if(main.state == "marble") timekeeper.state = ""
                         if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
                         plasmoid.configuration.mainState = main.state
                     }
@@ -290,10 +304,11 @@ Rectangle {
 
                 }
             }
+
             Terra {
                 id:luna;
                 x: 162; y: 90
-                z: 2
+                z: 5
             }
 
         }
@@ -321,13 +336,13 @@ Rectangle {
         State {
             name: "small"
             PropertyChanges {
-                target: calendar
+                target: timekeeper
                 scale: 0.3
                 rotation: 360
                 x: -119; y: -88
             }
-            PropertyChanges { 
-                target: timekeeper
+            PropertyChanges {
+                target: calendar
                 scale: 0.3
                 x: 10; y: 20
                 z: 1
@@ -338,14 +353,14 @@ Rectangle {
         State {
             name: "marble"
             PropertyChanges { target: def;      visible: false; }
-            PropertyChanges { target: timekeeper; state: "out"; }
+            PropertyChanges { target: calendar; state: "out"; }
             PropertyChanges { target: clock;      state: "out"; }
             PropertyChanges { target: luna;       state: "big_earth"; moon_z: -1 }
         },
         State {
             name: "solarSystem"
             PropertyChanges { target: def;      visible: false; }
-            PropertyChanges { target: timekeeper; state: "out"; }
+            PropertyChanges { target: calendar; state: "out"; }
             PropertyChanges { target: clock;      state: "out"; }
             PropertyChanges { target: luna;       state: "home"; moon_z: -1 }
         }

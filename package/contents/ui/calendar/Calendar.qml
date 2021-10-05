@@ -1,290 +1,262 @@
 import QtQuick 2.1
 
 Item {
-    id: glass
-    width: 478; height: 478
-    
-    property string userBackgroundImage: plasmoid.configuration.userBackgroundImage
-    property string transparentBackgroundImage: "backgrounds/glassTransparent.png"
-    property string originalBackgroundImage: "backgrounds/glassImmage.png"
-    property string universBackgroundImage: "backgrounds/wikipediaPabloImmage.png"
+    id: timekeeper
+    width: 193; height: 131
 
-    property double ring_degree
-    property int    count_angle
-    property bool   lock: false
-    property alias  sa  : mouse_rotate.start_angle
-    // TODO marble
-    // property alias  mar : marble
-    property bool   ch  : true
+    property string day:   "31"
+    property string month: "NOV"
+    property string year:  "54"
+    property string yyyy:  "1854"
 
-    property alias  moon_l  : moon1
-    property alias  moon_r  : moon2
-    
-    Image  {
-        id: backgroundImg
-        x: 0
-        y: 0
-        width: 298
-        height: 298
-        source: plasmoid.configuration.backgroundImage
-        smooth: true
-        anchors.centerIn: parent
-        fillMode: Image.PreserveAspectFit
-        sourceSize.width: 298
-        sourceSize.height: 298
-        property string selected: plasmoid.configuration.backgroundImage
+    property int ang: 0
+
+    property alias stained_glass: stglass.state
+    property alias color:         color.extend
+
+    property bool lock: false
+    property bool sw:   true
+
+    property string yearState: plasmoid.configuration.yearState
+
+    Component.onCompleted: {
+        yy.state = yearState
     }
-    
-    Rectangle {
-        id: fadeImg
-        x: 0
-        y: 0
-        opacity: 0
-        width: 298
-        height: 298
-        anchors.centerIn: parent
-        //color: "steelblue"
-        color: "black"
-    
+
+    Item {
+        id:cog_with_shadow
+        x: 29;     y: 13
+        width: 84; height: 84
+
+        Image {
+            id: cog
+            x: -6; y: -5;
+            source: "monthCogShadow.png"
+            smooth: true;
+            transform: Rotation {
+                angle: ang
+                origin.x: cog.width/2; origin.y: cog.height/2;
+                Behavior on angle {
+                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                }
+            }
+        }
+        Image {
+            id: cog_sh
+            x: 1; y: 0;
+            width: 82; height: 84;
+            source: "monthCog.png"
+            smooth: true;
+            transform: Rotation {
+                angle: ang
+                origin.x: cog_sh.width/2; origin.y: cog_sh.height/2;
+                Behavior on angle {
+                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                }
+            }
+        }
+
+        Timer {
+            id: cog_ani
+            property int a: 12
+            interval: 1000; repeat: true;
+            onTriggered: { if(ang >= 360 || ang <= -360){ ang = 0; }; ang += a; }
+        }
+    }
+
+    Item {
+        id:stglass
+
+        Rectangle {
+            id: yearBackground
+            x: 95;y: 70
+            width: 36;height: 36
+            radius: width*0.5
+            gradient: Gradient {
+                GradientStop {
+                    id: gradientstop5
+                    position: 0.16
+                    color: "#766139"
+                }
+                GradientStop {
+                    id: gradientstop6
+                    position: 0.68
+                    color: "#ffffff"
+                }
+            }
+        }
+        Rectangle {
+            id: dayBackground
+            x: 95;y: 5
+            width: 36;height: 36
+            radius: width*0.5
+            gradient: Gradient {
+                GradientStop {
+                    id: gradientstop7
+                    position: 0.46
+                    color: "#b8a38b"
+                }
+                GradientStop {
+                    id: gradientstop8
+                    position: 1
+                    color: "#ffffff"
+                }
+            }
+        }
+        Rectangle {
+            id: monthBackground
+            x: 50;y: 17
+            width: 21;height: 76
+            gradient: Gradient {
+                GradientStop {
+                    id: gradientstop1
+                    position: 0
+                    color: "#766139"
+                }
+                GradientStop {
+                    id: gradientstop2
+                    position: 0.35
+                    color: "#ffffff"
+                }
+                GradientStop {
+                    id: gradientstop3
+                    position: 0.58
+                    color: "#ffffff"
+                }
+                GradientStop {
+                    id: gradientstop4
+                    position: 1
+                    color: "#766139"
+                }
+            }
+            rotation: 270
+        }
+        Rectangle {
+            id: rectangle_glass
+            x: 139; y: 36
+            opacity: 0.53
+            visible: false
+            width: 40;height: 40
+            radius: width*0.5
+        }
+
         states: [
             State {
-                name: "onChangeIn";
-                PropertyChanges { target: fadeImg; opacity: 1}
+                name: "green"
+                PropertyChanges { target: gradientstop1; position: 0; color: "#206f4a" }
+                PropertyChanges { target: gradientstop4; position: 1; color: "#206f4a" }
+
+                PropertyChanges { target: gradientstop5; position: 0.16; color: "#206f4a" }
+                PropertyChanges { target: gradientstop7; position: 0.51; color: "#8ac0a6" }
+                PropertyChanges { target: gradientstop8; position: 0.7 ; color: "#ffffff" }
+
+                PropertyChanges { target: rectangle_glass;  color: "#206f4a"; visible: true }
+
+                PropertyChanges { target: clock.week_glass; visible: true }
+                PropertyChanges { target: clock.week_bgd;   visible: false }
+                PropertyChanges { target: clock;            gradient: "#206f4a" }
+
+                PropertyChanges { target: monthBackground; opacity: 0.65 }
+                PropertyChanges { target: dayBackground;   opacity: 0.65 }
+                PropertyChanges { target: yearBackground;  opacity: 0.65 }
             },
             State {
-                name: "onChangeOut";
-                PropertyChanges { target: fadeImg; opacity: 0}
+                name: "purple"
+                PropertyChanges { target: gradientstop1; position: 0; color: "#187c8b" }
+                PropertyChanges { target: gradientstop4; position: 1; color: "#187c8b" }
+
+                PropertyChanges { target: gradientstop5; position: 0.16; color: "#187c8b" }
+                PropertyChanges { target: gradientstop7; position: 0.51; color: "#66b7c2" }
+                PropertyChanges { target: gradientstop8; position: 0.68; color: "#ffffff" }
+
+                PropertyChanges { target: rectangle_glass;  color: "#187c8b"; visible: true }
+
+                PropertyChanges { target: clock.week_glass; visible: true }
+                PropertyChanges { target: clock.week_bgd;   visible: false }
+                PropertyChanges { target: clock;            gradient: "#187c8b" }
+
+                PropertyChanges { target: monthBackground; opacity: 0.65 }
+                PropertyChanges { target: dayBackground;   opacity: 0.65 }
+                PropertyChanges { target: yearBackground;  opacity: 0.65 }
+            },
+            State {
+                id: color
+                name: "color"
+                extend: "green"
+                when: count != 0
             }
         ]
+    }
+
+    Image { id:tk_img; x: 0; y: 0; source: "timekeeper.png"
+        Text {
+            x: 102; y: 14
+            width: 28; height: 22
+            text: day
+            font.pointSize: 15
+            font.family: fixedFont.name
+            color: "#333333"
+
+        }
+        Text {
+            x: 25; y: 45
+            width: 69; height: 19
+            text: month
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: main.fontMonthSize
+            font.family: fixedFont.name
+            color: "#333333"
+
+        }
+        Text {
+            id: yy
+            x: 100; y: 78
+            width: 28; height: 22
+            text: year
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 15
+            font.family: fixedFont.name
+            color: "#333333"
+            states: State {
+                name: "yyyy"
+                PropertyChanges { target: yy; text: yyyy; x:71; width:58; }
+                PropertyChanges { target: yearBackground; x:65; width:66; }
+                PropertyChanges { target: tk_img; source: "timekeeper_yyyy.png"; }
+            }
+        }
+    }
+
+    MouseArea {
+        id: yearFormat
+        x: 129; y: 81
+        width: 8; height: 8
+        cursorShape: Qt.PointingHandCursor
+        onClicked: change_yearFormat();
+    }
+    function change_yearFormat() {
+        if(sw) yy.state = "yyyy"
+        else   yy.state = ""
+
+        sw = !sw
         
-        transitions: Transition {
-            id: imageFlipAnnimation
-            NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 1000  }
-            onRunningChanged: {
-                if (!imageFlipAnnimation.running) {
-                    if (fadeImg.state != "onChangeIn") return;
-                    
-                    if (backgroundImg.selected == userBackgroundImage) {
-                        backgroundImg.selected = transparentBackgroundImage;
-                    } else if (backgroundImg.selected == transparentBackgroundImage) {
-                        backgroundImg.selected = originalBackgroundImage;
-                    } else if (backgroundImg.selected == originalBackgroundImage) {
-                        backgroundImg.selected = universBackgroundImage;
-                    } else if (userBackgroundImage != "" && backgroundImg.selected == universBackgroundImage) {
-                        backgroundImg.selected = userBackgroundImage;
-                    } else {
-                        backgroundImg.selected = transparentBackgroundImage;
-                    }
-                    
-                    backgroundImg.source = backgroundImg.selected;
-                    plasmoid.configuration.backgroundImage = backgroundImg.selected;
-                    
-                    fadeImg.state = "onChangeOut";
-                }
+        plasmoid.configuration.yearState = yy.state
+    }
+
+    states: State {
+                name: "out"
+                PropertyChanges { target: timekeeper; x: 354;}
+                PropertyChanges { target: timekeeper;}
             }
-        }
-    }
-    
-    Image  {
-        x: 0
-        y: 0
-        width: 298
-        height: 298
-        sourceSize.width: 298
-        sourceSize.height: 298
-        source: "innerMetalFrame.png"
-        smooth: true
-        anchors.centerIn: parent
-    }
-    
-    Image  {
-        x: 0
-        y: 0
-        source: "innerFrame.png"
-        smooth: true
-        anchors.centerIn: parent
-    }
 
-    Image {
-        source: "woodSurround.png"
-        smooth: true
-    }
-
-    Image {
-        id:month_ring
-        x: 16
-        y: 18
-        source: "rotatingring.png"
-        smooth: true
-        rotation: 122
-        transform: Rotation {
-            origin.x: 223; origin.y: 223;
-            angle: glass.ring_degree
-            Behavior on angle {
-                SpringAnimation { 
-                    spring: 2
-                    damping: 0.2
-                    modulus: 360
-                }
+    transitions: [
+        Transition {
+            SequentialAnimation {
+                PropertyAction  { target: cog_ani; property: "running"; value: "true"  }
+                NumberAnimation { properties: "x"; duration: 1000                      }
+                PropertyAction  { target: cog_ani; property: "running"; value: "false" }
+                ScriptAction    { script: { cog_ani.a = cog_ani.a * -1 }               }
             }
-        }
-
-    }
-    Image {
-        x: 69
-        y: 71
-        source: "counterWheel.png"
-        smooth: true
-        transform: Rotation {
-            origin.x: 170.5; origin.y: 170.5;
-            angle: glass.count_angle * -1
-            Behavior on angle {
-                SpringAnimation {
-                    spring: 2
-                    damping: 0.2
-                    modulus: 360
-                }
-            }
-        }
-    }
-
-    MouseArea {
-        id: mouse_rotate
-        x: 16; y: 18
-        width: 446; height: 445
-        property int start_angle:0
-        property int ostanov
-        property int a_pred
-
-
-        function inner(x, y){
-            var dx = x - 223;
-            var dy = y - 223;
-            var xy = (dx * dx + dy * dy)
-
-            var out = (223 * 223) >   xy;
-            var inn = (150 * 150) <=  xy;
-
-            return (out && inn) ? true : false;
-        }
-        function ringUpdated(count) {
-            var today = new Date();
-            today.setDate(today.getDate()+count)
-            nowTimeAndMoonPhase(today)
-        }
-        function tri_angle(x,y){
-            x = x - 223;
-            y = y - 223;
-            if(x == 0) return (y>0) ? 180 : 0;
-            var a = Math.atan(y/x)*180/Math.PI;
-            a = (x > 0) ? a+90 : a+270;
-
-            return Math.round(a);
-        }
-
-        onPressed: {
-            if( inner(mouse.x, mouse.y) ){
-                glass.lock  = false;
-
-                start_angle = tri_angle(mouse.x, mouse.y)
-                ostanov     = glass.ring_degree
-                a_pred      = start_angle
-            }
-        }
-        onReleased: {
-            glass.lock = whell.lock
-        }
-        onPositionChanged: {
-            var a, b, c
-            if( inner(mouse.x, mouse.y) ){
-                a = tri_angle(mouse.x, mouse.y)
-
-                b = ostanov + (a - start_angle)
-                glass.ring_degree = b
-                glass.count_angle = b
-
-                c = (a_pred - a)
-                if(c < 90 && -90 < c ) count += c
-                a_pred = a
-
-                ringUpdated(count)
-            } else {
-                start_angle = tri_angle(mouse.x, mouse.y)
-                ostanov     = glass.ring_degree
-                a_pred      = start_angle
-            }
-            if(ostanov >  360) ostanov -= 360;
-            if(ostanov < -360) ostanov += 360;
-            // console.log(b, ostanov, a, start_angle)
-        }
-    }
-    MouseArea {
-        id: moon1; x: 137; y: 386; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { }
-    }
-    MouseArea {
-        id: moon2; x: 331; y: 386; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { }
-    }
-
-
-    MouseArea {
-        id: on_off_citylights; x: 137; y: 386; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            if (!glass.ch)
-                marble.citylights_on();
-            else
-                marble.citylights_off();
-            glass.ch = !glass.ch
-        }
-    }
-    MouseArea {
-        id: on_off_clouds; x: 331; y: 386; width: 11; height: 11; visible: false
-        property bool ch: true
-        cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            if (!ch)
-                marble.clouds_data_on();
-            else
-                marble.clouds_data_off();
-            ch = !ch
-        }
-    }
-    
-    MouseArea {
-        /*
-         * Background switch button
-         */
-        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: true
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { 
-            fadeImg.state = "onChangeIn";
-        }
-    }
-    
-    MouseArea {
-        id: save_latlon;   x: 388; y: 401; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { marble.saveLatLon() }
-    }
-
-    states: [
-        State {
-            name: "earth"
-            // TODO marble
-            /*
-            PropertyChanges { target: marble;       visible: true }
-            PropertyChanges { target: mouse_rotate; visible: false }
-
-            PropertyChanges { target: on_off_citylights; visible: true }
-            PropertyChanges { target: on_off_clouds;     visible: true }
-            PropertyChanges { target: marble_latlon;     visible: true }
-            PropertyChanges { target: save_latlon;       visible: true }
-            // */
         }
     ]
-    //transform: Rotation { origin.x: 239; origin.y: 239; axis { x: 1; y: 1; z: 0 } angle: 0 }
 }

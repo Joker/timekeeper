@@ -1,5 +1,5 @@
 import QtQuick 2.1
-import "../luna"
+import "luna"
 
 Item {
     id: home;

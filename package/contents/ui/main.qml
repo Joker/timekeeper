@@ -13,7 +13,7 @@ import "timekeeper"
 import "orrery"
 import "terra"
 
-import "luna/phase.js"        as Moon
+import "terra/luna/phase.js"        as Moon
 import "terra/planets.js"     as Eth
 
 Item {

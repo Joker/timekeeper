@@ -6,8 +6,8 @@ Item {
     
     property string userBackgroundImage: plasmoid.configuration.userBackgroundImage
     property string transparentBackgroundImage: "backgrounds/glassTransparent.png"
-    property string originalBackgroundImage: "backgrounds/glassImmage.png"
-    property string universBackgroundImage: "backgrounds/wikipediaPabloImmage.png"
+    property string originalBackgroundImage: "backgrounds/glassImmage.png" //4 5 6 7 8
+    property string backSky: "backgrounds/backSky.png"
 
     property double ring_degree
     property int    count_angle
@@ -69,8 +69,8 @@ Item {
                     } else if (backgroundImg.selected == transparentBackgroundImage) {
                         backgroundImg.selected = originalBackgroundImage;
                     } else if (backgroundImg.selected == originalBackgroundImage) {
-                        backgroundImg.selected = universBackgroundImage;
-                    } else if (userBackgroundImage != "" && backgroundImg.selected == universBackgroundImage) {
+                        backgroundImg.selected = backSky;
+                    } else if (userBackgroundImage != "" && backgroundImg.selected == backSky) {
                         backgroundImg.selected = userBackgroundImage;
                     } else {
                         backgroundImg.selected = transparentBackgroundImage;

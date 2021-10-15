@@ -42,10 +42,6 @@ Item {
     readonly property int fontWeekSize:  11 //plasmoid.configuration.fontWeekSize
     readonly property int fontMonthSize: 11 //plasmoid.configuration.fontMonthSize
 
-    // TODO marble
-    // readonly property double lon:        plasmoid.configuration.lon
-    // readonly property double lat:        plasmoid.configuration.lat
-
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
     property bool calendarLock:      plasmoid.configuration.calendarLock
@@ -64,15 +60,6 @@ Item {
 
     Component.onCompleted: {
         defaultDate()
-        // TODO marble
-        //*
-        // plasmoid.setBackgroundHints(NoBackground);
-        // calendar.ms = "calendar/Marble.qml"
-
-        // var vlat = plasmoid.readConfig("lat")
-        // var vlon = plasmoid.readConfig("lon")
-        // if (vlat != 0 && vlon != 0 ){ lat = vlat; lon = vlon }
-        // */
 
         clock.state              = clockState
         whell.lock               = whellLock
@@ -132,15 +119,6 @@ Item {
             }
 
             if(Qt.formatDateTime(date, "hhmmss") == "000000") defaultDate()
-
-            // TODO marble
-            /*
-            if(main.state == "marble" && clock.minutes%10  == 0 && clock.seconds%60 == 0 && calendar.ch){
-                //console.log(clock.seconds)
-                calendar.mar.citylights_off();
-                calendar.mar.citylights_on();
-            }
-            // */
 
         }else{
 

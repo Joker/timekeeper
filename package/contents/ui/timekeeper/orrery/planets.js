@@ -10,14 +10,14 @@ var pname = ["Mercury", "Venus  ", "Earth  ",
              "Mars   ", "Jupiter", "Saturn ",
              "Uranus ", "Neptune", "Pluto  "];
 
-function angle(date)
+function angle(planet, date)
 {
-    var c = get_coord(2, day_number(date))
+    var c = get_coord(planet, day_number(date))
     return tri_angle(c.x, c.y)
 }
 
 function tri_angle(x,y){
-    if(x == 0) return (y>0) ? 180 : 0;
+    if(x === 0) return (y>0) ? 180 : 0;
     var a = Math.atan(y/x)*180/Math.PI;
     a = (x > 0) ? a+90 : a+270;
 

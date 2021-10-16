@@ -8,10 +8,6 @@ ColumnLayout {
 
     property alias cfg_userBackgroundImage:  backImg.text
 
-    property alias cfg_fontName:      selectfont.editText
-    property alias cfg_fontWeekSize:  week.value
-    property alias cfg_fontMonthSize: month.value
-
     GroupBox {
 
         title: i18n("Background image")
@@ -44,53 +40,6 @@ ColumnLayout {
                     fileDialog.visible = true
                 }
             }
-        }
-    }
-
-    GroupBox {
-
-        title: i18n("Time kepeeper font")
-        Layout.fillHeight: true
-        Layout.fillWidth:  true
-
-        GridLayout {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter:   parent.verticalCenter
-            columns: 2
-
-            ComboBox {
-                id: selectfont
-                model: Qt.fontFamilies()
-                editable: true
-
-                Layout.minimumWidth: 300
-                Layout.columnSpan:   2
-            }
-
-            Label {
-                text: i18n("Week font size:")
-                Layout.alignment: Qt.AlignRight
-                anchors.verticalCenter: week.verticalCenter
-            }
-
-            SpinBox {
-                id: week
-                minimumValue: 9
-                maximumValue: 17
-            }
-
-            Label {
-                text: i18n("Month font size:")
-                Layout.alignment: Qt.AlignRight
-                anchors.verticalCenter: month.verticalCenter
-            }
-
-            SpinBox {
-                id: month
-                minimumValue: 9
-                maximumValue: 17
-            }
-
         }
     }
     

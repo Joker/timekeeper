@@ -1,24 +1,42 @@
 import QtQuick 2.1
 
+import "orrery"
+
 Item {
     id: glass
-    width: 478; height: 478
+    width: parent.width; height: parent.height
     
-    property string userBackgroundImage: plasmoid.configuration.userBackgroundImage
-    property string transparentBackgroundImage: "backgrounds/glassTransparent.png"
-    property string originalBackgroundImage: "backgrounds/glassImmage.png" //4 5 6 7 8
-    property string backSky: "backgrounds/backSky.png"
+    property var backgroundImages: [
+        "backgrounds/glassImmage.png",
+        "backgrounds/glassImmage1.png",
+        "backgrounds/glassImmage2.png",
+        "backgrounds/glassImmage3.png",
+        "backgrounds/glassImmage4.png",
+        "backgrounds/backSky.png",
+        plasmoid.configuration.userBackgroundImage,
+        "backgrounds/glassTransparent.png"
+    ]
 
     property double ring_degree
     property int    count_angle
     property bool   lock: false
-    property alias  sa  : mouse_rotate.start_angle
-    // TODO marble
-    // property alias  mar : marble
-    property bool   ch  : true
+    property alias  startAngle  : mouse_rotate.start_angle
 
-    property alias  moon_l  : moon1
-    property alias  moon_r  : moon2
+    function onSecondTimer(date) {
+    }
+
+    function onMinuteTimer(date) {
+        orrery.onMinuteTimer(date);
+    }
+
+    Component.onCompleted: {
+        for (var i = 0; i < glass.backgroundImages.length; i++) {
+            if (glass.backgroundImages[i] && plasmoid.configuration.backgroundImage === glass.backgroundImages[i]) {
+                backgroundImgAnimator.selectedImg = i;
+                break;
+            }
+        }
+    }
     
     Image  {
         id: backgroundImg
@@ -36,7 +54,7 @@ Item {
     }
     
     Rectangle {
-        id: fadeImg
+        id: backgroundImgAnimator
         x: 0
         y: 0
         opacity: 0
@@ -45,15 +63,36 @@ Item {
         anchors.centerIn: parent
         //color: "steelblue"
         color: "black"
+
+        property int selectedImg: 0
+
+        function changeImage() {
+            if (!imageFlipAnnimation.running) {
+                console.error(glass.backgroundImages);
+
+                do {
+                    if (selectedImg < glass.backgroundImages.length) {
+                        selectedImg ++;
+                    } else {
+                        selectedImg = 0;
+                    }
+                    console.error(glass.backgroundImages[selectedImg]);
+                }
+                while (glass.backgroundImages[selectedImg] === "" || !glass.backgroundImages[selectedImg]);
+                backgroundImg.selected = glass.backgroundImages[selectedImg];
+
+                state = "onChangeIn";
+            }
+        }
     
         states: [
             State {
                 name: "onChangeIn";
-                PropertyChanges { target: fadeImg; opacity: 1}
+                PropertyChanges { target: backgroundImgAnimator; opacity: 1}
             },
             State {
                 name: "onChangeOut";
-                PropertyChanges { target: fadeImg; opacity: 0}
+                PropertyChanges { target: backgroundImgAnimator; opacity: 0}
             }
         ]
         
@@ -61,40 +100,30 @@ Item {
             id: imageFlipAnnimation
             NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 1000  }
             onRunningChanged: {
+
                 if (!imageFlipAnnimation.running) {
-                    if (fadeImg.state != "onChangeIn") return;
-                    
-                    if (backgroundImg.selected == userBackgroundImage) {
-                        backgroundImg.selected = transparentBackgroundImage;
-                    } else if (backgroundImg.selected == transparentBackgroundImage) {
-                        backgroundImg.selected = originalBackgroundImage;
-                    } else if (backgroundImg.selected == originalBackgroundImage) {
-                        backgroundImg.selected = backSky;
-                    } else if (userBackgroundImage != "" && backgroundImg.selected == backSky) {
-                        backgroundImg.selected = userBackgroundImage;
-                    } else {
-                        backgroundImg.selected = transparentBackgroundImage;
-                    }
-                    
+                    if (backgroundImgAnimator.state != "onChangeIn") return;
+
                     backgroundImg.source = backgroundImg.selected;
-                    plasmoid.configuration.backgroundImage = backgroundImg.selected;
-                    
-                    fadeImg.state = "onChangeOut";
+                    plasmoid.configuration.backgroundImage = backgroundImg.source;
+
+                    backgroundImgAnimator.state = "onChangeOut";
                 }
             }
         }
+
     }
     
     Image  {
-        x: 0
-        y: 0
-        width: 298
-        height: 298
-        sourceSize.width: 298
-        sourceSize.height: 298
+        id: innerMetalFrame
+        x: 92
+        y: 94
+        width: 294
+        height: 294
+        sourceSize.width: 294
+        sourceSize.height: 294
         source: "innerMetalFrame.png"
         smooth: true
-        anchors.centerIn: parent
     }
     
     Image  {
@@ -148,16 +177,15 @@ Item {
         }
     }
 
-    MouseArea {
+    MouseArea {//date cog rotation
         id: mouse_rotate
         x: 16; y: 18
         width: 446; height: 445
-        property int start_angle:0
+        property int start_angle: 0
         property int ostanov
         property int a_pred
 
-
-        function inner(x, y){
+        function inner(x, y) {
             var dx = x - 223;
             var dy = y - 223;
             var xy = (dx * dx + dy * dy)
@@ -167,15 +195,17 @@ Item {
 
             return (out && inn) ? true : false;
         }
+
         function ringUpdated(count) {
             var today = new Date();
             today.setDate(today.getDate()+count)
             nowTimeAndMoonPhase(today)
         }
-        function tri_angle(x,y){
+
+        function tri_angle(x,y) {
             x = x - 223;
             y = y - 223;
-            if(x == 0) return (y>0) ? 180 : 0;
+            if(x === 0) return (y>0) ? 180 : 0;
             var a = Math.atan(y/x)*180/Math.PI;
             a = (x > 0) ? a+90 : a+270;
 
@@ -191,9 +221,11 @@ Item {
                 a_pred      = start_angle
             }
         }
+
         onReleased: {
             glass.lock = whell.lock
         }
+
         onPositionChanged: {
             var a, b, c
             if( inner(mouse.x, mouse.y) ){
@@ -218,73 +250,52 @@ Item {
             // console.log(b, ostanov, a, start_angle)
         }
     }
-    MouseArea {
-        id: moon1; x: 137; y: 386; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { }
-    }
-    MouseArea {
-        id: moon2; x: 331; y: 386; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { }
+
+    Orrery {
+        id: orrery
+        x: innerMetalFrame.x
+        y: innerMetalFrame.y
+        z: 5
+        width: 294
+        height: 294
     }
 
-
-    MouseArea {
-        id: on_off_citylights; x: 137; y: 386; width: 11; height: 11; visible: false
-        cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            if (!glass.ch)
-                marble.citylights_on();
-            else
-                marble.citylights_off();
-            glass.ch = !glass.ch
-        }
-    }
-    MouseArea {
-        id: on_off_clouds; x: 331; y: 386; width: 11; height: 11; visible: false
-        property bool ch: true
-        cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            if (!ch)
-                marble.clouds_data_on();
-            else
-                marble.clouds_data_off();
-            ch = !ch
-        }
-    }
-    
     MouseArea {
         /*
          * Background switch button
          */
-        id: marble_latlon; x: 332; y: 84;  width: 11; height: 11; visible: true
-        cursorShape: Qt.PointingHandCursor
-        onClicked: { 
-            fadeImg.state = "onChangeIn";
+        id: marble_latlon
+        x: 331
+        y: 85
+        width: 11
+        height: 11
+        visible: true
+
+        Component.onCompleted: {
+            if (main.debug) {
+
+                Qt.createQmlObject("
+                                import QtQuick 2.0
+
+                                Rectangle {
+                                    width: parent.width
+                                    height: parent.height
+                                    color: \"transparent\"
+                                    border.color: \"white\"
+                                }
+                            ", this);
+            }
         }
-    }
-    
-    MouseArea {
-        id: save_latlon;   x: 388; y: 401; width: 11; height: 11; visible: false
+
         cursorShape: Qt.PointingHandCursor
-        onClicked: { marble.saveLatLon() }
+        onClicked: {
+            backgroundImgAnimator.changeImage();
+        }
     }
 
     states: [
         State {
-            name: "earth"
-            // TODO marble
-            /*
-            PropertyChanges { target: marble;       visible: true }
-            PropertyChanges { target: mouse_rotate; visible: false }
-
-            PropertyChanges { target: on_off_citylights; visible: true }
-            PropertyChanges { target: on_off_clouds;     visible: true }
-            PropertyChanges { target: marble_latlon;     visible: true }
-            PropertyChanges { target: save_latlon;       visible: true }
-            // */
+            name: "orrery"
         }
     ]
-    //transform: Rotation { origin.x: 239; origin.y: 239; axis { x: 1; y: 1; z: 0 } angle: 0 }
 }

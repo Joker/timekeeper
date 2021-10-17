@@ -12,6 +12,7 @@ Item {
     property var showingDate: new Date();
 
     function setDateTime(date) {
+        if (Math.abs(showingDate - date) < 100){return} //limit framerate
         showingDate = date;
 
         var offest   = date.getTimezoneOffset();
@@ -66,10 +67,10 @@ Item {
 
             transform: Rotation {
                 origin.x: mercury.width / 2
-                origin.y: mercury.width / 2 + mercury.planetoffset
-                angle: - Planets.getTrueAnomaly(0, showingDate)
+                origin.y: mercury.height / 2 + mercury.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(0, showingDate)
                 Behavior on angle {
-                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
+                    SpringAnimation { spring: 2; damping: 0.2; modulus: 360}
                 }
             }
         }
@@ -96,8 +97,8 @@ Item {
 
             transform: Rotation {
                 origin.x: venus.width / 2
-                origin.y: venus.width / 2 + venus.planetoffset
-                angle: - Planets.getTrueAnomaly(1, showingDate)
+                origin.y: venus.height / 2 + venus.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(1, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }
@@ -134,8 +135,8 @@ Item {
 
             transform: Rotation {
                 origin.x: earth.width / 2
-                origin.y: earth.width / 2 + earth.planetoffset
-                angle: - Planets.getTrueAnomaly(2, showingDate)
+                origin.y: earth.height / 2 + earth.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(2, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }
@@ -164,8 +165,8 @@ Item {
 
             transform: Rotation {
                 origin.x: mars.width / 2
-                origin.y: mars.width / 2 + mars.planetoffset
-                angle: - Planets.getTrueAnomaly(3, showingDate)
+                origin.y: mars.height / 2 + mars.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(3, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }
@@ -194,8 +195,8 @@ Item {
 
             transform: Rotation {
                 origin.x: jupiter.width / 2
-                origin.y: jupiter.width / 2 + jupiter.planetoffset
-                angle: - Planets.getTrueAnomaly(4, showingDate)
+                origin.y: jupiter.height / 2 + jupiter.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(4, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }
@@ -225,8 +226,8 @@ Item {
 
             transform: Rotation {
                 origin.x: saturn.width / 2
-                origin.y: saturn.width / 2 + saturn.planetoffset
-                angle: - Planets.getTrueAnomaly(5, showingDate)
+                origin.y: saturn.height / 2 + saturn.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(5, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }
@@ -255,8 +256,8 @@ Item {
 
             transform: Rotation {
                 origin.x: uranus.width / 2
-                origin.y: uranus.width / 2 + uranus.planetoffset
-                angle: - Planets.getTrueAnomaly(6, showingDate)
+                origin.y: uranus.height / 2 + uranus.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(6, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }
@@ -284,8 +285,8 @@ Item {
             }
             transform: Rotation {
                 origin.x: neptune.width / 2
-                origin.y: neptune.width / 2 + neptune.planetoffset
-                angle: - Planets.getTrueAnomaly(7, showingDate)
+                origin.y: neptune.height / 2 + neptune.planetoffset
+                angle: 360 - Planets.getTrueAnomaly(7, showingDate)
                 Behavior on angle {
                     SpringAnimation { spring: 2; damping: 0.2; modulus: 360 }
                 }

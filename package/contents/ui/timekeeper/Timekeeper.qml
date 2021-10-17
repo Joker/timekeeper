@@ -4,17 +4,20 @@ import "orrery"
 
 Item {
     id: glass
-    width: parent.width; height: parent.height
+    width: parent.width
+    height: parent.height
+
+    property int count: 0
     
     property var backgroundImages: [
-        "backgrounds/glassImmage.png",
-        "backgrounds/glassImmage1.png",
-        "backgrounds/glassImmage2.png",
-        "backgrounds/glassImmage3.png",
-        "backgrounds/glassImmage4.png",
-        "backgrounds/backSky.png",
+        "frame/backgrounds/glassImmage.png",
+        "frame/backgrounds/glassImmage1.png",
+        "frame/backgrounds/glassImmage2.png",
+        "frame/backgrounds/glassImmage3.png",
+        "frame/backgrounds/glassImmage4.png",
+        "frame/backgrounds/backSky.png",
         plasmoid.configuration.userBackgroundImage,
-        "backgrounds/glassTransparent.png"
+        "frame/backgrounds/glassTransparent.png"
     ]
 
     property double ring_degree
@@ -26,7 +29,9 @@ Item {
     }
 
     function onMinuteTimer(date) {
-        orrery.onMinuteTimer(date);
+        if (glass.count == 0) {
+            orrery.setDateTime(date);
+        }
     }
 
     Component.onCompleted: {
@@ -36,6 +41,9 @@ Item {
                 break;
             }
         }
+
+        backgroundImg.source = glass.backgroundImages[backgroundImgAnimator.selectedImg];
+        backgroundImg.selected = glass.backgroundImages[backgroundImgAnimator.selectedImg];
     }
     
     Image  {
@@ -44,7 +52,6 @@ Item {
         y: 0
         width: 298
         height: 298
-        source: plasmoid.configuration.backgroundImage
         smooth: true
         anchors.centerIn: parent
         fillMode: Image.PreserveAspectFit
@@ -95,7 +102,7 @@ Item {
         
         transitions: Transition {
             id: imageFlipAnnimation
-            NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 1000  }
+            NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad; duration: 500  }
             onRunningChanged: {
 
                 if (!imageFlipAnnimation.running) {
@@ -119,20 +126,20 @@ Item {
         height: 294
         sourceSize.width: 294
         sourceSize.height: 294
-        source: "innerMetalFrame.png"
+        source: "frame/innerMetalFrame.png"
         smooth: true
     }
     
     Image  {
         x: 0
         y: 0
-        source: "innerFrame.png"
+        source: "frame/innerFrame.png"
         smooth: true
         anchors.centerIn: parent
     }
 
     Image {
-        source: "woodSurround.png"
+        source: "frame/woodSurround.png"
         smooth: true
     }
 
@@ -140,7 +147,7 @@ Item {
         id:month_ring
         x: 16
         y: 18
-        source: "rotatingring.png"
+        source: "frame/rotatingring.png"
         smooth: true
         rotation: 122
         transform: Rotation {
@@ -159,7 +166,7 @@ Item {
     Image {
         x: 69
         y: 71
-        source: "counterWheel.png"
+        source: "frame/counterWheel.png"
         smooth: true
         transform: Rotation {
             origin.x: 170.5; origin.y: 170.5;
@@ -195,8 +202,8 @@ Item {
 
         function ringUpdated(count) {
             var today = new Date();
-            today.setDate(today.getDate()+count)
-            nowTimeAndMoonPhase(today)
+            today.setDate(today.getDate() + count)
+            orrery.setDateTime(today);
         }
 
         function tri_angle(x,y) {
@@ -220,7 +227,7 @@ Item {
         }
 
         onReleased: {
-            glass.lock = whell.lock
+
         }
 
         onPositionChanged: {

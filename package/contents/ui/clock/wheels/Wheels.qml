@@ -7,6 +7,18 @@ Item{
     property bool lock: false
 
     width: 132; height: 93
+
+    function setDateTime(date) {
+        if (Math.abs(showingDate - date) < 100){return} //limit framerate
+        showingDate = date;
+
+        var offest   = date.getTimezoneOffset();
+        var hours    = date.getHours();
+        var minutes  = date.getMinutes();
+
+        earth.rot = (hours * earth.framesPerHour + Math.round((minutes + offest) / earth.framesPerMin)) % earth.earthNumFrames;
+    }
+
     Image {
         id: cogShadow
         x: 43; y: -5;
@@ -59,7 +71,52 @@ Item{
             }
         }
     }
-    Image { x: 26; y: 2; source: "driveBand.png" }
+    Image {
+        x: 26
+        y: 2
+        source: "driveBand.png"
+
+        MouseArea {
+            id: tiktak_ma
+            x: 16; y: 36
+            width: 14; height: 14
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: {
+                if(!whell.lock){
+                    whell.ang = -10
+                    whell.lock = !whell.lock
+                } else if(!timekeeper.lock){
+                    timekeeper.count_angle = 10
+                    timekeeper.lock = !timekeeper.lock
+                } else {
+                    whell.lock = !whell.lock
+                    timekeeper.lock = !timekeeper.lock
+
+                    whell.ang = 0
+                    calendar.ang = 0
+                    timekeeper.count_angle = 0
+                }
+                plasmoid.configuration.calendarLock = timekeeper.lock
+                plasmoid.configuration.whellLock = whell.lock
+            }
+        }
+    }
 
 
     state: "in"

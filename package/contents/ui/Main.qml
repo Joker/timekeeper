@@ -7,18 +7,13 @@ import org.kde.plasma.plasmoid 2.0
 import "timekeeper"
 
 //time keeping
-//import "clock"
-//import "clock/wheels"
-//import "calendar"
-
-//solar system
-//import "orrery"
-//import "terra"
+import "clock"
+import "calendar"
 
 Item {
     id: main
 
-    readonly property bool debug: true
+    readonly property bool debug: false
 
     readonly property int main_width: 478 * units.devicePixelRatio //540
     readonly property int main_height: 478 * units.devicePixelRatio
@@ -36,8 +31,8 @@ Item {
     Plasmoid.backgroundHints: "NoBackground"
 
     readonly property string fontName:   "Engravers MT"
-    readonly property int fontWeekSize:  11 //plasmoid.configuration.fontWeekSize
-    readonly property int fontMonthSize: 11 //plasmoid.configuration.fontMonthSize
+    readonly property int fontWeekSize:  10 //plasmoid.configuration.fontWeekSize
+    readonly property int fontMonthSize: 10 //plasmoid.configuration.fontMonthSize
 
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
@@ -62,7 +57,7 @@ Item {
             var date = new Date;
 
             if(Qt.formatDateTime(date, "hhmmss") != "000000") {
-                timekeeper.onSecondTimer(date);
+                clock.setDateTime(date);
             }
         }
     }
@@ -74,29 +69,41 @@ Item {
             var date = new Date;
 
             if(Qt.formatDateTime(date, "hhmmss") != "000000") {
-                timekeeper.onMinuteTimer(date);
+                timekeeper.setDateTime(date);
+                calendar.setDateTime(date);
             }
         }
     }
 
     Flipable { //main container
-            id: container
-            property bool flipped: false
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
+        id: container
+        property bool flipped: false
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
 
-            front: Item {
-                        width: main_width;
-                        height: main_height
+        front: Item {
+            width: main_width;
+            height: main_height
 
-                        Timekeeper{ // frame backgroound
-                            id:timekeeper;
-                            z: 1
-                        }
-
+            Timekeeper{ // frame backgroound
+                id:timekeeper;
+                z: 1
             }
 
+            Clock {
+                id: clock;
+                x: 29; y: 60;
+                z: 10
+                state: "in"
+            }
+
+            Calendar{
+                id: calendar;
+                x: 285;y: 186;
+                z: 10
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 import QtQuick 2.1
 
+import "wheels"
+
 Item {
     id: clock
     width: 182; height: 182
@@ -12,6 +14,18 @@ Item {
     property alias  week_bgd   : week_bg
     property alias  week_glass : glass
     property string gradient   : "#206f4a"
+
+    function setDateTime(date) {
+        clock.hours    = date.getHours();
+        clock.minutes  = date.getMinutes();
+        clock.seconds  = date.getSeconds();
+        clock.week_day = Qt.formatDateTime(date, "ddd");
+    }
+
+    Wheels {
+        id: whell
+        x: -26;y: 137;
+    }
 
     Rectangle {
         id: glass
@@ -27,7 +41,69 @@ Item {
         }
         rotation: 270
     }
-    Image { id: background; source: "clock_old.png" ; z: 5}
+
+    Image {
+        id: background;
+        z: 5
+        source: "clock.png"
+
+        MouseArea {
+            id: in_out_ma
+            x: 62; y: 86
+            z: 7
+            width: 11; height: 12
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: {
+                clock.state === "out" ? clock.state = "in" : clock.state = "out";
+                plasmoid.configuration.clockState = clock.state
+            }
+        }
+
+        MouseArea {
+            id: hide_ma
+            x: 101; y: 86
+            z: 7
+            width: 11; height: 12
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: {
+                whell.hide = !whell.hide
+                plasmoid.configuration.whellState = whell.hide
+            }
+        }
+    }
+
     Image { id: week_bg; x: 64; y: 102; z: 5;    source: "week_bg.png" }
     Text {
         x: 66; y: 104; z: 5
@@ -41,7 +117,43 @@ Item {
 
     }
 
-    Image { x: 77; y: 74; z: 5;  source: "center.png" }
+    Image {
+        x: 77
+        y: 74
+        z: 5
+        source: "center.png"
+
+        MouseArea {
+            id: center_ma
+            x: 3
+            y: 3
+            z: 7
+            width: 14
+            height: 14
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked:{
+                if(main.state == "marble") timekeeper.state = ""
+                if(main.state == "small") {main.state = "big"; luna.state = "home3"} else main.state = "small";
+                plasmoid.configuration.mainState = main.state
+            }
+        }
+    }
 
     Image {
         x: 75; y: 29; z: 5

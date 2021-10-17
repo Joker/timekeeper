@@ -1,7 +1,7 @@
 import QtQuick 2.1
 
 Item {
-    id: timekeeper
+    id: calendar
     width: 193; height: 131
 
     property string day:   "31"
@@ -21,6 +21,16 @@ Item {
 
     Component.onCompleted: {
         yy.state = yearState
+        setDateTime(new Date());
+    }
+
+    function setDateTime(date) {
+        var dtime = Qt.formatDateTime(date, "dd,MMM,yy,yyyy")
+        var now = dtime.toString().split(",")
+        calendar.day   = now[0]
+        calendar.month = now[1]
+        calendar.year  = now[2]
+        calendar.yyyy  = now[3]
     }
 
     Item {
@@ -41,6 +51,7 @@ Item {
                 }
             }
         }
+
         Image {
             id: cog_sh
             x: 1; y: 0;
@@ -188,7 +199,12 @@ Item {
         ]
     }
 
-    Image { id:tk_img; x: 0; y: 0; source: "timekeeper.png"
+    Image {
+        id:tk_img
+        x: 0
+        y: 0
+        source: "timekeeper.png"
+
         Text {
             x: 102; y: 14
             width: 28; height: 22
@@ -198,6 +214,7 @@ Item {
             color: "#333333"
 
         }
+
         Text {
             x: 25; y: 45
             width: 69; height: 19
@@ -209,6 +226,7 @@ Item {
             color: "#333333"
 
         }
+
         Text {
             id: yy
             x: 100; y: 78
@@ -225,22 +243,154 @@ Item {
                 PropertyChanges { target: tk_img; source: "timekeeper_yyyy.png"; }
             }
         }
-    }
 
-    MouseArea {
-        id: yearFormat
-        x: 129; y: 81
-        width: 8; height: 8
-        cursorShape: Qt.PointingHandCursor
-        onClicked: change_yearFormat();
-    }
-    function change_yearFormat() {
-        if(sw) yy.state = "yyyy"
-        else   yy.state = ""
+        MouseArea {
+            id: yearFormat
+            x: 129; y: 81
+            width: 8; height: 8
+            cursorShape: Qt.PointingHandCursor
 
-        sw = !sw
-        
-        plasmoid.configuration.yearState = yy.state
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: {
+                if(sw) yy.state = "yyyy"
+                else   yy.state = ""
+
+                sw = !sw
+
+                plasmoid.configuration.yearState = yy.state
+            }
+        }
+
+        MouseArea {
+            id: color_ma
+            x: 131; y: 25
+            width: 9; height: 11
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: {
+                if(calendar.stained_glass == "purple" ) {
+                    calendar.color = "purple";
+                    calendar.stained_glass = "green"
+                } else if (calendar.stained_glass == "green") {
+                    calendar.color = "";
+                    calendar.stained_glass = ""
+                } else if (calendar.stained_glass == "") {
+                    calendar.color = "green";
+                    calendar.stained_glass = "purple"
+                }
+
+                plasmoid.configuration.stainedglassState = calendar.stained_glass
+            }
+        }
+
+        MouseArea {
+            id: flip_ma
+            x: 154; y: 96
+            width: 10; height: 24
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            // onClicked: { side.flipped = !side.flipped }
+        }
+
+        MouseArea {
+            id: default_ma
+            x: 178; y: 32
+            width: 12; height: 14
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: defaultDate()
+        }
+
+        MouseArea {
+            id: solarSystem_ma
+            x: 0; y: 49
+            width: 13; height: 14
+            cursorShape: Qt.PointingHandCursor
+
+            Component.onCompleted: {
+                if (main.debug) {
+
+                    Qt.createQmlObject("
+                                    import QtQuick 2.0
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        color: \"transparent\"
+                                        border.color: \"white\"
+                                    }
+                                ", this);
+                }
+            }
+
+            onClicked: {
+                if(main.state != "solarSystem") {
+                    main.state = "solarSystem";
+                } else {
+                    main.state = ""; timekeeper.state = ""
+                }
+
+                plasmoid.configuration.mainState = main.state
+            }
+        }
     }
 
     states: State {

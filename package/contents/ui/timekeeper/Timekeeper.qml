@@ -25,10 +25,7 @@ Item {
     property bool   lock: false
     property alias  startAngle  : mouse_rotate.start_angle
 
-    function onSecondTimer(date) {
-    }
-
-    function onMinuteTimer(date) {
+    function setDateTime(date) {
         if (glass.count == 0) {
             orrery.setDateTime(date);
         }
@@ -255,15 +252,6 @@ Item {
         }
     }
 
-    Orrery {
-        id: orrery
-        x: innerMetalFrame.x
-        y: innerMetalFrame.y
-        z: 5
-        width: 294
-        height: 294
-    }
-
     MouseArea {
         /*
          * Background switch button
@@ -282,8 +270,7 @@ Item {
                                 import QtQuick 2.0
 
                                 Rectangle {
-                                    width: parent.width
-                                    height: parent.height
+                                    anchors.fill: parent
                                     color: \"transparent\"
                                     border.color: \"white\"
                                 }
@@ -302,4 +289,13 @@ Item {
             name: "orrery"
         }
     ]
+
+    Orrery {
+        id: orrery
+        x: innerMetalFrame.x
+        y: innerMetalFrame.y
+        z: 5
+        width: 294
+        height: 294
+    }
 }

@@ -35,7 +35,7 @@ Item {
 
     Plasmoid.backgroundHints: "NoBackground"
 
-    readonly property string fontName:   plasmoid.configuration.fontName
+    readonly property string fontName:   "Engravers MT"
     readonly property int fontWeekSize:  11 //plasmoid.configuration.fontWeekSize
     readonly property int fontMonthSize: 11 //plasmoid.configuration.fontMonthSize
 

@@ -10,7 +10,7 @@ var pname = ["Mercury", "Venus  ", "Earth  ",
              "Mars   ", "Jupiter", "Saturn ",
              "Uranus ", "Neptune", "Pluto  "];
 
-function angle(planet, date)
+function getTrueAnomaly(planet, date)
 {
     var c = get_coord(planet, day_number(date))
     return tri_angle(c.x, c.y)

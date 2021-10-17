@@ -68,15 +68,12 @@ Item {
 
         function changeImage() {
             if (!imageFlipAnnimation.running) {
-                console.error(glass.backgroundImages);
-
                 do {
                     if (selectedImg < glass.backgroundImages.length) {
                         selectedImg ++;
                     } else {
                         selectedImg = 0;
                     }
-                    console.error(glass.backgroundImages[selectedImg]);
                 }
                 while (glass.backgroundImages[selectedImg] === "" || !glass.backgroundImages[selectedImg]);
                 backgroundImg.selected = glass.backgroundImages[selectedImg];

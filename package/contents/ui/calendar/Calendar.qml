@@ -21,7 +21,6 @@ Item {
 
     Component.onCompleted: {
         yy.state = yearState
-        setDateTime(new Date());
     }
 
     function setDateTime(date) {
@@ -80,8 +79,8 @@ Item {
 
         Rectangle {
             id: yearBackground
-            x: 95;y: 70
-            width: 36;height: 36
+            x: 65;y: 70
+            width: 66;height: 36
             radius: width*0.5
             gradient: Gradient {
                 GradientStop {
@@ -171,6 +170,7 @@ Item {
                 PropertyChanges { target: dayBackground;   opacity: 0.65 }
                 PropertyChanges { target: yearBackground;  opacity: 0.65 }
             },
+
             State {
                 name: "purple"
                 PropertyChanges { target: gradientstop1; position: 0; color: "#187c8b" }
@@ -190,11 +190,12 @@ Item {
                 PropertyChanges { target: dayBackground;   opacity: 0.65 }
                 PropertyChanges { target: yearBackground;  opacity: 0.65 }
             },
+
             State {
                 id: color
                 name: "color"
                 extend: "green"
-                when: count != 0
+                when: timekeeper.count != 0
             }
         ]
     }
@@ -203,12 +204,14 @@ Item {
         id:tk_img
         x: 0
         y: 0
-        source: "timekeeper.png"
+        source: "timekeeper_yyyy.png"
 
         Text {
             x: 102; y: 14
             width: 28; height: 22
             text: day
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
             font.pointSize: 15
             font.family: fixedFont.name
             color: "#333333"
@@ -221,7 +224,7 @@ Item {
             text: month
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pointSize: main.fontMonthSize
+            font.pointSize: 15
             font.family: fixedFont.name
             color: "#333333"
 
@@ -229,18 +232,21 @@ Item {
 
         Text {
             id: yy
-            x: 100; y: 78
-            width: 28; height: 22
-            text: year
+            x: 71; y: 78
+            width: 58; height: 22
+            text: yyyy
+
+            verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
+
             font.pointSize: 15
             font.family: fixedFont.name
             color: "#333333"
             states: State {
-                name: "yyyy"
-                PropertyChanges { target: yy; text: yyyy; x:71; width:58; }
-                PropertyChanges { target: yearBackground; x:65; width:66; }
-                PropertyChanges { target: tk_img; source: "timekeeper_yyyy.png"; }
+                name: "yy"
+                PropertyChanges { target: yy; text: year; x:100; width:28; }
+                PropertyChanges { target: yearBackground; x:95; width:36; }
+                PropertyChanges { target: tk_img; source: "timekeeper.png"; }
             }
         }
 
@@ -266,7 +272,7 @@ Item {
             }
 
             onClicked: {
-                if(sw) yy.state = "yyyy"
+                if(sw) yy.state = "yy"
                 else   yy.state = ""
 
                 sw = !sw
@@ -337,7 +343,7 @@ Item {
         }
 
         MouseArea {
-            id: default_ma
+            id: setCurrentTime
             x: 178; y: 32
             width: 12; height: 14
             cursorShape: Qt.PointingHandCursor
@@ -357,7 +363,7 @@ Item {
                 }
             }
 
-            onClicked: defaultDate()
+            onClicked: currentTime()
         }
 
         MouseArea {

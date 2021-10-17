@@ -3,7 +3,7 @@ import QtQuick 2.1
 import "orrery"
 
 Item {
-    id: glass
+    id: frame
     width: parent.width
     height: parent.height
 
@@ -26,21 +26,26 @@ Item {
     property alias  startAngle  : mouse_rotate.start_angle
 
     function setDateTime(date) {
-        if (glass.count == 0) {
+        if (frame.count == 0) {
             orrery.setDateTime(date);
+
+            var MM = [0, -31, -62, -93, -123, -153, -182.5, -212, -241.5, -270.5, -299.5, -329.2]
+            var month = date.getMonth()
+            var dayOfMonth  = date.getDate()-1
+            frame.ring_degree = MM[month] - dayOfMonth;
         }
     }
 
     Component.onCompleted: {
-        for (var i = 0; i < glass.backgroundImages.length; i++) {
-            if (glass.backgroundImages[i] && plasmoid.configuration.backgroundImage === glass.backgroundImages[i]) {
+        for (var i = 0; i < frame.backgroundImages.length; i++) {
+            if (frame.backgroundImages[i] && plasmoid.configuration.backgroundImage === frame.backgroundImages[i]) {
                 backgroundImgAnimator.selectedImg = i;
                 break;
             }
         }
 
-        backgroundImg.source = glass.backgroundImages[backgroundImgAnimator.selectedImg];
-        backgroundImg.selected = glass.backgroundImages[backgroundImgAnimator.selectedImg];
+        backgroundImg.source = frame.backgroundImages[backgroundImgAnimator.selectedImg];
+        backgroundImg.selected = frame.backgroundImages[backgroundImgAnimator.selectedImg];
     }
     
     Image  {
@@ -73,14 +78,14 @@ Item {
         function changeImage() {
             if (!imageFlipAnnimation.running) {
                 do {
-                    if (selectedImg < glass.backgroundImages.length) {
+                    if (selectedImg < frame.backgroundImages.length) {
                         selectedImg ++;
                     } else {
                         selectedImg = 0;
                     }
                 }
-                while (glass.backgroundImages[selectedImg] === "" || !glass.backgroundImages[selectedImg]);
-                backgroundImg.selected = glass.backgroundImages[selectedImg];
+                while (frame.backgroundImages[selectedImg] === "" || !frame.backgroundImages[selectedImg]);
+                backgroundImg.selected = frame.backgroundImages[selectedImg];
 
                 state = "onChangeIn";
             }
@@ -149,7 +154,7 @@ Item {
         rotation: 122
         transform: Rotation {
             origin.x: 223; origin.y: 223;
-            angle: glass.ring_degree
+            angle: frame.ring_degree
             Behavior on angle {
                 SpringAnimation { 
                     spring: 2
@@ -167,7 +172,7 @@ Item {
         smooth: true
         transform: Rotation {
             origin.x: 170.5; origin.y: 170.5;
-            angle: glass.count_angle * -1
+            angle: frame.count_angle * -1
             Behavior on angle {
                 SpringAnimation {
                     spring: 2
@@ -199,8 +204,10 @@ Item {
 
         function ringUpdated(count) {
             var today = new Date();
-            today.setDate(today.getDate() + count)
+            today.setDate(today.getDate() + count);
+
             orrery.setDateTime(today);
+            calendar.setDateTime(today);
         }
 
         function tri_angle(x,y) {
@@ -215,10 +222,10 @@ Item {
 
         onPressed: {
             if( inner(mouse.x, mouse.y) ){
-                glass.lock  = false;
+                frame.lock  = false;
 
                 start_angle = tri_angle(mouse.x, mouse.y)
-                ostanov     = glass.ring_degree
+                ostanov     = frame.ring_degree
                 a_pred      = start_angle
             }
         }
@@ -233,8 +240,8 @@ Item {
                 a = tri_angle(mouse.x, mouse.y)
 
                 b = ostanov + (a - start_angle)
-                glass.ring_degree = b
-                glass.count_angle = b
+                frame.ring_degree = b
+                frame.count_angle = b
 
                 c = (a_pred - a)
                 if(c < 90 && -90 < c ) count += c
@@ -243,7 +250,7 @@ Item {
                 ringUpdated(count)
             } else {
                 start_angle = tri_angle(mouse.x, mouse.y)
-                ostanov     = glass.ring_degree
+                ostanov     = frame.ring_degree
                 a_pred      = start_angle
             }
             if(ostanov >  360) ostanov -= 360;

@@ -105,16 +105,18 @@ Item {
     }
 
     Image { id: week_bg; x: 64; y: 102; z: 5;    source: "week_bg.png" }
+
     Text {
         x: 66; y: 104; z: 5
         width: 42; height: 17
         text: clock.week_day
+
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pointSize: main.fontWeekSize
+
+        font.pointSize: 10
         font.family: fixedFont.name
         color: "#333333"
-
     }
 
     Image {

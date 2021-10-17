@@ -31,14 +31,16 @@ Item {
     Plasmoid.backgroundHints: "NoBackground"
 
     readonly property string fontName:   "Engravers MT"
-    readonly property int fontWeekSize:  10 //plasmoid.configuration.fontWeekSize
-    readonly property int fontMonthSize: 10 //plasmoid.configuration.fontMonthSize
 
     property string mainState:         plasmoid.configuration.mainState
     property string clockState:        plasmoid.configuration.clockState
     property bool calendarLock:      plasmoid.configuration.calendarLock
     property bool whellLock:         plasmoid.configuration.whellLock
     property string stainedglassState: plasmoid.configuration.stainedglassState
+
+    Component.onCompleted: {
+        currentTime();
+    }
 
     FontLoader {
         id:   fixedFont;
@@ -55,10 +57,7 @@ Item {
         interval: 1000; running: true; repeat: true;
         onTriggered: {
             var date = new Date;
-
-            if(Qt.formatDateTime(date, "hhmmss") != "000000") {
-                clock.setDateTime(date);
-            }
+            clock.setDateTime(date);
         }
     }
 
@@ -67,12 +66,19 @@ Item {
         interval: 60000; running: true; repeat: true;
         onTriggered: {
             var date = new Date;
-
-            if(Qt.formatDateTime(date, "hhmmss") != "000000") {
-                timekeeper.setDateTime(date);
-                calendar.setDateTime(date);
-            }
+            timekeeper.setDateTime(date);
+            calendar.setDateTime(date);
         }
+    }
+
+    function currentTime() {
+        var date = new Date;
+
+        timekeeper.count = 0;
+
+        clock.setDateTime(date);
+        timekeeper.setDateTime(date);
+        calendar.setDateTime(date);
     }
 
     Flipable { //main container
@@ -88,7 +94,7 @@ Item {
             height: main_height
 
             Timekeeper{ // frame backgroound
-                id:timekeeper;
+                id: timekeeper;
                 z: 1
             }
 
